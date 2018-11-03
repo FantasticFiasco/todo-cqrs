@@ -4,6 +4,6 @@ namespace Cqrs
 {
     public interface IHandleCommand<in TCommand>
     {
-        IEnumerable Handle(TCommand c);
+        IEnumerable Handle(TCommand command);
     }
 }

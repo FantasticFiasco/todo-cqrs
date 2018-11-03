@@ -85,7 +85,7 @@ namespace Cqrs
 
                         // With everything set up, we invoke the command handler, collecting the
                         // events that it produces.
-                        var resultEvents = new ArrayList();
+                        var resultEvents = new List<object>();
 
                         foreach (var e in (agg as IHandleCommand<TCommand>).Handle((TCommand) c))
                         {
@@ -99,7 +99,7 @@ namespace Cqrs
                             eventStore.SaveEventsFor<TAggregate>(
                                 agg.Id,
                                 agg.EventsLoaded,
-                                resultEvents);
+                                resultEvents.ToArray());
                         }
 
                         // Publish them to all subscribers.
