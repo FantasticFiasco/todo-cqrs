@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Threading;
+using Cqrs;
 
-namespace Cqrs
+namespace InMemory
 {
     public class InMemoryEventStore : IEventStore
     {
