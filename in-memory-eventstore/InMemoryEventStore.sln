@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventStore.Test", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventStore", "src\InMemoryEventStore.csproj", "{4161C539-A446-4681-988C-2AEDC36DA5A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs", "..\cqrs\Cqrs.csproj", "{EA565737-9AC8-407E-B203-C5DE0D261CD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs", "..\shared\cqrs\Cqrs.csproj", "{EA565737-9AC8-407E-B203-C5DE0D261CD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
