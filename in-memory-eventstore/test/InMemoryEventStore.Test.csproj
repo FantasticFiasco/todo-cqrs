@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\InMemory.csproj" />
+    <ProjectReference Include="..\src\InMemoryEventStore.csproj" />
   </ItemGroup>
 
 </Project>

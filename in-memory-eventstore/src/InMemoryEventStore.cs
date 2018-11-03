@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using Cqrs;
 
-namespace InMemory
+namespace InMemoryEventStore
 {
     public class InMemoryEventStore : IEventStore
     {
@@ -37,7 +37,7 @@ namespace InMemory
 
                 // Ensure no events persisted since us
                 var previousEvents = events?.Count ?? 0;
-                
+
                 if (previousEvents != eventsLoaded) throw new Exception("Concurrency conflict; cannot persist these events");
 
                 // Create a new event list with existing ones plus our new
@@ -45,7 +45,7 @@ namespace InMemory
                 var newEventList = events == null
                     ? new ArrayList()
                     : (ArrayList)events.Clone();
-                
+
                 newEventList.AddRange(newEvents);
 
                 // Try to put the new event list in place atomically
