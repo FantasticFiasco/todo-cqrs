@@ -2,10 +2,8 @@ using System;
 
 namespace Todo.Commands
 {
-    public class Rename
+    public class CompleteItem
     {
         public Guid Id { get; set; }
-
-        public string NewTitle { get; set; }
     }
 }

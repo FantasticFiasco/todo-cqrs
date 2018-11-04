@@ -2,10 +2,8 @@ using System;
 
 namespace Todo.Commands
 {
-    public class Add
+    public class RemoveItem
     {
         public Guid Id { get; set; }
-
-        public string Title { get; set; }
     }
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace Todo.Events
 {
-    public class Renamed
+    public class ItemRenamed
     {
         public Guid Id { get; set; }
 
