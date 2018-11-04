@@ -10,19 +10,19 @@ namespace Cqrs
     /// <summary>
     /// Provides infrastructure for a set of tests on a given aggregate.
     /// </summary>
-    public class BddTest<TAggregate>
+    public abstract class BddTest<TAggregate>
         where TAggregate : Aggregate, new()
     {
-        private TAggregate sut;
+        private readonly TAggregate aggregate;
 
-        public void BddTestSetup()
+        protected BddTest()
         {
-            sut = new TAggregate();
+            aggregate = new TAggregate();
         }
 
         protected void Test(IEnumerable given, Func<TAggregate, object> when, Action<object> then)
         {
-            then(when(ApplyEvents(sut, given)));
+            then(when(ApplyEvents(aggregate, given)));
         }
 
         protected IEnumerable Given(params object[] events)
@@ -97,8 +97,8 @@ namespace Cqrs
 
         private IEnumerable DispatchCommand<TCommand>(TCommand command)
         {
-            if (!(sut is IHandleCommand<TCommand> handler))
-                throw new CommandHandlerNotDefinedException($"Aggregate {sut.GetType().Name} does not yet handle command {command.GetType().Name}");
+            if (!(aggregate is IHandleCommand<TCommand> handler))
+                throw new CommandHandlerNotDefinedException($"Aggregate {aggregate.GetType().Name} does not yet handle command {command.GetType().Name}");
 
             return handler.Handle(command);
         }

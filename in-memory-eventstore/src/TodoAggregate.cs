@@ -9,7 +9,7 @@ namespace InMemoryEventstore
         IHandleCommand<AddItem>,
         IHandleCommand<RenameItem>,
         IHandleCommand<CompleteItem>,
-        IHandleCommand<Incomplete>,
+        IHandleCommand<IncompleteItem>,
         IHandleCommand<RemoveItem>
     {
         public IEnumerable Handle(AddItem command)
@@ -25,7 +25,7 @@ namespace InMemoryEventstore
 
         public IEnumerable Handle(CompleteItem command) => throw new System.NotImplementedException();
 
-        public IEnumerable Handle(Incomplete command) => throw new System.NotImplementedException();
+        public IEnumerable Handle(IncompleteItem command) => throw new System.NotImplementedException();
 
         public IEnumerable Handle(RemoveItem command) => throw new System.NotImplementedException();
     }

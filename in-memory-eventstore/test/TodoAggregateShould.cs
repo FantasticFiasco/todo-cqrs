@@ -9,19 +9,21 @@ namespace InMemoryEventstore.Test
     public class TodoAggregateShould : BddTest<TodoAggregate>
     {
         [Fact]
-        public void AddItem()
+        public void PublishItemAddedGivenAddItem()
         {
+            var addItem = new AddItem
+            {
+                Id = Guid.NewGuid(),
+                Title = "Buy cheese"
+            };
+
             Test(
                 Given(),
-                When(new AddItem
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "Buy cheese"
-                }),
+                When(addItem),
                 Then(new ItemAdded
                 {
-                    Id = Guid.NewGuid(),
-                    Title = "Buy cheese"
+                    Id = addItem.Id,
+                    Title = addItem.Title
                 }));
         }
     }
