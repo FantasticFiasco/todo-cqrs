@@ -3,7 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using Xunit;
+using Shouldly;
 
 namespace Cqrs
 {
@@ -49,37 +49,33 @@ namespace Cqrs
         {
             return got =>
             {
-                var gotEvents = got as object[];
-                if (gotEvents != null)
+                if (got is object[] gotEvents)
                 {
                     if (gotEvents.Length == expectedEvents.Length)
                         for (var i = 0; i < gotEvents.Length; i++)
                             if (gotEvents[i].GetType() == expectedEvents[i].GetType())
-                                Assert.AreEqual(Serialize(expectedEvents[i]), Serialize(gotEvents[i]));
+                                Serialize(gotEvents[i]).ShouldBe(Serialize(expectedEvents[i]));
                             else
-                                Assert.Fail(string.Format(
-                                    "Incorrect event in results; expected a {0} but got a {1}",
-                                    expectedEvents[i].GetType().Name, gotEvents[i].GetType().Name));
+                                throw new Exception($"Incorrect event in results; expected a {expectedEvents[i].GetType().Name} but got a {gotEvents[i].GetType().Name}");
                     else if (gotEvents.Length < expectedEvents.Length)
-                        Assert.Fail(string.Format("Expected event(s) missing: {0}",
-                            string.Join(", ", EventDiff(expectedEvents, gotEvents))));
+                        throw new Exception($"Expected event(s) missing: {string.Join(", ", EventDiff(expectedEvents, gotEvents))}");
                     else
-                        Assert.Fail(string.Format("Unexpected event(s) emitted: {0}",
-                            string.Join(", ", EventDiff(gotEvents, expectedEvents))));
+                        throw new Exception($"Unexpected event(s) emitted: {string.Join(", ", EventDiff(gotEvents, expectedEvents))}");
                 }
-                else if (got is CommandHandlerNotDefiendException)
-                    Assert.Fail((got as Exception).Message);
+                else if (got is CommandHandlerNotDefinedException exception)
+                    throw new Exception(exception.Message);
                 else
-                    Assert.Fail("Expected events, but got exception {0}",
-                        got.GetType().Name);
+                    throw new Exception($"Expected events, but got exception {got.GetType().Name}");
             };
         }
 
         private string[] EventDiff(object[] a, object[] b)
         {
             var diff = a.Select(e => e.GetType().Name).ToList();
+
             foreach (var remove in b.Select(e => e.GetType().Name))
                 diff.Remove(remove);
+
             return diff.ToArray();
         }
 
@@ -87,49 +83,46 @@ namespace Cqrs
         {
             return got =>
             {
-                if (got is TException)
-                    Assert.Pass("Got correct exception type");
-                else if (got is CommandHandlerNotDefiendException)
-                    Assert.Fail((got as Exception).Message);
-                else if (got is Exception)
-                    Assert.Fail(string.Format(
-                        "Expected exception {0}, but got exception {1}",
-                        typeof(TException).Name, got.GetType().Name));
-                else
-                    Assert.Fail(string.Format(
-                        "Expected exception {0}, but got event result",
-                        typeof(TException).Name));
+                switch (got)
+                {
+                    case TException _:
+                        break;
+                    case Exception _:
+                        throw new Exception($"Expected exception {typeof(TException).Name}, but got exception {got.GetType().Name}");
+                    default:
+                        throw new Exception($"Expected exception {typeof(TException).Name}, but got event result");
+                }
             };
         }
 
-        private IEnumerable DispatchCommand<TCommand>(TCommand c)
+        private IEnumerable DispatchCommand<TCommand>(TCommand command)
         {
-            var handler = sut as IHandleCommand<TCommand>;
-            if (handler == null)
-                throw new CommandHandlerNotDefiendException(string.Format(
-                    "Aggregate {0} does not yet handle command {1}",
-                    sut.GetType().Name, c.GetType().Name));
-            return handler.Handle(c);
+            if (!(sut is IHandleCommand<TCommand> handler))
+                throw new CommandHandlerNotDefinedException($"Aggregate {sut.GetType().Name} does not yet handle command {command.GetType().Name}");
+
+            return handler.Handle(command);
         }
 
-        private TAggregate ApplyEvents(TAggregate agg, IEnumerable events)
+        private static TAggregate ApplyEvents(TAggregate agg, IEnumerable events)
         {
             agg.ApplyEvents(events);
+
             return agg;
         }
 
-        private string Serialize(object obj)
+        private static string Serialize(object obj)
         {
             var ser = new XmlSerializer(obj.GetType());
             var ms = new MemoryStream();
             ser.Serialize(ms, obj);
             ms.Seek(0, SeekOrigin.Begin);
+
             return new StreamReader(ms).ReadToEnd();
         }
 
-        private class CommandHandlerNotDefiendException : Exception
+        private class CommandHandlerNotDefinedException : Exception
         {
-            public CommandHandlerNotDefiendException(string msg) : base(msg) { }
+            public CommandHandlerNotDefinedException(string msg) : base(msg) { }
         }
     }
 }
