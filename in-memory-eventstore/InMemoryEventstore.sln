@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F753231E-84D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{844F58A4-B5D2-43D3-AA57-32A775506CB0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventStore.Test", "test\InMemoryEventStore.Test.csproj", "{AD47A05D-2E44-4CB4-BE4C-B9A22CEBC8CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventstore.Test", "test\InMemoryEventstore.Test.csproj", "{AD47A05D-2E44-4CB4-BE4C-B9A22CEBC8CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventStore", "src\InMemoryEventStore.csproj", "{4161C539-A446-4681-988C-2AEDC36DA5A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventstore", "src\InMemoryEventstore.csproj", "{4161C539-A446-4681-988C-2AEDC36DA5A6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs", "..\shared\cqrs\Cqrs.csproj", "{EA565737-9AC8-407E-B203-C5DE0D261CD8}"
 EndProject

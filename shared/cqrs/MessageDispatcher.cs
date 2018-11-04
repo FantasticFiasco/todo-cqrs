@@ -14,7 +14,7 @@ namespace Cqrs
     /// </summary>
     public class MessageDispatcher
     {
-        private readonly IEventStore eventStore;
+        private readonly IEventstore eventStore;
         private readonly Dictionary<Type, Action<object>> commandHandlers;
         private readonly Dictionary<Type, List<Action<object>>> eventSubscribers;
 
@@ -22,7 +22,7 @@ namespace Cqrs
         /// Initializes a message dispatcher, which will use the specified event store
         /// implementation.
         /// </summary>
-        public MessageDispatcher(IEventStore eventStore)
+        public MessageDispatcher(IEventstore eventStore)
         {
             this.eventStore = eventStore;
 

@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{862B54
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs", "shared\cqrs\Cqrs.csproj", "{E17E649F-D7B4-4AF5-92E4-AA925756FD72}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventStore", "in-memory-eventstore\src\InMemoryEventStore.csproj", "{FBC9CD7F-E165-4AE4-9492-7D3735348BE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventstore", "in-memory-eventstore\src\InMemoryEventstore.csproj", "{FBC9CD7F-E165-4AE4-9492-7D3735348BE0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventStore.Test", "in-memory-eventstore\test\InMemoryEventStore.Test.csproj", "{D4D7A111-EB9A-4906-9458-D0321DA9AB62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventstore.Test", "in-memory-eventstore\test\InMemoryEventstore.Test.csproj", "{D4D7A111-EB9A-4906-9458-D0321DA9AB62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo", "shared\todo\Todo.csproj", "{43EC4FAA-6865-41DE-94BD-8C6DF9629128}"
 EndProject

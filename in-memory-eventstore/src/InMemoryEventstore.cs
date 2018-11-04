@@ -4,13 +4,13 @@ using System.Collections.Concurrent;
 using System.Threading;
 using Cqrs;
 
-namespace InMemoryEventStore
+namespace InMemoryEventstore
 {
-    public class InMemoryEventStore : IEventStore
+    public class InMemoryEventstore : IEventstore
     {
         private readonly ConcurrentDictionary<Guid, Stream> store;
 
-        public InMemoryEventStore()
+        public InMemoryEventstore()
         {
             store = new ConcurrentDictionary<Guid, Stream>();
         }

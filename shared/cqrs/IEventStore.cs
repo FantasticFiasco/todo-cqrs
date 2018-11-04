@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Cqrs
 {
-    public interface IEventStore
+    public interface IEventstore
     {
         IEnumerable LoadEventsFor<TAggregate>(Guid id);
 
