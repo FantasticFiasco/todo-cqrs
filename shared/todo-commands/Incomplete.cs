@@ -1,8 +1,8 @@
 using System;
 
-namespace Todo
+namespace Todo.Commands
 {
-    public class Remove
+    public class Incomplete
     {
         public Guid Id { get; set; }
     }

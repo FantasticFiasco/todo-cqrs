@@ -1,10 +1,10 @@
 using System;
 
-namespace Todo
+namespace Todo.Events
 {
     public class Added
     {
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
 
         public string Title { get; set; }
     }

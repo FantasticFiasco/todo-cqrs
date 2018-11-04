@@ -1,6 +1,6 @@
 using System;
 
-namespace Todo
+namespace Todo.Commands
 {
     public class Complete
     {

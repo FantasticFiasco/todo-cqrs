@@ -1,4 +1,4 @@
-namespace Todo
+namespace Todo.Commands
 {
     public class ClearCompleted
     {

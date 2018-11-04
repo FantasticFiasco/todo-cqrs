@@ -6,6 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\shared\cqrs\Cqrs.csproj" />
+    <ProjectReference Include="..\..\shared\todo-commands\Todo.Commands.csproj" />
+    <ProjectReference Include="..\..\shared\todo-events\Todo.Events.csproj" />
   </ItemGroup>
 
 </Project>

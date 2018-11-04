@@ -1,8 +1,8 @@
 using System;
 
-namespace Todo
+namespace Todo.Events
 {
-    public class Completed
+    public class Incompleted
     {
         public Guid Id { get; set; }
     }

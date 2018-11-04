@@ -1,6 +1,6 @@
 using System;
 
-namespace Todo
+namespace Todo.Events
 {
     public class Removed
     {
