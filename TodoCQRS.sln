@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventStore", "in-me
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventStore.Test", "in-memory-eventstore\test\InMemoryEventStore.Test.csproj", "{D4D7A111-EB9A-4906-9458-D0321DA9AB62}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo", "shared\todo\Todo.csproj", "{43EC4FAA-6865-41DE-94BD-8C6DF9629128}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{D4D7A111-EB9A-4906-9458-D0321DA9AB62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4D7A111-EB9A-4906-9458-D0321DA9AB62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4D7A111-EB9A-4906-9458-D0321DA9AB62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43EC4FAA-6865-41DE-94BD-8C6DF9629128}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43EC4FAA-6865-41DE-94BD-8C6DF9629128}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43EC4FAA-6865-41DE-94BD-8C6DF9629128}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43EC4FAA-6865-41DE-94BD-8C6DF9629128}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +51,7 @@ Global
 		{E17E649F-D7B4-4AF5-92E4-AA925756FD72} = {862B5404-C709-47F7-80A5-D6265E358CDD}
 		{FBC9CD7F-E165-4AE4-9492-7D3735348BE0} = {F753231E-84D8-4226-AE81-F74C5A793E6E}
 		{D4D7A111-EB9A-4906-9458-D0321DA9AB62} = {844F58A4-B5D2-43D3-AA57-32A775506CB0}
+		{43EC4FAA-6865-41DE-94BD-8C6DF9629128} = {862B5404-C709-47F7-80A5-D6265E358CDD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E23D2172-9A43-4806-9739-B39D6DA6FEAC}
