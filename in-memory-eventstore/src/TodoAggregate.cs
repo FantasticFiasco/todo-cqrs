@@ -12,14 +12,18 @@ namespace InMemoryEventstore
         IHandleCommand<IncompleteTodo>,
         IHandleCommand<RemoveTodo>,
         IApplyEvent<TodoAdded>,
-        IApplyEvent<TodoCompleted>
+        IApplyEvent<TodoCompleted>,
+        IApplyEvent<CompleteTodo>
     {
         public IEnumerable Handle(AddTodo command)
         {
             yield return new TodoAdded(command.Id, command.Title);
         }
 
-        public IEnumerable Handle(RenameTodo command) => throw new System.NotImplementedException();
+        public IEnumerable Handle(RenameTodo command)
+        {
+            yield return new TodoRenamed(command.Id, command.NewTitle);
+        }
 
         public IEnumerable Handle(CompleteTodo command)
         {
@@ -41,6 +45,10 @@ namespace InMemoryEventstore
         }
 
         public void Apply(TodoCompleted e)
+        {
+        }
+
+        public void Apply(CompleteTodo e)
         {
         }
     }

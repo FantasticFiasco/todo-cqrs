@@ -54,6 +54,29 @@ namespace InMemoryEventstore.Test
                 Then(new TodoRemoved(taxesFiled.Id)));
         }
 
+        [Fact]
+        public void ReturnTodoRemovedGivenRemoveCompleteTodo()
+        {
+            var taxesFiled = CreateTodoAdded("File taxes");
+
+            Test(
+                Given(taxesFiled, new CompleteTodo(taxesFiled.Id)),
+                When(new RemoveTodo(taxesFiled.Id)),
+                Then(new TodoRemoved(taxesFiled.Id)));
+        }
+
+        [Fact]
+        public void ReturnTodoRemovedGivenRenameTodo()
+        {
+            var taxesFiled = CreateTodoAdded("File taxes");
+            var renameTodo = new RenameTodo(taxesFiled.Id, "Apply for 6-month tax extension");
+
+            Test(
+                Given(taxesFiled),
+                When(renameTodo),
+                Then(new TodoRenamed(renameTodo.Id, renameTodo.NewTitle)));
+        }
+
         private static TodoAdded CreateTodoAdded(string title)
         {
             return new TodoAdded(Guid.NewGuid(), title);
