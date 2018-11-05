@@ -8,76 +8,106 @@ namespace InMemoryEventstore.Test
 {
     public class TodoAggregateShould : BddTest<TodoAggregate>
     {
+        private readonly Guid id;
+        private readonly string title;
+        private readonly string newTitle;
+
+        public TodoAggregateShould()
+        {
+            id = Guid.NewGuid();
+            title = "Buy cheese";
+            newTitle = "Apply for 6-month tax extension";
+        }
+
         [Fact]
         public void ReturnTodoAddedGivenAddTodo()
         {
-            var addTodo = new AddTodo(Guid.NewGuid(), "Buy cheese");
-
             Test(
                 Given(),
-                When(addTodo),
-                Then(new TodoAdded(addTodo.Id, addTodo.Title)));
+                When(new AddTodo(id, title)),
+                Then(new TodoAdded(id, title)));
+        }
+
+        [Fact]
+        public void ReturnTodoRenamedGivenRenameTodo()
+        {
+            Test(
+                Given(new TodoAdded(id, title)),
+                When(new RenameTodo(id, newTitle)),
+                Then(new TodoRenamed(id, newTitle)));
+        }
+
+        [Fact]
+        public void ThrowExceptionOnRenameTodoGivenTodoRemoved()
+        {
+            Test(
+                Given(
+                    new TodoAdded(id, title),
+                    new TodoRemoved(id)),
+                When(new RenameTodo(id, newTitle)),
+                ThenFailWith<TodoRemovedException>());
         }
 
         [Fact]
         public void ReturnTodoCompletedGivenCompleteTodo()
         {
-            var todoAdded = CreateTodoAdded("File taxes");
-
             Test(
-                Given(todoAdded),
-                When(new CompleteTodo(todoAdded.Id)),
-                Then(new TodoCompleted(todoAdded.Id)));
+                Given(new TodoAdded(id, title)),
+                When(new CompleteTodo(id)),
+                Then(new TodoCompleted(id)));
+        }
+
+        [Fact]
+        public void ThrowExceptionOnCompleteTodoGivenTodoRemoved()
+        {
+            Test(
+                Given(
+                    new TodoAdded(id, title),
+                    new TodoRemoved(id)),
+                When(new CompleteTodo(id)),
+                ThenFailWith<TodoRemovedException>());
         }
 
         [Fact]
         public void ReturnTodoIncompletedGivenIncompleteTodo()
         {
-            var todoAdded = CreateTodoAdded("File taxes");
-
             Test(
                 Given(
-                    todoAdded,
-                    new TodoCompleted(todoAdded.Id)),
-                When(new IncompleteTodo(todoAdded.Id)),
-                Then(new TodoIncompleted(todoAdded.Id)));
+                    new TodoAdded(id, title),
+                    new TodoCompleted(id)),
+                When(new IncompleteTodo(id)),
+                Then(new TodoIncompleted(id)));
         }
 
         [Fact]
-        public void ReturnTodoRemovedGivenRemoveIncompleteTodo()
+        public void ThrowExceptionOnIncompleteTodoGivenTodoRemoved()
         {
-            var todoAdded = CreateTodoAdded("File taxes");
-
             Test(
-                Given(todoAdded),
-                When(new RemoveTodo(todoAdded.Id)),
-                Then(new TodoRemoved(todoAdded.Id)));
+                Given(
+                    new TodoAdded(id, title),
+                    new TodoRemoved(id)),
+                When(new IncompleteTodo(id)),
+                ThenFailWith<TodoRemovedException>());
         }
 
         [Fact]
-        public void ReturnTodoRemovedGivenRemoveCompleteTodo()
+        public void ReturnTodoRemovedGivenRemoveIncompletedTodo()
         {
-            var todoAdded = CreateTodoAdded("File taxes");
-
             Test(
-                Given(todoAdded, new CompleteTodo(todoAdded.Id)),
-                When(new RemoveTodo(todoAdded.Id)),
-                Then(new TodoRemoved(todoAdded.Id)));
+                Given(new TodoAdded(id, title)),
+                When(new RemoveTodo(id)),
+                Then(new TodoRemoved(id)));
         }
 
         [Fact]
-        public void ReturnTodoRemovedGivenRenameTodo()
+        public void ReturnTodoRemovedGivenRemoveCompletedTodo()
         {
-            var todoAdded = CreateTodoAdded("File taxes");
-            var renameTodo = new RenameTodo(todoAdded.Id, "Apply for 6-month tax extension");
-
             Test(
-                Given(todoAdded),
-                When(renameTodo),
-                Then(new TodoRenamed(renameTodo.Id, renameTodo.NewTitle)));
+                Given(
+                    new TodoAdded(id, title),
+                    new TodoCompleted(id)),
+                When(new RemoveTodo(id)),
+                Then(new TodoRemoved(id)));
         }
-
-        private static TodoAdded CreateTodoAdded(string title) =>
-            new TodoAdded(Guid.NewGuid(), title);
     }
 }
