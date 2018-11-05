@@ -11,7 +11,7 @@ namespace InMemoryEventstore.Test
         [Fact]
         public void ReturnTodoAddedGivenAddTodo()
         {
-            var addItem = new AddTodo
+            var buyCheese = new AddTodo
             {
                 Id = Guid.NewGuid(),
                 Title = "Buy cheese"
@@ -19,12 +19,41 @@ namespace InMemoryEventstore.Test
 
             Test(
                 Given(),
-                When(addItem),
+                When(buyCheese),
                 Then(new TodoAdded
                 {
-                    Id = addItem.Id,
-                    Title = addItem.Title
+                    Id = buyCheese.Id,
+                    Title = buyCheese.Title
                 }));
+        }
+
+        [Fact]
+        public void ReturnTodoCompletedGivenCompleteTodo()
+        {
+            var fileTaxes = CreateTodoAdded("File taxes");
+
+            var completeTodo = new CompleteTodo
+            {
+                Id = fileTaxes.Id
+            };
+
+
+            Test(
+                Given(fileTaxes),
+                When(completeTodo),
+                Then(new TodoCompleted
+                    {
+                        Id = completeTodo.Id
+                    }));
+        }
+
+        private static TodoAdded CreateTodoAdded(string title)
+        {
+            return new TodoAdded
+            {
+                Id = Guid.NewGuid(),
+                Title = title
+            };
         }
     }
 }
