@@ -1,6 +1,6 @@
 namespace Todo.Commands
 {
-    public class ClearCompletedItems
+    public class ClearCompletedTodos
     {
     }
 }

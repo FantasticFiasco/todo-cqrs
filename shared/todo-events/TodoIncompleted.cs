@@ -2,10 +2,8 @@ using System;
 
 namespace Todo.Events
 {
-    public class ItemRenamed
+    public class TodoIncompleted
     {
         public Guid Id { get; set; }
-
-        public string NewTitle { get; set; }
     }
 }

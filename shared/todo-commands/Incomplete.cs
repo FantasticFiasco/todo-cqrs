@@ -2,7 +2,7 @@ using System;
 
 namespace Todo.Commands
 {
-    public class IncompleteItem
+    public class IncompleteTodo
 
     {
         public Guid Id { get; set; }

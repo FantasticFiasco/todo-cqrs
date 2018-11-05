@@ -1,8 +1,8 @@
 using System;
 
-namespace Todo.Events
+namespace Todo.Commands
 {
-    public class ItemRemoved
+    public class CompleteTodo
     {
         public Guid Id { get; set; }
     }

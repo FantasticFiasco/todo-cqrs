@@ -6,27 +6,27 @@ using Todo.Events;
 namespace InMemoryEventstore
 {
     public class TodoAggregate : Aggregate,
-        IHandleCommand<AddItem>,
-        IHandleCommand<RenameItem>,
-        IHandleCommand<CompleteItem>,
-        IHandleCommand<IncompleteItem>,
-        IHandleCommand<RemoveItem>
+        IHandleCommand<AddTodo>,
+        IHandleCommand<RenameTodo>,
+        IHandleCommand<CompleteTodo>,
+        IHandleCommand<IncompleteTodo>,
+        IHandleCommand<RemoveTodo>
     {
-        public IEnumerable Handle(AddItem command)
+        public IEnumerable Handle(AddTodo command)
         {
-            yield return new ItemAdded
+            yield return new TodoAdded
             {
                 Id = command.Id,
                 Title = command.Title
             };
         }
 
-        public IEnumerable Handle(RenameItem command) => throw new System.NotImplementedException();
+        public IEnumerable Handle(RenameTodo command) => throw new System.NotImplementedException();
 
-        public IEnumerable Handle(CompleteItem command) => throw new System.NotImplementedException();
+        public IEnumerable Handle(CompleteTodo command) => throw new System.NotImplementedException();
 
-        public IEnumerable Handle(IncompleteItem command) => throw new System.NotImplementedException();
+        public IEnumerable Handle(IncompleteTodo command) => throw new System.NotImplementedException();
 
-        public IEnumerable Handle(RemoveItem command) => throw new System.NotImplementedException();
+        public IEnumerable Handle(RemoveTodo command) => throw new System.NotImplementedException();
     }
 }

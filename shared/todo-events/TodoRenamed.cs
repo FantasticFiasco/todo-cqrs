@@ -1,8 +1,8 @@
 using System;
 
-namespace Todo.Commands
+namespace Todo.Events
 {
-    public class RenameItem
+    public class TodoRenamed
     {
         public Guid Id { get; set; }
 

@@ -9,9 +9,9 @@ namespace InMemoryEventstore.Test
     public class TodoAggregateShould : BddTest<TodoAggregate>
     {
         [Fact]
-        public void PublishItemAddedGivenAddItem()
+        public void ReturnTodoAddedGivenAddTodo()
         {
-            var addItem = new AddItem
+            var addItem = new AddTodo
             {
                 Id = Guid.NewGuid(),
                 Title = "Buy cheese"
@@ -20,7 +20,7 @@ namespace InMemoryEventstore.Test
             Test(
                 Given(),
                 When(addItem),
-                Then(new ItemAdded
+                Then(new TodoAdded
                 {
                     Id = addItem.Id,
                     Title = addItem.Title
