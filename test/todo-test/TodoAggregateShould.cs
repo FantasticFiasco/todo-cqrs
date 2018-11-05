@@ -1,10 +1,9 @@
 using System;
 using Cqrs;
-using Todo.Commands;
 using Todo.Events;
 using Xunit;
 
-namespace InMemoryEventstore.Test
+namespace Todo.Test
 {
     public class TodoAggregateShould : BddTest<TodoAggregate>
     {

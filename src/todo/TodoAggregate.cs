@@ -1,9 +1,8 @@
 using System.Collections;
 using Cqrs;
-using Todo.Commands;
 using Todo.Events;
 
-namespace InMemoryEventstore
+namespace Todo
 {
     public class TodoAggregate : Aggregate,
         IHandleCommand<AddTodo>,

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Todo.Commands
+namespace Todo
 {
     public class TodoRemovedException : Exception
     {

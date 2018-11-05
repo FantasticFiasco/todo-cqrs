@@ -1,11 +1,10 @@
 using System;
 
-namespace Todo.Commands
+namespace Todo
 {
-    public class IncompleteTodo
-
+    public class CompleteTodo
     {
-        public IncompleteTodo(Guid id)
+        public CompleteTodo(Guid id)
         {
             Id = id;
         }
