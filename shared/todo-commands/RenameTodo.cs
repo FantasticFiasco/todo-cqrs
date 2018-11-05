@@ -4,8 +4,14 @@ namespace Todo.Commands
 {
     public class RenameTodo
     {
-        public Guid Id { get; set; }
+        public RenameTodo(Guid id, string newTitle)
+        {
+            Id = id;
+            NewTitle = newTitle;
+        }
 
-        public string NewTitle { get; set; }
+        public Guid Id { get; }
+
+        public string NewTitle { get; }
     }
 }

@@ -4,8 +4,14 @@ namespace Todo.Commands
 {
     public class AddTodo
     {
-        public Guid Id { get; set; }
+        public AddTodo(Guid id, string title)
+        {
+            Id = id;
+            Title = title;
+        }
 
-        public string Title { get; set; }
+        public Guid Id { get; }
+
+        public string Title { get; }
     }
 }

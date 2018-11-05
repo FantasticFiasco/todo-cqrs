@@ -4,6 +4,11 @@ namespace Todo.Commands
 {
     public class RemoveTodo
     {
-        public Guid Id { get; set; }
+        public RemoveTodo(Guid id)
+        {
+            Id = id;
+        }
+
+        public Guid Id { get; }
     }
 }
