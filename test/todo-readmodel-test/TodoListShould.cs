@@ -55,7 +55,7 @@ namespace Todo.ReadModel
         }
 
         [Fact]
-        public void HandleÎncompletedTodoItem()
+        public void HandleIncompletedTodoItem()
         {
             // Arrange
             todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
@@ -74,7 +74,7 @@ namespace Todo.ReadModel
         }
 
         [Fact]
-        public void HandleRemoveÎncompletedTodoItem()
+        public void HandleRemoveIncompletedTodoItem()
         {
             // Arrange
             todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
@@ -107,7 +107,7 @@ namespace Todo.ReadModel
             todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
 
             var newTitle = "Apply for 6-month tax extension";
-            
+
             // Act
             todoList.Handle(new TodoRenamed(BuyCheese.Id, newTitle));
 
