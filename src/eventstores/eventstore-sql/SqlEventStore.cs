@@ -1,8 +1,9 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Cqrs;
@@ -22,7 +23,7 @@ namespace EventStore.Sql
             this.connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public object[] LoadEventsFor<TAggregate>(Guid id)
+        public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
             using (var connection = new SqlConnection(connectionString))
             {
@@ -50,7 +51,7 @@ namespace EventStore.Sql
             }
         }
 
-        public void SaveEventsFor<TAggregate>(Guid aggregateId, int eventsLoaded, ArrayList newEvents)
+        public void SaveEventsFor<TAggregate>(Guid aggregateId, int eventsLoaded, IEnumerable<object> newEvents)
         {
             using (var command = new SqlCommand())
             {
@@ -65,9 +66,9 @@ namespace EventStore.Sql
 
                 // Add saving of the events
                 command.Parameters.AddWithValue("CommitDateTime", DateTime.UtcNow);
-                for (int i = 0; i < newEvents.Count; i++)
+                for (int i = 0; i < newEvents.Count(); i++)
                 {
-                    var e = newEvents[i];
+                    var e = newEvents.ElementAt(i);
                     queryText.AppendFormat(
                         @"INSERT INTO [dbo].[Events] ([AggregateId], [SequenceNumber], [Type], [Body], [Timestamp])
                           VALUES(@AggregateId, {0}, @Type{1}, @Body{1}, @CommitDateTime);",
