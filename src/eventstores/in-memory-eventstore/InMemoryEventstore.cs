@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using Cqrs;
 
@@ -15,16 +15,16 @@ namespace InMemoryEventstore
             store = new ConcurrentDictionary<Guid, Stream>();
         }
 
-        public IEnumerable LoadEventsFor<TAggregate>(Guid id)
+        public object[] LoadEventsFor<TAggregate>(Guid id)
         {
             // Get the current event stream. Note that we never mutate the
             // events array so it's safe to return the real thing.
             return store.TryGetValue(id, out var stream)
                 ? stream.Events
-                : new ArrayList();
+                : new object[0];
         }
 
-        public void SaveEventsFor<TAggregate>(Guid aggregateId, int eventsLoaded, ArrayList newEvents)
+        public void SaveEventsFor<TAggregate>(Guid aggregateId, int eventsLoaded, object[] newEvents)
         {
             // Get or create stream
             var stream = store.GetOrAdd(aggregateId, _ => new Stream());
@@ -36,20 +36,20 @@ namespace InMemoryEventstore
                 var events = stream.Events;
 
                 // Ensure no events persisted since us
-                var previousEvents = events?.Count ?? 0;
+                var previousEvents = events?.Length ?? 0;
 
                 if (previousEvents != eventsLoaded) throw new Exception("Concurrency conflict; cannot persist these events");
 
                 // Create a new event list with existing ones plus our new
                 // ones (making new important for lock free algorithm!)
                 var newEventList = events == null
-                    ? new ArrayList()
-                    : (ArrayList)events.Clone();
+                    ? new List<object>()
+                    : (List<object>)events.Clone();
 
                 newEventList.AddRange(newEvents);
 
                 // Try to put the new event list in place atomically
-                if (Interlocked.CompareExchange(ref stream.Events, newEventList, events) == events)
+                if (Interlocked.CompareExchange(ref stream.Events, newEventList.ToArray(), events) == events)
                 {
                     break;
                 }
@@ -58,7 +58,7 @@ namespace InMemoryEventstore
 
         private class Stream
         {
-            public ArrayList Events;
+            public object[] Events;
         }
     }
 }

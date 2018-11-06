@@ -25,6 +25,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.ReadModel", "src\todo-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.ReadModel.Test", "test\todo-readmodel-test\Todo.ReadModel.Test.csproj", "{35516C9E-5AF5-4C48-9CCE-D43BDA67ECA4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eventstores", "eventstores", "{76C8331D-AD32-4EC9-BD79-62BE763BE1F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventstore.Test", "test\eventstores\in-memory-eventstore-test\InMemoryEventstore.Test.csproj", "{BAFAB63F-FB51-4C87-A1C8-3FBBA75012F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,10 @@ Global
 		{35516C9E-5AF5-4C48-9CCE-D43BDA67ECA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35516C9E-5AF5-4C48-9CCE-D43BDA67ECA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35516C9E-5AF5-4C48-9CCE-D43BDA67ECA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAFAB63F-FB51-4C87-A1C8-3FBBA75012F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAFAB63F-FB51-4C87-A1C8-3FBBA75012F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAFAB63F-FB51-4C87-A1C8-3FBBA75012F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAFAB63F-FB51-4C87-A1C8-3FBBA75012F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +85,8 @@ Global
 		{D09A1E28-B69C-46EB-9423-B9089BA3B1E4} = {F753231E-84D8-4226-AE81-F74C5A793E6E}
 		{A1BA76EA-E4D6-4F9E-92DC-F4E28E4102AF} = {F753231E-84D8-4226-AE81-F74C5A793E6E}
 		{35516C9E-5AF5-4C48-9CCE-D43BDA67ECA4} = {862B5404-C709-47F7-80A5-D6265E358CDD}
+		{76C8331D-AD32-4EC9-BD79-62BE763BE1F0} = {862B5404-C709-47F7-80A5-D6265E358CDD}
+		{BAFAB63F-FB51-4C87-A1C8-3FBBA75012F8} = {76C8331D-AD32-4EC9-BD79-62BE763BE1F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E23D2172-9A43-4806-9739-B39D6DA6FEAC}
