@@ -33,15 +33,24 @@ namespace Todo.ReadModel
             todoItemById.Add(todoItem.Id, todoItem);
         }
 
-        public void Handle(TodoRenamed e) => throw new System.NotImplementedException();
+        public void Handle(TodoRenamed e)
+        {
+            todoItemById[e.Id].Title = e.NewTitle;
+        }
 
         public void Handle(TodoCompleted e)
         {
             todoItemById[e.Id].IsCompleted = true;
         }
 
-        public void Handle(TodoIncompleted e) => throw new System.NotImplementedException();
+        public void Handle(TodoIncompleted e)
+        {
+            todoItemById[e.Id].IsCompleted = false;
+        }
 
-        public void Handle(TodoRemoved e) => throw new System.NotImplementedException();
+        public void Handle(TodoRemoved e)
+        {
+            todoItemById.Remove(e.Id);
+        }
     }
 }

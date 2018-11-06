@@ -1,4 +1,3 @@
-using System.Linq;
 using Shouldly;
 using Todo.Events;
 using Xunit;
@@ -16,34 +15,47 @@ namespace Todo.ReadModel
         }
 
         [Fact]
-        public void AddTodoItemGivenEmpty()
+        public void HandleAddedTodoItem()
         {
-            // Arrange
+            // Act
             todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
 
-            // Act
-            var actual = todoList.GetAll();
-
             // Assert
-            actual.ShouldBe(new[] { BuyCheese });
+            todoList.GetAll().ShouldBe(new[] { BuyCheese });
         }
 
         [Fact]
-        public void AddTodoItemsGivenEmpty()
+        public void HandleAddedTodoItems()
+        {
+            // Act
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
+            todoList.Handle(new TodoAdded(WashCar.Id, WashCar.Title));
+
+            // Assert
+            todoList.GetAll().ShouldBe(new[] { BuyCheese, WashCar });
+        }
+
+        [Fact]
+        public void HandleCompletedTodoItem()
         {
             // Arrange
             todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
             todoList.Handle(new TodoAdded(WashCar.Id, WashCar.Title));
 
             // Act
-            var actual = todoList.GetAll();
+            todoList.Handle(new TodoCompleted(BuyCheese.Id));
+
 
             // Assert
-            actual.ShouldBe(new[] { BuyCheese, WashCar });
+            var actual = todoList.GetAll();
+            actual.Length.ShouldBe(2);
+
+            actual[0].IsCompleted.ShouldBeTrue();
+            actual[1].IsCompleted.ShouldBeFalse();
         }
 
         [Fact]
-        public void CompleteTodoItem()
+        public void HandleÎncompletedTodoItem()
         {
             // Arrange
             todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
@@ -51,13 +63,59 @@ namespace Todo.ReadModel
             todoList.Handle(new TodoCompleted(BuyCheese.Id));
 
             // Act
-            var actual = todoList.GetAll();
+            todoList.Handle(new TodoIncompleted(BuyCheese.Id));
 
             // Assert
+            var actual = todoList.GetAll();
             actual.Length.ShouldBe(2);
 
-            actual[0].IsCompleted.ShouldBeTrue();
+            actual[0].IsCompleted.ShouldBeFalse();
             actual[1].IsCompleted.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void HandleRemoveÎncompletedTodoItem()
+        {
+            // Arrange
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
+
+            // Act
+            todoList.Handle(new TodoRemoved(BuyCheese.Id));
+
+            // Assert
+            todoList.GetAll().ShouldBeEmpty();
+        }
+
+        [Fact]
+        public void HandleRemoveCompletedTodoItem()
+        {
+            // Arrange
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
+            todoList.Handle(new TodoCompleted(BuyCheese.Id));
+
+            // Act
+            todoList.Handle(new TodoRemoved(BuyCheese.Id));
+
+            // Assert
+            todoList.GetAll().ShouldBeEmpty();
+        }
+
+        [Fact]
+        public void HandleRenamedTodoItem()
+        {
+            // Arrange
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
+
+            var newTitle = "Apply for 6-month tax extension";
+            
+            // Act
+            todoList.Handle(new TodoRenamed(BuyCheese.Id, newTitle));
+
+            // Assert
+            var actual = todoList.GetAll();
+            actual.Length.ShouldBe(1);
+
+            actual[0].Title.ShouldBe(newTitle);
         }
     }
 }
