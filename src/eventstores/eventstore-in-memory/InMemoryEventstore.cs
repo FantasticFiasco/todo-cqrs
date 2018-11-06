@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cqrs;
 
-namespace InMemoryEventstore
+namespace Eventstore.InMemory
 {
     public class InMemoryEventstore : IEventstore
     {

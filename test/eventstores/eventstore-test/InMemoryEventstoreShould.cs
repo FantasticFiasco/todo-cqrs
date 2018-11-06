@@ -1,8 +1,9 @@
 using System;
+using Eventstore.InMemory;
 using Shouldly;
 using Xunit;
 
-namespace InMemoryEventstore
+namespace Eventstore
 {
     public class InMemoryEventstoreShould
     {
@@ -34,7 +35,7 @@ namespace InMemoryEventstore
                 new { Id = Guid.NewGuid() },
                 new { Id = Guid.NewGuid() }
             };
-            
+
             inMemoryEventstore.SaveEventsFor<SomeAggregate>(id, 0, events);
 
             // Act

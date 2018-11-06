@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{862B5404-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs", "src\cqrs\Cqrs.csproj", "{E17E649F-D7B4-4AF5-92E4-AA925756FD72}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventstore", "src\eventstores\in-memory-eventstore\InMemoryEventstore.csproj", "{FBC9CD7F-E165-4AE4-9492-7D3735348BE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eventstore.InMemory", "src\eventstores\eventstore-in-memory\Eventstore.InMemory.csproj", "{FBC9CD7F-E165-4AE4-9492-7D3735348BE0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.Events", "src\todo-events\Todo.Events.csproj", "{295F2737-201D-40AD-AB83-DB7F0B8EA74F}"
 EndProject
@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.ReadModel.Test", "test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "eventstores", "eventstores", "{76C8331D-AD32-4EC9-BD79-62BE763BE1F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryEventstore.Test", "test\eventstores\in-memory-eventstore-test\InMemoryEventstore.Test.csproj", "{BAFAB63F-FB51-4C87-A1C8-3FBBA75012F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eventstore.Test", "test\eventstores\eventstore-test\Eventstore.Test.csproj", "{BAFAB63F-FB51-4C87-A1C8-3FBBA75012F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
