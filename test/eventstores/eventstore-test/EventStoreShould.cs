@@ -1,18 +1,18 @@
 using System;
-using Eventstore.InMemory;
+using EventStore.InMemory;
 using Shouldly;
 using Xunit;
 
-namespace Eventstore
+namespace EventStore
 {
-    public class EventstoreShould
+    public class EventStoreShould
     {
-        private readonly InMemoryEventstore inMemoryEventstore;
+        private readonly InMemoryEventStore inMemoryEventStore;
         private readonly Guid id;
 
-        public EventstoreShould()
+        public EventStoreShould()
         {
-            inMemoryEventstore = new InMemoryEventstore();
+            inMemoryEventStore = new InMemoryEventStore();
             id = Guid.NewGuid();
         }
 
@@ -20,7 +20,7 @@ namespace Eventstore
         public void LoadNoEventsForNewAggregate()
         {
             // Act
-            var actual = inMemoryEventstore.LoadEventsFor<SomeAggregate>(id);
+            var actual = inMemoryEventStore.LoadEventsFor<SomeAggregate>(id);
 
             // Assert
             actual.ShouldBeEmpty();
@@ -36,10 +36,10 @@ namespace Eventstore
                 new { Id = Guid.NewGuid() }
             };
 
-            inMemoryEventstore.SaveEventsFor<SomeAggregate>(id, 0, events);
+            inMemoryEventStore.SaveEventsFor<SomeAggregate>(id, 0, events);
 
             // Act
-            var actual = inMemoryEventstore.LoadEventsFor<SomeAggregate>(id);
+            var actual = inMemoryEventStore.LoadEventsFor<SomeAggregate>(id);
 
             // Assert
             actual.ShouldBe(events);

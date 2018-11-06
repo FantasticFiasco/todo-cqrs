@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System.Threading;
 using Cqrs;
 
-namespace Eventstore.InMemory
+namespace EventStore.InMemory
 {
-    public class InMemoryEventstore : IEventstore
+    public class InMemoryEventStore : IEventStore
     {
         private readonly ConcurrentDictionary<Guid, Stream> store;
 
-        public InMemoryEventstore()
+        public InMemoryEventStore()
         {
             store = new ConcurrentDictionary<Guid, Stream>();
         }
 
-        public object[] LoadEventsFor<TAggregate>(Guid id)
+        public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
             // Get the current event stream. Note that we never mutate the
             // events array so it's safe to return the real thing.
@@ -24,7 +24,7 @@ namespace Eventstore.InMemory
                 : new object[0];
         }
 
-        public void SaveEventsFor<TAggregate>(Guid aggregateId, int eventsLoaded, object[] newEvents)
+        public void SaveEventsFor<TAggregate>(Guid aggregateId, int eventsLoaded, IEnumerable<object> newEvents)
         {
             // Get or create stream
             var stream = store.GetOrAdd(aggregateId, _ => new Stream());

@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>Eventstore</RootNamespace>
+    <RootNamespace>EventStore</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\eventstores\eventstore-in-memory\Eventstore.InMemory.csproj" />
+    <ProjectReference Include="..\..\..\src\eventstores\eventstore-in-memory\EventStore.InMemory.csproj" />
   </ItemGroup>
 
   <ItemGroup>

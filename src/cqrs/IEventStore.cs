@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Cqrs
 {
-    public interface IEventstore
+    public interface IEventStore
     {
-        object[] LoadEventsFor<TAggregate>(Guid id);
+        IEnumerable<object> LoadEventsFor<TAggregate>(Guid id);
 
-        void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents);
+        void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, IEnumerable<object> newEvents);
     }
 }
