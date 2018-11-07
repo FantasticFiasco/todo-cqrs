@@ -1,5 +1,7 @@
 # Todo CQRS
 
+[![Build Status](https://dev.azure.com/fantasticfiasco/Todo%20CQRS/_apis/build/status/FantasticFiasco.todo-cqrs)](https://dev.azure.com/fantasticfiasco/Todo%20CQRS/_build/latest?definitionId=2)
+
 ## Scenarios
 
 ### Empty list can have item added
