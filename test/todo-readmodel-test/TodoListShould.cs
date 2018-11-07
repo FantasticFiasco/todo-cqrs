@@ -45,7 +45,6 @@ namespace Todo.ReadModel
             // Act
             todoList.Handle(new TodoCompleted(BuyCheese.Id));
 
-
             // Assert
             todoList.GetAll().ShouldBe(new[] { BuyCheese.ButCompleted(), WashCar });
         }
