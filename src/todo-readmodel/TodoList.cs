@@ -28,7 +28,7 @@ namespace Todo.ReadModel
 
         public void Handle(TodoAdded e)
         {
-            var todoItem = new TodoItem(e.Id, e.Title);
+            var todoItem = new TodoItem(e.Id, e.Title, false);
 
             todoItemById.Add(todoItem.Id, todoItem);
         }

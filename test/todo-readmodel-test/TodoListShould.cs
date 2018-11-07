@@ -47,11 +47,7 @@ namespace Todo.ReadModel
 
 
             // Assert
-            var actual = todoList.GetAll();
-            actual.Length.ShouldBe(2);
-
-            actual[0].IsCompleted.ShouldBeTrue();
-            actual[1].IsCompleted.ShouldBeFalse();
+            todoList.GetAll().ShouldBe(new[] { BuyCheese.ButCompleted(), WashCar });
         }
 
         [Fact]
@@ -66,11 +62,7 @@ namespace Todo.ReadModel
             todoList.Handle(new TodoIncompleted(BuyCheese.Id));
 
             // Assert
-            var actual = todoList.GetAll();
-            actual.Length.ShouldBe(2);
-
-            actual[0].IsCompleted.ShouldBeFalse();
-            actual[1].IsCompleted.ShouldBeFalse();
+            todoList.GetAll().ShouldBe(new[] { BuyCheese, WashCar });
         }
 
         [Fact]
@@ -112,10 +104,7 @@ namespace Todo.ReadModel
             todoList.Handle(new TodoRenamed(BuyCheese.Id, newTitle));
 
             // Assert
-            var actual = todoList.GetAll();
-            actual.Length.ShouldBe(1);
-
-            actual[0].Title.ShouldBe(newTitle);
+            todoList.GetAll().ShouldBe(new[] { BuyCheese.ButWithTitle(newTitle) });
         }
     }
 }
