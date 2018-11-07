@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\eventstores\eventstore-in-memory\EventStore.InMemory.csproj" />
+    <ProjectReference Include="..\..\..\src\event-stores\event-store-in-memory\EventStore.InMemory.csproj" />
   </ItemGroup>
 
   <ItemGroup>
