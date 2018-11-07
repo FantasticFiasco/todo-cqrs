@@ -5,12 +5,12 @@ using Xunit;
 
 namespace EventStore
 {
-    public class EventStoreShould
+    public class InMemoryEventStoreShould
     {
         private readonly InMemoryEventStore inMemoryEventStore;
         private readonly Guid id;
 
-        public EventStoreShould()
+        public InMemoryEventStoreShould()
         {
             inMemoryEventStore = new InMemoryEventStore();
             id = Guid.NewGuid();
