@@ -31,13 +31,6 @@ When the first item is marked as incomplete<br/>
 Then only those items are listed<br/>
 And both items are listed as active
 
-### Complete items can be cleared
-
-Given a Todo list with items 'Buy cheese' & 'Wash the car'<br/>
-And the first item is completed<br/>
-When 'Clear completed' is executed<br/>
-Then only the second item is listed
-
 ### Incomplete items can be removed
 
 Given a Todo list with a single item 'Buy cheese'<br/>
