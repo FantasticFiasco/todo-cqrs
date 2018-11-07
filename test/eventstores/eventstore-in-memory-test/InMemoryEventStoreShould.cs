@@ -7,12 +7,12 @@ namespace EventStore
 {
     public class InMemoryEventStoreShould
     {
-        private readonly InMemoryEventStore inMemoryEventStore;
+        private readonly InMemoryEventStore eventStore;
         private readonly Guid id;
 
         public InMemoryEventStoreShould()
         {
-            inMemoryEventStore = new InMemoryEventStore();
+            eventStore = new InMemoryEventStore();
             id = Guid.NewGuid();
         }
 
@@ -20,7 +20,7 @@ namespace EventStore
         public void LoadNoEventsForNewAggregate()
         {
             // Act
-            var actual = inMemoryEventStore.LoadEventsFor<SomeAggregate>(id);
+            var actual = eventStore.LoadEventsFor<SomeAggregate>(id);
 
             // Assert
             actual.ShouldBeEmpty();
@@ -36,10 +36,10 @@ namespace EventStore
                 new { Id = Guid.NewGuid() }
             };
 
-            inMemoryEventStore.SaveEventsFor<SomeAggregate>(id, 0, events);
+            eventStore.SaveEventsFor<SomeAggregate>(id, 0, events);
 
             // Act
-            var actual = inMemoryEventStore.LoadEventsFor<SomeAggregate>(id);
+            var actual = eventStore.LoadEventsFor<SomeAggregate>(id);
 
             // Assert
             actual.ShouldBe(events);
