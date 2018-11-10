@@ -44,7 +44,7 @@ namespace EventStore.InMemory
                 // ones (making new important for lock free algorithm!)
                 var newEventList = events == null
                     ? new List<object>()
-                    : (List<object>)events.Clone();
+                    : new List<object>((object[])events.Clone());
 
                 newEventList.AddRange(newEvents);
 
