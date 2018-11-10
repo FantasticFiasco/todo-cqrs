@@ -73,7 +73,7 @@ namespace Todo.Web.Controllers
         [ProducesResponseType(204)]
         public IActionResult Delete(Guid id)
         {
-            var command = new RemoveTodo(Guid.NewGuid());
+            var command = new RemoveTodo(id);
 
             messageDispatcher.SendCommand(command);
 
