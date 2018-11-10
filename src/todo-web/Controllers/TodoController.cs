@@ -25,9 +25,9 @@ namespace Todo.Web.Controllers
         /// </summary>
         [HttpPost]
         [ProducesResponseType(typeof(TodoResponse), 201)]
-        public IActionResult Create(TodoRequest request)
+        public IActionResult Create([FromBody] AddTodoRequest body)
         {
-            var command = new AddTodo(Guid.NewGuid(), request.Title);
+            var command = new AddTodo(Guid.NewGuid(), body.Title);
 
             messageDispatcher.SendCommand(command);
 
@@ -55,20 +55,68 @@ namespace Todo.Web.Controllers
         /// <summary>
         /// Gets todo.
         /// </summary>
-        /// <param name="id">The id</param>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(TodoResponse), 200)]
         public IActionResult Get(Guid id)
         {
             var todoItem = todoList.Get(id);
 
+            if (todoItem == null)
+            {
+                return NotFound();
+            }
+
             return Ok(ToResponse(todoItem));
+        }
+
+        /// <summary>
+        /// Renames a todo.
+        /// </summary>
+        [HttpPost("{id}/title")]
+        [ProducesResponseType(204)]
+        public IActionResult Rename(Guid id, [FromBody] RenameTodoRequest body)
+        {
+            var todoItem = todoList.Get(id);
+
+            if (todoItem == null)
+            {
+                return NotFound();
+            }
+
+            messageDispatcher.SendCommand(new RenameTodo(id, body.NewTitle));
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Marks a todo as completed or incompleted.
+        /// </summary>
+        [HttpPost("{id}/completed")]
+        [ProducesResponseType(204)]
+        public IActionResult Rename(Guid id, [FromBody] CompletedTodoRequest body)
+        {
+            var todoItem = todoList.Get(id);
+
+            if (todoItem == null)
+            {
+                return NotFound();
+            }
+
+            if (body.IsCompleted)
+            {
+                messageDispatcher.SendCommand(new CompleteTodo(id));
+            }
+            else
+            {
+                messageDispatcher.SendCommand(new IncompleteTodo(id));
+            }
+
+            return NoContent();
         }
 
         /// <summary>
         /// Remove a todo.
         /// </summary>
-        /// <param name="id">The id</param>
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         public IActionResult Delete(Guid id)

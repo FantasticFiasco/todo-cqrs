@@ -28,7 +28,9 @@ namespace Todo.ReadModel
 
         public TodoItem Get(Guid id)
         {
-            return todoItemById[id];
+            todoItemById.TryGetValue(id, out var todoItem);
+
+            return todoItem;
         }
 
         public void Handle(TodoAdded e)

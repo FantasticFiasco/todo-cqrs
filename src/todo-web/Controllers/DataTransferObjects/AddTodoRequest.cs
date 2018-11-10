@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Todo.Web.Controllers.DataTransferObjects
 {
-    public class TodoRequest
+    public class AddTodoRequest
     {
         /// <summary>
         /// the title

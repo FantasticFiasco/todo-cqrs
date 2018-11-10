@@ -12,6 +12,7 @@ namespace Todo
         IHandleCommand<RemoveTodo>,
         IApplyEvent<TodoAdded>,
         IApplyEvent<TodoRemoved>,
+        IApplyEvent<TodoRenamed>,
         IApplyEvent<TodoCompleted>
     {
         private bool isRemoved;
@@ -54,6 +55,10 @@ namespace Todo
         public void Apply(TodoRemoved e)
         {
             isRemoved = true;
+        }
+
+        public void Apply(TodoRenamed e)
+        {
         }
 
         public void Apply(TodoCompleted e)
