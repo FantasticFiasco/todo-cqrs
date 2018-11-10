@@ -2,7 +2,11 @@
 
 [![Build Status](https://dev.azure.com/fantasticfiasco/Todo%20CQRS/_apis/build/status/FantasticFiasco.todo-cqrs)](https://dev.azure.com/fantasticfiasco/Todo%20CQRS/_build/latest?definitionId=2)
 
-## Scenarios
+## Introduction
+
+This is a very basic implementation of the acceptance criteria defined by TodoMVC, implemented using CQRS and event sourcing. Currently only a in-memory implementation of the event store exists, but there is nothing preventing you from implementing one using a SQL database or [Event Store](https://eventstore.org/).
+
+## Acceptance criteria
 
 ### Empty list can have item added
 
