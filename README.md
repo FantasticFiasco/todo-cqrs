@@ -1,4 +1,4 @@
-# Todo CQRS
+# TodoCQRS - TodoMVC using CQRS and event sourcing
 
 [![Build Status](https://dev.azure.com/fantasticfiasco/Todo%20CQRS/_apis/build/status/FantasticFiasco.todo-cqrs)](https://dev.azure.com/fantasticfiasco/Todo%20CQRS/_build/latest?definitionId=2)
 
