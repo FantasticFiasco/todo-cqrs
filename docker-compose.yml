@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+
+  todo:
+    build:
+      context: ./src
+    ports:
+      - "8080:80"
