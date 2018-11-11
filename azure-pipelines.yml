@@ -10,3 +10,6 @@ steps:
     command: test
     projects: '**/*.Test.csproj'
     arguments: "--configuration Release"
+
+- script: docker-compose build
+  displayName: "Build Docker image"
