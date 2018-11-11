@@ -2,9 +2,25 @@
 
 [![Build Status](https://dev.azure.com/fantasticfiasco/Todo%20CQRS/_apis/build/status/FantasticFiasco.todo-cqrs)](https://dev.azure.com/fantasticfiasco/Todo%20CQRS/_build/latest?definitionId=2)
 
+## Table of contents
+
+- [Introduction](#introduction)
+- [Running the application](#running-the-application)
+- [Acceptance criteria](#acceptance-criteria)
+
 ## Introduction
 
 This is a very basic implementation of the acceptance criteria defined by TodoMVC, implemented using CQRS and event sourcing. Currently only a in-memory implementation of the event store exists, but there is nothing preventing you from implementing one using a SQL database or [Event Store](https://eventstore.org/).
+
+## Running the application
+
+Make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) is installed before running the following command in the root of the repository:
+
+```bash
+$ docker-compose up
+```
+
+Access the OpenAPI description by hitting [http://localhost:8080/swagger](http://localhost:8080/swagger) in your favorite web browser.
 
 ## Acceptance criteria
 
