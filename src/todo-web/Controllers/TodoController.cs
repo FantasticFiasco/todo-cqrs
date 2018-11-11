@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cqrs;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +45,7 @@ namespace Todo.Web.Controllers
         /// Gets all todos.
         /// </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(TodoResponse[]), 200)]
+        [ProducesResponseType(typeof(IEnumerable<TodoResponse>), 200)]
         public IActionResult GetAll()
         {
             var todoItems = todoList.GetAll();

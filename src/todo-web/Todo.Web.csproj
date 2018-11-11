@@ -12,11 +12,10 @@
     <ProjectReference Include="..\todo-readmodel\Todo.ReadModel.csproj" />
     <ProjectReference Include="..\todo\Todo.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
+    <PackageReference Include="GraphQL" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
   </ItemGroup>
 
 </Project>
