@@ -20,6 +20,11 @@ namespace Todo.Web
             services.AddSingleton<ISchema, TodoSchema>();
             services.AddGraphQL();
 
+            // Queries
+            services.AddSingleton<TodoQuery>();
+            services.AddSingleton<TodoItemType>();
+            services.AddSingleton<IdGraphType>();
+
             // Mutations
             services.AddSingleton<TodoMutation>();
             services.AddSingleton<AddTodoType>();
@@ -28,11 +33,6 @@ namespace Todo.Web
             services.AddSingleton<RemoveTodoType>();
             services.AddSingleton<RenameTodoType>();
             services.AddSingleton<GuidGraphType>();
-
-            // Queries
-            services.AddSingleton<TodoQuery>();
-            services.AddSingleton<TodoItemType>();
-            services.AddSingleton<IdGraphType>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

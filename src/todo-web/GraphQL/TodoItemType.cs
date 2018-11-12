@@ -7,7 +7,7 @@ namespace Todo.Web.GraphQL
     {
         public TodoItemType()
         {
-            Name = "Todo";
+            Name = "TodoItem";
 
             Field(nameof(TodoItem.Id), self => self.Id.ToString()).Description("The id of the todo.");
             Field(self => self.Title).Description("The title of the todo.");
