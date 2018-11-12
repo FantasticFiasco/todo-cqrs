@@ -19,7 +19,12 @@ namespace Todo.Web.GraphQL
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "id", Description = "Id of the todo" }
                 ),
-                resolve: context => todoList.Get(context.GetArgument<string>("id")));
+                resolve: context =>
+                {
+                    var id = Guid.Parse(context.GetArgument<string>("id"));
+
+                    return todoList.Get(id);
+                });
         }
     }
 }

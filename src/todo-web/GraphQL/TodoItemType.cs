@@ -9,7 +9,7 @@ namespace Todo.Web.GraphQL
         {
             Name = "Todo";
 
-            Field(self => self.Id).Description("The id of the todo.");
+            Field(nameof(TodoItem.Id), self => self.Id.ToString()).Description("The id of the todo.");
             Field(self => self.Title).Description("The title of the todo.");
             Field(self => self.IsCompleted).Description("Whether todo is completed.");
         }

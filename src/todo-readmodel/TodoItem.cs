@@ -4,14 +4,14 @@ namespace Todo.ReadModel
 {
     public class TodoItem : IEquatable<TodoItem>
     {
-        public TodoItem(string id, string title, bool isCompleted)
+        public TodoItem(Guid id, string title, bool isCompleted)
         {
             Id = id;
             Title = title;
             IsCompleted = isCompleted;
         }
 
-        public string Id { get; set; }
+        public Guid Id { get; }
 
         public string Title { get; set; }
 

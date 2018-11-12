@@ -1,4 +1,3 @@
-using System;
 using Shouldly;
 using Todo.Events;
 using Xunit;
@@ -19,7 +18,7 @@ namespace Todo.ReadModel
         public void HandleAddedTodoItem()
         {
             // Act
-            todoList.Handle(new TodoAdded(Guid.Parse(BuyCheese.Id), BuyCheese.Title));
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
 
             // Assert
             todoList.GetAll().ShouldBe(new[] { BuyCheese });
@@ -29,8 +28,8 @@ namespace Todo.ReadModel
         public void HandleAddedTodoItems()
         {
             // Act
-            todoList.Handle(new TodoAdded(Guid.Parse(BuyCheese.Id), BuyCheese.Title));
-            todoList.Handle(new TodoAdded(Guid.Parse(WashCar.Id), WashCar.Title));
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
+            todoList.Handle(new TodoAdded(WashCar.Id, WashCar.Title));
 
             // Assert
             todoList.GetAll().ShouldBe(new[] { BuyCheese, WashCar });
@@ -40,11 +39,11 @@ namespace Todo.ReadModel
         public void HandleCompletedTodoItem()
         {
             // Arrange
-            todoList.Handle(new TodoAdded(Guid.Parse(BuyCheese.Id), BuyCheese.Title));
-            todoList.Handle(new TodoAdded(Guid.Parse(WashCar.Id), WashCar.Title));
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
+            todoList.Handle(new TodoAdded(WashCar.Id, WashCar.Title));
 
             // Act
-            todoList.Handle(new TodoCompleted(Guid.Parse(BuyCheese.Id)));
+            todoList.Handle(new TodoCompleted(BuyCheese.Id));
 
             // Assert
             todoList.GetAll().ShouldBe(new[] { BuyCheese.ButCompleted(), WashCar });
@@ -54,12 +53,12 @@ namespace Todo.ReadModel
         public void HandleIncompletedTodoItem()
         {
             // Arrange
-            todoList.Handle(new TodoAdded(Guid.Parse(BuyCheese.Id), BuyCheese.Title));
-            todoList.Handle(new TodoAdded(Guid.Parse(WashCar.Id), WashCar.Title));
-            todoList.Handle(new TodoCompleted(Guid.Parse(BuyCheese.Id)));
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
+            todoList.Handle(new TodoAdded(WashCar.Id, WashCar.Title));
+            todoList.Handle(new TodoCompleted(BuyCheese.Id));
 
             // Act
-            todoList.Handle(new TodoIncompleted(Guid.Parse(BuyCheese.Id)));
+            todoList.Handle(new TodoIncompleted(BuyCheese.Id));
 
             // Assert
             todoList.GetAll().ShouldBe(new[] { BuyCheese, WashCar });
@@ -69,10 +68,10 @@ namespace Todo.ReadModel
         public void HandleRemoveIncompletedTodoItem()
         {
             // Arrange
-            todoList.Handle(new TodoAdded(Guid.Parse(BuyCheese.Id), BuyCheese.Title));
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
 
             // Act
-            todoList.Handle(new TodoRemoved(Guid.Parse(BuyCheese.Id)));
+            todoList.Handle(new TodoRemoved(BuyCheese.Id));
 
             // Assert
             todoList.GetAll().ShouldBeEmpty();
@@ -82,11 +81,11 @@ namespace Todo.ReadModel
         public void HandleRemoveCompletedTodoItem()
         {
             // Arrange
-            todoList.Handle(new TodoAdded(Guid.Parse(BuyCheese.Id), BuyCheese.Title));
-            todoList.Handle(new TodoCompleted(Guid.Parse(BuyCheese.Id)));
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
+            todoList.Handle(new TodoCompleted(BuyCheese.Id));
 
             // Act
-            todoList.Handle(new TodoRemoved(Guid.Parse(BuyCheese.Id)));
+            todoList.Handle(new TodoRemoved(BuyCheese.Id));
 
             // Assert
             todoList.GetAll().ShouldBeEmpty();
@@ -96,12 +95,12 @@ namespace Todo.ReadModel
         public void HandleRenamedTodoItem()
         {
             // Arrange
-            todoList.Handle(new TodoAdded(Guid.Parse(BuyCheese.Id), BuyCheese.Title));
+            todoList.Handle(new TodoAdded(BuyCheese.Id, BuyCheese.Title));
 
             var newTitle = "Apply for 6-month tax extension";
 
             // Act
-            todoList.Handle(new TodoRenamed(Guid.Parse(BuyCheese.Id), newTitle));
+            todoList.Handle(new TodoRenamed(BuyCheese.Id, newTitle));
 
             // Assert
             todoList.GetAll().ShouldBe(new[] { BuyCheese.ButWithTitle(newTitle) });
