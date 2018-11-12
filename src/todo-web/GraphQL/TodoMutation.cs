@@ -14,12 +14,12 @@ namespace Todo.Web.GraphQL
             Field<TodoItemType>(
                 "createTodo",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<TodoItemInputType>> { Name = "todo" }
+                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "title" }
                 ),
                 resolve: context =>
                 {
                     var id = Guid.NewGuid();
-                    var title = context.GetArgument<TodoItem>("todo").Title;
+                    var title = context.GetArgument<string>("title");
 
                     messageDispatcher.SendCommand(new AddTodo(id, title));
 

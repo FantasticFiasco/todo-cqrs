@@ -18,7 +18,6 @@ namespace Todo.Web
             services.AddSingleton<IDependencyResolver>(serviceProvider => new FuncDependencyResolver(serviceProvider.GetRequiredService));
             services.AddSingleton<ISchema, TodoSchema>();
             services.AddSingleton<TodoMutation>();
-            services.AddSingleton<TodoItemInputType>();
             services.AddSingleton<TodoQuery>();
             services.AddSingleton<TodoItemType>();
             services.AddSingleton<IdGraphType>();
@@ -32,7 +31,7 @@ namespace Todo.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseGraphQL<ISchema>("/graphql");
+            app.UseGraphQL<ISchema>();
 
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions
             {
