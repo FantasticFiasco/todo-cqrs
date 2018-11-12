@@ -37,7 +37,7 @@ namespace Todo.ReadModel
         {
             var todoItem = new TodoItem(e.Id, e.Title, false);
 
-            todoItemById.Add(e.Id, todoItem);
+            todoItemById.Add(todoItem.Id, todoItem);
         }
 
         public void Handle(TodoRenamed e)
