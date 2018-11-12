@@ -16,11 +16,9 @@ namespace Todo.Web.GraphQL
 
             Field<TodoItemType>(
                 "todo",
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IdGraphType>>
-                {
-                    Name = "id",
-                    Description = "Id of the todo"
-                }),
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "id", Description = "Id of the todo" }
+                ),
                 resolve: context => todoList.Get(context.GetArgument<Guid>("id")));
         }
     }

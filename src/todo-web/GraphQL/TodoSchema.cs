@@ -9,6 +9,7 @@ namespace Todo.Web.GraphQL
             : base(resolver)
         {
             Query = resolver.Resolve<TodoQuery>();
+            Mutation = resolver.Resolve<TodoMutation>();
         }
     }
 }
