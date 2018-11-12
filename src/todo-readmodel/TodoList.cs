@@ -26,18 +26,18 @@ namespace Todo.ReadModel
             return todoItemById.Values.ToArray();
         }
 
-        public TodoItem Get(Guid id)
+        public TodoItem Get(string id)
         {
-            todoItemById.TryGetValue(id, out var todoItem);
+            todoItemById.TryGetValue(Guid.Parse(id), out var todoItem);
 
             return todoItem;
         }
 
         public void Handle(TodoAdded e)
         {
-            var todoItem = new TodoItem(e.Id, e.Title, false);
+            var todoItem = new TodoItem(e.Id.ToString(), e.Title, false);
 
-            todoItemById.Add(todoItem.Id, todoItem);
+            todoItemById.Add(e.Id, todoItem);
         }
 
         public void Handle(TodoRenamed e)

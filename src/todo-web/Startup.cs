@@ -15,13 +15,24 @@ namespace Todo.Web
         {
             services.AddCqrs();
 
+            // GraphQL
             services.AddSingleton<IDependencyResolver>(serviceProvider => new FuncDependencyResolver(serviceProvider.GetRequiredService));
             services.AddSingleton<ISchema, TodoSchema>();
+            services.AddGraphQL();
+
+            // Mutations
             services.AddSingleton<TodoMutation>();
+            services.AddSingleton<AddTodoType>();
+            services.AddSingleton<CompleteTodoType>();
+            services.AddSingleton<IncompleteTodoType>();
+            services.AddSingleton<RemoveTodoType>();
+            services.AddSingleton<RenameTodoType>();
+            services.AddSingleton<GuidGraphType>();
+
+            // Queries
             services.AddSingleton<TodoQuery>();
             services.AddSingleton<TodoItemType>();
             services.AddSingleton<IdGraphType>();
-            services.AddGraphQL();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
