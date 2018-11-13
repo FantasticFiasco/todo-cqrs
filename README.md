@@ -20,7 +20,7 @@ Make sure [Docker](https://www.docker.com/community-edition#/download) and [Dock
 $ docker-compose up
 ```
 
-Access the OpenAPI description by hitting [http://localhost:8080/swagger](http://localhost:8080/swagger) in your favorite web browser.
+Access the GraphQL playground by hitting [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground) in your favorite web browser.
 
 ## Acceptance criteria
 

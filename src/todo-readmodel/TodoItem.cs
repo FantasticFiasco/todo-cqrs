@@ -11,7 +11,7 @@ namespace Todo.ReadModel
             IsCompleted = isCompleted;
         }
 
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
         public string Title { get; set; }
 

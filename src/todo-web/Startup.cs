@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
+﻿using GraphQL;
+using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
+using Todo.Web.GraphQL;
 
 namespace Todo.Web
 {
@@ -15,18 +15,24 @@ namespace Todo.Web
         {
             services.AddCqrs();
 
-            services.AddSwaggerGen(configuration =>
-            {
-                configuration.SwaggerDoc("v1", new Info { Title = "TodoCQRS API", Version = "v1" });
+            // GraphQL
+            services.AddSingleton<IDependencyResolver>(serviceProvider => new FuncDependencyResolver(serviceProvider.GetRequiredService));
+            services.AddSingleton<ISchema, TodoSchema>();
+            services.AddGraphQL();
 
-                // Set the comments path
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                configuration.IncludeXmlComments(xmlPath);
-            });
+            // Queries
+            services.AddSingleton<TodoQuery>();
+            services.AddSingleton<TodoItemType>();
+            services.AddSingleton<IdGraphType>();
 
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);;
+            // Mutations
+            services.AddSingleton<TodoMutation>();
+            services.AddSingleton<AddTodoType>();
+            services.AddSingleton<CompleteTodoType>();
+            services.AddSingleton<IncompleteTodoType>();
+            services.AddSingleton<RemoveTodoType>();
+            services.AddSingleton<RenameTodoType>();
+            services.AddSingleton<GuidGraphType>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -36,15 +42,12 @@ namespace Todo.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseGraphQL<ISchema>();
 
-            app.UseSwagger();
-
-            app.UseSwaggerUI(configuration =>
+            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions
             {
-                configuration.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoCQRS API v1");
+                Path = "/ui/playground"
             });
-
         }
     }
 }
