@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+
+  todo:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.app-in-memory
+    ports:
+      - "8080:80"

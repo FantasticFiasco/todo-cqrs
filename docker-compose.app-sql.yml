@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+
+  todo:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.sql
+    ports:
+      - "8080:80"
+    depends_on:
+      - sql
+    restart: on-failure
+
+  sql:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"

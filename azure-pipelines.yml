@@ -1,15 +1,33 @@
-pool:
-  vmImage: 'Ubuntu 16.04'
+jobs:
 
-steps:
-- script: echo -e "$(curl --silent https://raw.githubusercontent.com/FantasticFiasco/logo/master/logo.raw)"
-  displayName: "Print logo"
+- job: logo
+  displayName: Print Logo
+  pool:
+    vmImage: Ubuntu 16.04
+  steps:
+  - script: echo -e "$(curl --silent https://raw.githubusercontent.com/FantasticFiasco/logo/master/logo.raw)"
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: test
-    projects: '**/*.Test.csproj'
-    arguments: "--configuration Release"
+- job: test
+  displayName: Test
+  pool:
+    vmImage: Ubuntu 16.04
+  steps:
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: test
+      projects: "**/*.Test.csproj"
+      arguments: --configuration Release
 
-- script: docker-compose build
-  displayName: "Build Docker image"
+- job: inMemoryEventStore
+  displayName: In-memory event store Docker image
+  pool:
+    vmImage: Ubuntu 16.04
+  steps:
+  - script: docker build -f ./src/Dockerfile.app-in-memory ./src
+
+- job: sqlEventStore
+  displayName: SQL event store Docker image
+  pool:
+    vmImage: Ubuntu 16.04
+  steps:
+  - script: docker build -f ./src/Dockerfile.sql ./src
