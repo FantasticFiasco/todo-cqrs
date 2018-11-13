@@ -22,9 +22,9 @@ $ docker-compose up
 
 Access the GraphQL playground by hitting [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground) in your favorite web browser.
 
-![create todo](https://github.com/FantasticFiasco/todo-cqrs/raw/master/src/doc/resources/create-todo.png "Create todo")
+![alt text](./doc/resources/create-todo.png "Create todo")
 
-![get todos](https://github.com/FantasticFiasco/todo-cqrs/raw/master/src/doc/resources/get-todos.png "Create todo")
+![alt text](./doc/resources/get-todos.png "Create todo")
 
 ## Acceptance criteria
 
