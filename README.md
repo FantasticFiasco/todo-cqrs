@@ -7,63 +7,62 @@
 - [Introduction](#introduction)
 - [What you will end up with](#what-you-will-end-up-with)
 - [Implementations](#implementations)
-- [TodoMVC acceptance criteria](#todomvc-acceptance-criteria)
+- [Acceptance criteria](#acceptance-criteria)
 
 ## Introduction
 
-This repository contain various implementations meeting the acceptance criteria of [TodoMVC](http://todomvc.com/), built using CQRS and event sourcing. It starts with a very basic in-memory event store, but then gradually becomes more complex with increasing requirements.
+This repository contains various implementations meeting the acceptance criteria of [TodoMVC](http://todomvc.com/), built using CQRS and event sourcing. It starts with a very basic in-memory event store, but then gradually becomes more complex with increasing requirements.
 
 These are the implementations, ordered according to complexity:
 
-1. [Single process using a in-memory event store](#single-process-using-a-in-memory-event-store)
-1. [Single process using a SQL event store](#single-process-using-a-sql-event-store)
+1. [Single process using in-memory event store](#single-process-using-in-memory-event-store)
+1. [Single process using SQL event store](#single-process-using-sql-event-store)
 
 ## What you will end up with
 
-All implementations will expose the GraphQL playground on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground). Using the playground you will be able to execute GraphQL mutations to modify the state, and GraphQL queries to view the state, as demonstrated below.
+All implementations will expose the same GraphQL playground on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground). Using the playground you will be able to query and mutate the state using GraphQL, as shown below.
 
 ![alt text](./doc/resources/create-todo.png "Create todo")
 
 ![alt text](./doc/resources/get-todos.png "Create todo")
 
-
 ## Implementations
 
 Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
 
-### Single process using a in-memory event store
+### Single process using in-memory event store
 
-The solution `TodoCQRS.InMemory.sln` in the root of the repository contains the C# code needed to meet the requirements.
+#### Requirements
 
-#### Acceptance criteria
+- State does not need to be durable, we can live with having it being lost if the application is terminated
 
-- State does not need to be durable, we can live with having to rebuild it if the application is terminated
+#### Solution
 
-#### Running the application
+The code needed to fulfill the requirements can be found in `TodoCQRS.InMemory.sln`. It contains a very basic in-memory event store that holds all published events. The read model is also held in memory, in the same process as the event store.
 
-Run the following command in the root of the repository:
+Run the following command in the root of the repository to start the application.
 
 ```bash
 $ docker-compose -f .\docker-compose.app-in-memory.yml up
 ```
 
-### Single process using a SQL event store
+### Single process using SQL event store
 
-The solution `TodoCQRS.Sql.sln` in the root of the repository contains the C# code needed to meet the requirements.
-
-#### Acceptance criteria
+#### Requirements
 
 - State must be durable, we must retain state even if application is terminated
 
-#### Running the application
+#### Solution
 
-Run the following command in the root of the repository:
+The code needed to fulfill the requirements can be found in `TodoCQRS.Sql.sln`. It has replaced the in-memory event store with one that persists events in a PostgreSQL database, thus living up to the requirements of being durable. The read model is still being held in memory, thus if the application is terminated, all evens will have to be replayed to get the current state of the application.
+
+Run the following command in the root of the repository to start the application.
 
 ```bash
 $ docker-compose -f .\docker-compose.app-sql.yml up
 ```
 
-## TodoMVC acceptance criteria
+## Acceptance criteria
 
 ### Empty list can have item added
 
