@@ -5,28 +5,65 @@
 ## Table of contents
 
 - [Introduction](#introduction)
-- [Running the application](#running-the-application)
-- [Acceptance criteria](#acceptance-criteria)
+- [What you will end up with](#what-you-will-end-up-with)
+- [Implementations](#implementations)
+- [TodoMVC acceptance criteria](#todomvc-acceptance-criteria)
 
 ## Introduction
 
-This is a very basic implementation of the acceptance criteria defined by TodoMVC, implemented using CQRS and event sourcing. Currently only a in-memory implementation of the event store exists, but there is nothing preventing you from implementing one using a SQL database or [Event Store](https://eventstore.org/).
+This repository contain various implementations meeting the acceptance criteria of [TodoMVC](http://todomvc.com/), built using CQRS and event sourcing. It starts with a very basic in-memory event store, but then gradually becomes more complex with increasing requirements.
 
-## Running the application
+These are the implementations, ordered according to complexity:
 
-Make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) is installed before running the following command in the root of the repository:
+1. [Single process using a in-memory event store](#single-process-using-a-in-memory-event-store)
+1. [Single process using a SQL event store](#single-process-using-a-sql-event-store)
 
-```bash
-$ docker-compose up
-```
+## What you will end up with
 
-Access the GraphQL playground by hitting [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground) in your favorite web browser.
+All implementations will expose the GraphQL playground on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground). Using the playground you will be able to execute GraphQL mutations to modify the state, and GraphQL queries to view the state, as demonstrated below.
 
 ![alt text](./doc/resources/create-todo.png "Create todo")
 
 ![alt text](./doc/resources/get-todos.png "Create todo")
 
-## Acceptance criteria
+
+## Implementations
+
+Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
+
+### Single process using a in-memory event store
+
+The solution `TodoCQRS.InMemory.sln` in the root of the repository contains the C# code needed to meet the requirements.
+
+#### Acceptance criteria
+
+- State does not need to be durable, we can live with having to rebuild it if the application is terminated
+
+#### Running the application
+
+Run the following command in the root of the repository:
+
+```bash
+$ docker-compose -f .\docker-compose.app-in-memory.yml up
+```
+
+### Single process using a SQL event store
+
+The solution `TodoCQRS.Sql.sln` in the root of the repository contains the C# code needed to meet the requirements.
+
+#### Acceptance criteria
+
+- State must be durable, we must retain state even if application is terminated
+
+#### Running the application
+
+Run the following command in the root of the repository:
+
+```bash
+$ docker-compose -f .\docker-compose.app-sql.yml up
+```
+
+## TodoMVC acceptance criteria
 
 ### Empty list can have item added
 

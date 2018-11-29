@@ -1,0 +1,19 @@
+FROM microsoft/dotnet:sdk AS build-env
+WORKDIR /app
+
+COPY app-in-memory/event-store-in-memory/EventStore.InMemory.csproj ./app-in-memory/event-store-in-memory/
+COPY app-in-memory/todo-web/Todo.Web.csproj ./app-in-memory/todo-web/
+COPY shared/cqrs/Cqrs.csproj ./shared/cqrs/
+COPY shared/todo/Todo.csproj ./shared/todo/
+COPY shared/todo-events/Todo.Events.csproj ./shared/todo-events/
+COPY shared/todo-readmodel/Todo.ReadModel.csproj ./shared/todo-readmodel/
+COPY shared/todo-web-graphql/Todo.Web.GraphQL.csproj ./shared/todo-web-graphql/
+RUN dotnet restore ./app-in-memory/todo-web/Todo.Web.csproj
+
+COPY . ./
+RUN dotnet publish -c Release -o out ./app-in-memory/todo-web/Todo.Web.csproj
+
+FROM microsoft/dotnet:aspnetcore-runtime
+WORKDIR /app
+COPY --from=build-env /app/app-in-memory/todo-web/out .
+ENTRYPOINT ["dotnet", "Todo.Web.dll"]
