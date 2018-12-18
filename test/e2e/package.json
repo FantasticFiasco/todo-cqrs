@@ -1,0 +1,22 @@
+{
+  "name": "todo-cqrs-e2e",
+  "version": "1.0.0",
+  "description": "e2e tests for todo-cqrs",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env PATH=$PATH:./drivers/ mocha -t 20000 --require ts-node/register index.ts"
+  },
+  "author": "Mattias Kindborg <mattias.kindborg@gmail.com> (https://twitter.com/FantasticFiasco)",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/chai": "4.1.7",
+    "@types/mocha": "5.2.5",
+    "@types/selenium-webdriver": "3.0.14",
+    "chai": "4.2.0",
+    "cross-env": "5.2.0",
+    "mocha": "5.2.0",
+    "selenium-webdriver": "4.0.0-alpha.1",
+    "ts-node": "7.0.1",
+    "typescript": "3.2.2"
+  }
+}
