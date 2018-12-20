@@ -19,30 +19,45 @@ describe('mutations', () => {
   it('should add item given empty list', async () => {
     const title = 'Buy cheese';
 
-    await mutation.add(title);
+    const id = await mutation.add(title);
 
     const actual = await query.getAll();
-    expect(actual).to.have.length(1);
-    expect(actual[0]).to.have.property('id');
-    expect(actual[0].title).to.equal(title);
-    expect(actual[0].isCompleted).to.equal(false);
+    const expected = [
+      new Todo(id, title, false),
+    ];
+
+    expect(actual).to.deep.equal(expected);
   });
 
   it('should add two items given empty list', async () => {
     const firstTitle = 'Buy cheese';
     const secondTitle = 'Wash the car';
 
-    await mutation.add(firstTitle);
-    await mutation.add(secondTitle);
+    const firstId = await mutation.add(firstTitle);
+    const secondId = await mutation.add(secondTitle);
 
     const actual = await query.getAll();
-    expect(actual).to.have.length(2);
-    expect(actual[1]).to.have.property('id');
-    expect(actual[1].title).to.equal(firstTitle);
-    expect(actual[1].isCompleted).to.equal(false);
-    expect(actual[0]).to.have.property('id');
-    expect(actual[0].title).to.equal(secondTitle);
-    expect(actual[0].isCompleted).to.equal(false);
+    const expected = [
+      new Todo(secondId, secondTitle, false),
+      new Todo(firstId, firstTitle, false),
+    ];
+    expect(actual).to.deep.equal(expected);
+  });
+
+  it('should complete item given two items in the list', async () => {
+    const firstTitle = 'Buy cheese';
+    const secondTitle = 'Wash the car';
+    const firstId = await mutation.add(firstTitle);
+    const secondId = await mutation.add(secondTitle);
+
+    await mutation.complete(firstId);
+
+    const actual = await query.getAll();
+    const expected = [
+      new Todo(secondId, secondTitle, false),
+      new Todo(firstId, firstTitle, true),
+    ];
+    expect(actual).to.deep.equal(expected);
   });
 
 });
