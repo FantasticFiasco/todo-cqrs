@@ -11,7 +11,7 @@ namespace Todo.Web.GraphQL.Schema
             Name = "Mutation";
 
             Field<AddTodoType>(
-                "createTodo",
+                "addTodo",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "title" }
                 ),
