@@ -10,7 +10,8 @@ export class QueryApiModel {
     const query = `{
       todos {
         id,
-        title
+        title,
+        isCompleted
       }
     }`;
 
