@@ -6,6 +6,19 @@ export class QueryApiModel {
   constructor(private readonly url: string) {
   }
 
+  public async get(id: string): Promise<Todo> {
+    const query = `{
+      todo(id: "${id}") {
+        id,
+        title,
+        isCompleted
+      }
+    }`;
+
+    const response: IGetResponse = await request(this.url, query);
+    return response.todo;
+  }
+
   public async getAll(): Promise<Todo[]> {
     const query = `{
       todos {
@@ -18,6 +31,10 @@ export class QueryApiModel {
     const response: IGetAllResponse = await request(this.url, query);
     return response.todos;
   }
+}
+
+interface IGetResponse {
+  todo: Todo;
 }
 
 interface IGetAllResponse {
