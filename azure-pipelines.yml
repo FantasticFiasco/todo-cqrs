@@ -24,8 +24,11 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
-      docker build -f ./src/Dockerfile.app-in-memory ./src
-      docker-compose --version
+      cd ./test/e2e && yarn
+      ls
+      #docker-compose -f ./docker-compose.app-in-memory.yml up --detach
+      #docker build -f ./src/Dockerfile.app-in-memory ./src
+      #docker-compose --version
 
 
 - job: sqlEventStore
