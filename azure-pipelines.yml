@@ -23,7 +23,7 @@ jobs:
   pool:
     vmImage: Ubuntu 16.04
   steps:
-  - script: |
+  - bash: |
       docker build -f ./src/Dockerfile.app-in-memory ./src
       docker-compose --version
 
@@ -33,4 +33,4 @@ jobs:
   pool:
     vmImage: Ubuntu 16.04
   steps:
-  - script: docker build -f ./src/Dockerfile.sql ./src
+  - bash: docker build -f ./src/Dockerfile.sql ./src
