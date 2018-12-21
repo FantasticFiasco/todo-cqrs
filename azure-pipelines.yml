@@ -24,8 +24,8 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - script: |
-    docker build -f ./src/Dockerfile.app-in-memory ./src
-    docker-compose --version
+      docker build -f ./src/Dockerfile.app-in-memory ./src
+      docker-compose --version
 
 
 - job: sqlEventStore
