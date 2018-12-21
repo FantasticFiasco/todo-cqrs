@@ -18,6 +18,16 @@ jobs:
       projects: "**/*.Test.csproj"
       arguments: --configuration Release
 
+- job: e2eLint
+  displayName: E2E lint
+  pool:
+    vmImage: Ubuntu 16.04
+  steps:
+  - bash: |
+      cd ./test/e2e
+      yarn
+      yarn lint
+
 - job: e2eInMemoryEventStore
   displayName: E2E in-memory event store
   pool:
