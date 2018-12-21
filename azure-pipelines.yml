@@ -23,7 +23,10 @@ jobs:
   pool:
     vmImage: Ubuntu 16.04
   steps:
-  - script: docker build -f ./src/Dockerfile.app-in-memory ./src
+  - script: |
+    docker build -f ./src/Dockerfile.app-in-memory ./src
+    docker-compose --version
+
 
 - job: sqlEventStore
   displayName: SQL event store Docker image

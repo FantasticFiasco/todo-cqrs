@@ -43,7 +43,7 @@ The code needed to fulfill the requirements can be found in `TodoCQRS.InMemory.s
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f .\docker-compose.app-in-memory.yml up
+$ docker-compose -f ./docker-compose.app-in-memory.yml up
 ```
 
 ### Single process using SQL event store
@@ -59,7 +59,7 @@ The code needed to fulfill the requirements can be found in `TodoCQRS.Sql.sln`. 
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f .\docker-compose.app-sql.yml up
+$ docker-compose -f ./docker-compose.app-sql.yml up
 ```
 
 ## Acceptance criteria
