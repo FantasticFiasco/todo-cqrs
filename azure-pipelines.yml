@@ -23,8 +23,8 @@ jobs:
   pool:
     vmImage: Ubuntu 16.04
   steps:
-  - bash: docker-compose -f ./docker-compose.app-in-memory.yml up --detach
   - bash: |
+      docker-compose -f ./docker-compose.app-in-memory.yml up --detach
       cd ./test/e2e
       yarn
       yarn test

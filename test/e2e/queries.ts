@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { MutationApiModel, QueryApiModel, Todo } from './api-models';
 
 describe('queries', () => {
-  const url = 'http://localhost:5000/graphql';
+  const url = 'http://localhost:8080/graphql';
   const mutation = new MutationApiModel(url);
   const query = new QueryApiModel(url);
 
