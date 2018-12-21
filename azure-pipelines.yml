@@ -18,8 +18,8 @@ jobs:
       projects: "**/*.Test.csproj"
       arguments: --configuration Release
 
-- job: inMemoryEventStore
-  displayName: In-memory event store Docker image
+- job: e2eInMemoryEventStore
+  displayName: E2E in-memory event store
   pool:
     vmImage: Ubuntu 16.04
   steps:
@@ -29,9 +29,13 @@ jobs:
       yarn
       yarn test
 
-- job: sqlEventStore
-  displayName: SQL event store Docker image
+- job: e2eSqlEventStore
+  displayName: E2E SQL event store
   pool:
     vmImage: Ubuntu 16.04
   steps:
-  - bash: docker build -f ./src/Dockerfile.sql ./src
+  - bash: |
+      docker-compose -f ./docker-compose.app-sql.yml up --detach
+      cd ./test/e2e
+      yarn
+      yarn test
