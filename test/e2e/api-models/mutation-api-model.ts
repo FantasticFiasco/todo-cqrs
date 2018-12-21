@@ -27,6 +27,26 @@ export class MutationApiModel {
     await request(this.url, mutation);
   }
 
+  public async incomplete(id: string): Promise<void> {
+    const mutation = `mutation {
+      incompleteTodo(id: "${id}") {
+        id
+      }
+    }`;
+
+    await request(this.url, mutation);
+  }
+
+  public async rename(id: string, newTitle: string): Promise<void> {
+    const mutation = `mutation {
+      renameTodo(id: "${id}", newTitle: "${newTitle}") {
+        id
+      }
+    }`;
+
+    await request(this.url, mutation);
+  }
+
   public async remove(id: string): Promise<void> {
     const mutation = `mutation {
       removeTodo(id: "${id}") {
