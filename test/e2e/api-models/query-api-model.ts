@@ -29,7 +29,7 @@ export class QueryApiModel {
     }`;
 
     const response: IGetAllResponse = await request(this.url, query);
-    return response.todos;
+    return response.todos.sort((a, b) => a.title.localeCompare(b.title));
   }
 }
 

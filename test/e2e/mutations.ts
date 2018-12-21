@@ -38,8 +38,8 @@ describe('mutations', () => {
 
     const actual = await query.getAll();
     const expected = [
-      new Todo(secondId, secondTitle, false),
       new Todo(firstId, firstTitle, false),
+      new Todo(secondId, secondTitle, false),
     ];
     expect(actual).to.deep.equal(expected);
   });
@@ -54,8 +54,8 @@ describe('mutations', () => {
 
     const actual = await query.getAll();
     const expected = [
-      new Todo(secondId, secondTitle, false),
       new Todo(firstId, firstTitle, true),
+      new Todo(secondId, secondTitle, false),
     ];
     expect(actual).to.deep.equal(expected);
   });
@@ -71,8 +71,8 @@ describe('mutations', () => {
 
     const actual = await query.getAll();
     const expected = [
-      new Todo(secondId, secondTitle, false),
       new Todo(firstId, firstTitle, false),
+      new Todo(secondId, secondTitle, false),
     ];
     expect(actual).to.deep.equal(expected);
   });
