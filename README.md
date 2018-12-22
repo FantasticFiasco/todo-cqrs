@@ -45,7 +45,7 @@ Then only those items are listed
 Given a Todo list with items 'Buy cheese' & 'Wash the car'<br/>
 When the first item is marked as complete<br/>
 Then only those items are listed<br/>
-And only the second item is listed as active
+And only the second item is listed as incomplete
 
 ### Item incompletion changes the list
 
@@ -53,7 +53,7 @@ Given a Todo list with items 'Buy cheese' & 'Wash the car'<br/>
 And the first item is completed<br/>
 When the first item is marked as incomplete<br/>
 Then only those items are listed<br/>
-And both items are listed as active
+And both items are listed as incomplete
 
 ### Incomplete items can be removed
 
