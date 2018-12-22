@@ -1,0 +1,22 @@
+{
+  "name": "todo-cqrs-e2e",
+  "version": "1.0.0",
+  "description": "e2e tests for todo-cqrs",
+  "main": "index.js",
+  "scripts": {
+    "lint": "tslint **/*.ts",
+    "test": "mocha --require ts-node/register *.ts"
+  },
+  "author": "Mattias Kindborg <mattias.kindborg@gmail.com> (https://twitter.com/FantasticFiasco)",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/chai": "4.1.7",
+    "@types/mocha": "5.2.5",
+    "chai": "4.2.0",
+    "graphql-request": "1.8.2",
+    "mocha": "5.2.0",
+    "ts-node": "7.0.1",
+    "tslint": "5.12.0",
+    "typescript": "3.2.2"
+  }
+}
