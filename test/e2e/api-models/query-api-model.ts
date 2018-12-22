@@ -1,4 +1,5 @@
 import { request } from 'graphql-request';
+import { Variables } from 'graphql-request/dist/src/types';
 
 import { Todo } from './todo';
 
@@ -7,15 +8,19 @@ export class QueryApiModel {
   }
 
   public async get(id: string): Promise<Todo> {
-    const query = `{
-      todo(id: "${id}") {
+    const query = `query wrapper($id: String!) {
+      todo(id: $id) {
         id,
         title,
         isCompleted
       }
     }`;
 
-    const response: IGetResponse = await request(this.url, query);
+    const variables: Variables = {
+      id,
+    };
+
+    const response: IGetResponse = await request(this.url, query, variables);
     return response.todo;
   }
 
