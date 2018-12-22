@@ -20,7 +20,7 @@ export class QueryApiModel {
       id,
     };
 
-    const response: IGetResponse = await request(this.url, query, variables);
+    const response = await request<IGetResponse>(this.url, query, variables);
     return response.todo;
   }
 
@@ -33,7 +33,7 @@ export class QueryApiModel {
       }
     }`;
 
-    const response: IGetAllResponse = await request(this.url, query);
+    const response = await request<IGetAllResponse>(this.url, query);
     return response.todos.sort((a, b) => a.title.localeCompare(b.title));
   }
 }
