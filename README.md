@@ -6,8 +6,8 @@
 
 - [Introduction](#introduction)
 - [What you will end up with](#what-you-will-end-up-with)
-- [Implementations](#implementations)
 - [Acceptance criteria](#acceptance-criteria)
+- [Implementations](#implementations)
 
 ## Introduction
 
@@ -20,47 +20,11 @@ These are the implementations, ordered according to complexity:
 
 ## What you will end up with
 
-All implementations will expose the same GraphQL playground on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground). Using the playground you will be able to query and mutate the state using GraphQL, as shown below.
+All implementations will expose the same GraphQL playground on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground). Using the playground you will be able to query and mutate state using GraphQL, as shown below.
 
 ![alt text](./doc/resources/create-todo.png "Create todo")
 
 ![alt text](./doc/resources/get-todos.png "Create todo")
-
-## Implementations
-
-Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
-
-### Single process using in-memory event store
-
-#### Requirements
-
-- State does not need to be durable, we can live with having it being lost if the application is terminated
-
-#### Solution
-
-The code needed to fulfill the requirements can be found in `TodoCQRS.InMemory.sln`. It contains a very basic in-memory event store that holds all published events. The read model is also held in memory, in the same process as the event store.
-
-Run the following command in the root of the repository to start the application.
-
-```bash
-$ docker-compose -f ./docker-compose.app-in-memory.yml up
-```
-
-### Single process using SQL event store
-
-#### Requirements
-
-- State must be durable, we must retain state even if application is terminated
-
-#### Solution
-
-The code needed to fulfill the requirements can be found in `TodoCQRS.Sql.sln`. It has replaced the in-memory event store with one that persists events in a PostgreSQL database, thus living up to the requirements of being durable. The read model is still being held in memory, thus if the application is terminated, all evens will have to be replayed to get the current state of the application.
-
-Run the following command in the root of the repository to start the application.
-
-```bash
-$ docker-compose -f ./docker-compose.app-sql.yml up
-```
 
 ## Acceptance criteria
 
@@ -109,3 +73,39 @@ Then nothing is listed
 Given a Todo list with a single item 'Buy cheese'<br/>
 When the item changed to 'Apply for 6-month tax extension'<br/>
 Then only the revised item is listed
+
+## Implementations
+
+Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
+
+### Single process using in-memory event store
+
+#### Requirements
+
+- State does not need to be durable, we can live with having it being lost if the application is terminated
+
+#### Solution
+
+The code needed to fulfill the requirements can be found in `TodoCQRS.InMemory.sln`. It contains a very basic in-memory event store that holds all published events. The read model is also held in memory, in the same process as the event store.
+
+Run the following command in the root of the repository to start the application.
+
+```bash
+$ docker-compose -f ./docker-compose.app-in-memory.yml up
+```
+
+### Single process using SQL event store
+
+#### Requirements
+
+- State must be durable, we must retain state even if application is terminated
+
+#### Solution
+
+The code needed to fulfill the requirements can be found in `TodoCQRS.Sql.sln`. It has replaced the in-memory event store with one that persists events in a PostgreSQL database, thus living up to the requirements of being durable. The read model is still being held in memory, thus if the application is terminated, all evens will have to be replayed to get the current state of the application.
+
+Run the following command in the root of the repository to start the application.
+
+```bash
+$ docker-compose -f ./docker-compose.app-sql.yml up
+```
