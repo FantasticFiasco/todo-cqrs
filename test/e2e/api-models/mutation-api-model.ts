@@ -16,7 +16,7 @@ export class MutationApiModel {
       title,
     };
 
-    const response: IAddResponse = await request(this.url, mutation, variables);
+    const response = await request<IAddResponse>(this.url, mutation, variables);
     return response.addTodo.id;
   }
 
