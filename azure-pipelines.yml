@@ -49,3 +49,14 @@ jobs:
       cd ./test/e2e
       yarn
       yarn test
+
+- job: e2eNoSqlEventStore
+  displayName: E2E NoSQL event store
+  pool:
+    vmImage: Ubuntu 16.04
+  steps:
+  - bash: |
+      docker-compose -f ./docker-compose.app-no-sql.yml up --detach
+      cd ./test/e2e
+      yarn
+      yarn test
