@@ -8,6 +8,9 @@ services:
       dockerfile: Dockerfile.no-sql
     ports:
       - "8080:80"
+    environment:
+      DB_USER: root
+      DB_PASSWORD: secret
     depends_on:
       - no-sql
     restart: on-failure

@@ -11,13 +11,12 @@ namespace EventStore.NoSql
         private readonly IMongoDatabase database;
         private readonly BsonDocument filter;
 
-        public NoSqlEventStore()
+        public NoSqlEventStore(string connectionString)
         {
-            var client = new MongoClient("mongodb://localhost:27017");
+            var client = new MongoClient(connectionString);
             database = client.GetDatabase("event");
             filter = new BsonDocument();
         }
-
 
         public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {

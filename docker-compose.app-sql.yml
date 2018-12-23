@@ -8,12 +8,12 @@ services:
       dockerfile: Dockerfile.sql
     ports:
       - "8080:80"
-    depends_on:
-      - sql
-    restart: on-failure
     environment:
       DB_USER: root
       DB_PASSWORD: secret
+    depends_on:
+      - sql
+    restart: on-failure
 
   sql:
     image: postgres
