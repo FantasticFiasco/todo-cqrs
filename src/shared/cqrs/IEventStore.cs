@@ -7,6 +7,6 @@ namespace Cqrs
     {
         IEnumerable<object> LoadEventsFor<TAggregate>(Guid id);
 
-        void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents);
+        void SaveEventsFor<TAggregate>(Guid id, int version, object[] newEvents);
     }
 }
