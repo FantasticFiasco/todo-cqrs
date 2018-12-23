@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Cqrs
 {
     public interface IEventStore
     {
-        IEnumerable<object> LoadEventsFor<TAggregate>(Guid id);
+        Task<IEnumerable<object>> LoadEventsForAsync<TAggregate>(Guid id);
 
-        void SaveEventsFor<TAggregate>(Guid id, int version, object[] newEvents);
+        Task SaveEventsForAsync<TAggregate>(Guid id, int version, object[] newEvents);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using EventStore.InMemory;
 using Shouldly;
 using Xunit;
@@ -17,17 +18,17 @@ namespace EventStore
         }
 
         [Fact]
-        public void LoadNoEventsForNewAggregate()
+        public async Task LoadNoEventsForNewAggregate()
         {
             // Act
-            var actual = eventStore.LoadEventsFor<SomeAggregate>(id);
+            var actual = await eventStore.LoadEventsForAsync<SomeAggregate>(id);
 
             // Assert
             actual.ShouldBeEmpty();
         }
 
         [Fact]
-        public void LoadEventsForExistingAggregate()
+        public async Task LoadEventsForExistingAggregate()
         {
             // Arrange
             var events = new object[]
@@ -36,10 +37,10 @@ namespace EventStore
                 new { Id = Guid.NewGuid() }
             };
 
-            eventStore.SaveEventsFor<SomeAggregate>(id, 0, events);
+            await eventStore.SaveEventsForAsync<SomeAggregate>(id, 0, events);
 
             // Act
-            var actual = eventStore.LoadEventsFor<SomeAggregate>(id);
+            var actual = await eventStore.LoadEventsForAsync<SomeAggregate>(id);
 
             // Assert
             actual.ShouldBe(events);

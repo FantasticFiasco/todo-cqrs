@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cqrs;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -18,14 +19,15 @@ namespace EventStore.NoSql
             filter = new BsonDocument();
         }
 
-        public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
+        public async Task<IEnumerable<object>> LoadEventsForAsync<TAggregate>(Guid id)
         {
-            var collection = database.GetCollection<BsonDocument>(id.ToString());
+            var collection = database.GetCollection<Schema>(id.ToString());
 
             // TODO: The items returned are unordered, please fix
-            return collection.Find(filter).ToList();
+            return await collection.Find(filter).ToListAsync();
         }
 
-        public void SaveEventsFor<TAggregate>(Guid id, int version, object[] newEvents) => throw new NotImplementedException();
+        public Task SaveEventsForAsync<TAggregate>(Guid id, int version, object[] newEvents) =>
+            throw new NotImplementedException();
     }
 }

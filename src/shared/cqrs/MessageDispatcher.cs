@@ -73,14 +73,14 @@ namespace Cqrs
 
             commandHandlers.Add(
                 typeof(TCommand),
-                c =>
+                async c =>
                     {
                         // Create an empty aggregate.
                         var agg = new TAggregate();
 
                         // Load the aggregate with events.
                         agg.Id = ((dynamic)c).Id;
-                        agg.ApplyEvents(eventStore.LoadEventsFor<TAggregate>(agg.Id));
+                        agg.ApplyEvents(await eventStore.LoadEventsForAsync<TAggregate>(agg.Id));
 
                         // With everything set up, we invoke the command handler, collecting the
                         // events that it produces.
@@ -95,7 +95,7 @@ namespace Cqrs
                         // Store the events in the event store.
                         if (resultEvents.Count > 0)
                         {
-                            eventStore.SaveEventsFor<TAggregate>(
+                            await eventStore.SaveEventsForAsync<TAggregate>(
                                 agg.Id,
                                 agg.Version,
                                 resultEvents.ToArray());
