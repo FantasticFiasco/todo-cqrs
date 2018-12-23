@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+
+  todo:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.no-sql
+    ports:
+      - "8080:80"
+    depends_on:
+      - no-sql
+    restart: on-failure
+
+  no-sql:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret

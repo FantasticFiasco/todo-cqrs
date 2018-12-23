@@ -11,14 +11,15 @@ services:
     depends_on:
       - sql
     restart: on-failure
+    environment:
+      DB_USER: root
+      DB_PASSWORD: secret
 
   sql:
     image: postgres
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: secret
-    ports:
-      - "5432:5432"
 
   sql-ui:
     image: adminer

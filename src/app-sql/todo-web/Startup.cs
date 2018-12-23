@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Todo.Web.GraphQL;
 
@@ -7,10 +8,17 @@ namespace Todo.Web
 {
     public class Startup
     {
+        private readonly IConfiguration configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCqrs();
-            services.AddDatabase();
+            services.AddCqrs(configuration);
+            services.AddDatabase(configuration);
             services.AddTodoGraphQL();
         }
 
