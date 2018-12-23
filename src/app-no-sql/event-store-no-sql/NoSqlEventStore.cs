@@ -26,6 +26,6 @@ namespace EventStore.NoSql
             return collection.Find(filter).ToList();
         }
 
-        public void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents) => throw new NotImplementedException();
+        public void SaveEventsFor<TAggregate>(Guid id, int version, object[] newEvents) => throw new NotImplementedException();
     }
 }

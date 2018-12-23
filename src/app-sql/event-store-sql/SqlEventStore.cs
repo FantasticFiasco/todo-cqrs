@@ -24,7 +24,7 @@ namespace EventStore.Sql
                     SELECT type, body
                     FROM event
                     WHERE id = @id
-                    ORDER BY sequence_number";
+                    ORDER BY version";
 
                 command.Parameters.AddWithValue("id", id);
 
@@ -39,7 +39,7 @@ namespace EventStore.Sql
             }
         }
 
-        public void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents)
+        public void SaveEventsFor<TAggregate>(Guid id, int version, object[] newEvents)
         {
             using (var command = new NpgsqlCommand())
             {
@@ -52,15 +52,13 @@ namespace EventStore.Sql
                 {
                     commandTextBuilder.Append($@"
                         INSERT INTO event
-                        (id, sequence_number, type, body)
+                        (id, version, type, body)
                         VALUES
-                        (@id, @sequenceNumber{i}, @type{i}, @body{i})");
+                        (@id, @version{i}, @type{i}, @body{i})");
 
-                    var e = newEvents[i];
-
-                    command.Parameters.AddWithValue($"sequenceNumber{i}", eventsLoaded + i);
-                    command.Parameters.AddWithValue($"type{i}", e.GetType().AssemblyQualifiedName);
-                    command.Parameters.AddWithValue($"body{i}", Serialize(e));
+                    command.Parameters.AddWithValue($"version{i}", version + i);
+                    command.Parameters.AddWithValue($"type{i}", newEvents[i].GetType().AssemblyQualifiedName);
+                    command.Parameters.AddWithValue($"body{i}", Serialize(newEvents[i]));
                 }
 
                 using (command.OpenConnection(connectionString))

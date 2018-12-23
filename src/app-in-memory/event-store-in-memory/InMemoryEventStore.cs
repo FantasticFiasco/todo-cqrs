@@ -24,7 +24,7 @@ namespace EventStore.InMemory
                 : new object[0];
         }
 
-        public void SaveEventsFor<TAggregate>(Guid aggregateId, int eventsLoaded, object[] newEvents)
+        public void SaveEventsFor<TAggregate>(Guid aggregateId, int version, object[] newEvents)
         {
             // Get or create stream
             var stream = store.GetOrAdd(aggregateId, _ => new Stream());
@@ -36,9 +36,12 @@ namespace EventStore.InMemory
                 var events = stream.Events;
 
                 // Ensure no events persisted since us
-                var previousEvents = events?.Length ?? 0;
+                var currentVersion = events
+                    .Select(e => e.Version)
+                    .DefaultIfEmpty(0)
+                    .Max();
 
-                if (previousEvents != eventsLoaded) throw new Exception("Concurrency conflict; cannot persist these events");
+                if (currentVersion != version) throw new Exception("Concurrency conflict; cannot persist these events");
 
                 // Create a new event list with existing ones plus our new
                 // ones (making new important for lock free algorithm!)

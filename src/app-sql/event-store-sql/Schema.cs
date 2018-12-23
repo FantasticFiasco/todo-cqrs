@@ -28,7 +28,7 @@ namespace EventStore.Sql
             command.CommandText = @"
                 CREATE TABLE IF NOT EXISTS event (
                     id uuid NOT NULL,
-                    sequence_number bigint,
+                    version bigint,
                     type text,
                     body text,
                     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
