@@ -17,8 +17,8 @@ namespace Todo.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCqrs(configuration);
             services.AddDatabase(configuration);
+            services.AddCqrs(configuration);
             services.AddTodoGraphQL();
         }
 

@@ -9,6 +9,13 @@ namespace Todo.Web
 {
     public static class Extensions
     {
+        public static void AddDatabase(this IServiceCollection _, IConfiguration configuration)
+        {
+            var connectionString = BuildConnectionString(configuration);
+            var schema = new Schema(connectionString);
+            schema.Create();
+        }
+
         public static void AddCqrs(this IServiceCollection self, IConfiguration configuration)
         {
             var connectionString = BuildConnectionString(configuration);
@@ -21,13 +28,6 @@ namespace Todo.Web
 
             self.AddSingleton<ITodoList>(_ => todoList);
             self.AddSingleton(_ => messageDispatcher);
-        }
-
-        public static void AddDatabase(this IServiceCollection _, IConfiguration configuration)
-        {
-            var connectionString = BuildConnectionString(configuration);
-            var schema = new Schema(connectionString);
-            schema.Create();
         }
 
         private static string BuildConnectionString(IConfiguration configuration)

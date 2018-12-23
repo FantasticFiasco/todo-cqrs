@@ -1,4 +1,3 @@
-using System;
 using Cqrs;
 using EventStore.NoSql;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +9,11 @@ namespace Todo.Web
 {
     public static class Extensions
     {
+        public static void AddDatabase(this IServiceCollection _)
+        {
+            Schema.Create();
+        }
+
         public static void AddCqrs(this IServiceCollection self, IConfiguration configuration)
         {
             var connectionString = BuildConnectionString(configuration);
@@ -22,13 +26,6 @@ namespace Todo.Web
 
             self.AddSingleton<ITodoList>(_ => todoList);
             self.AddSingleton(_ => messageDispatcher);
-        }
-
-        public static void AddDatabase(this IServiceCollection _)
-        {
-            //var schema = new Schema(ConnectionString);
-            //schema.Create();
-            throw new NotImplementedException();
         }
 
         private static string BuildConnectionString(IConfiguration configuration)
