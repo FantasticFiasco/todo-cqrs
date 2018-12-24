@@ -88,11 +88,15 @@ Before running any of the implementations, please make sure [Docker](https://www
 
 The code needed to fulfill the requirements can be found in `TodoCQRS.InMemory.sln`. It contains a very basic in-memory event store that holds all published events. The read model is also held in memory, in the same process as the event store.
 
+#### Running the application
+
 Run the following command in the root of the repository to start the application.
 
 ```bash
 $ docker-compose -f ./docker-compose.app-in-memory.yml up
 ```
+
+The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
 ### Single process using SQL event store
 
@@ -104,8 +108,19 @@ $ docker-compose -f ./docker-compose.app-in-memory.yml up
 
 The code needed to fulfill the requirements can be found in `TodoCQRS.Sql.sln`. It has replaced the in-memory event store with one that persists events in a PostgreSQL database, thus living up to the requirements of being durable. The read model is still being held in memory, thus if the application is terminated, all evens will have to be replayed to get the current state of the application.
 
+#### Running the application
+
 Run the following command in the root of the repository to start the application.
 
 ```bash
 $ docker-compose -f ./docker-compose.app-sql.yml up
 ```
+
+The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
+
+[Adminer](https://www.adminer.org/), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081), where one enters the following information to view the PostgreSQL database.
+
+- System: `PostgreSQL`
+- Server: `sql`
+- Username: `root`
+- Password: `secret`
