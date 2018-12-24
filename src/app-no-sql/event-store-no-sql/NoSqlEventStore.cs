@@ -19,15 +19,15 @@ namespace EventStore.NoSql
             filter = new BsonDocument();
         }
 
-        public async Task<IEnumerable<object>> LoadEventsForAsync<TAggregate>(Guid id)
+        public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
             var collection = database.GetCollection<Schema>(id.ToString());
 
             // TODO: The items returned are unordered, please fix
-            return await collection.Find(filter).ToListAsync();
+            return collection.Find(filter).ToList();
         }
 
-        public Task SaveEventsForAsync<TAggregate>(Guid id, int version, object[] newEvents) =>
+        public void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents) =>
             throw new NotImplementedException();
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Cqrs;
 using Newtonsoft.Json;
 using Npgsql;
@@ -17,7 +16,7 @@ namespace EventStore.Sql
             this.connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public async Task<IEnumerable<object>> LoadEventsForAsync<TAggregate>(Guid id)
+        public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
             using (var command = new NpgsqlCommand())
             {
@@ -30,7 +29,7 @@ namespace EventStore.Sql
                 command.Parameters.AddWithValue("id", id);
 
                 using (command.OpenConnection(connectionString))
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var reader = command.ExecuteReader())
                 {
                     var events = new List<object>();
 
@@ -44,7 +43,7 @@ namespace EventStore.Sql
             }
         }
 
-        public async Task SaveEventsForAsync<TAggregate>(Guid id, int version, object[] newEvents)
+        public void SaveEventsFor<TAggregate>(Guid id, int version, object[] newEvents)
         {
             using (var command = new NpgsqlCommand())
             {
@@ -69,7 +68,7 @@ namespace EventStore.Sql
                 using (command.OpenConnection(connectionString))
                 {
                     command.CommandText = commandTextBuilder.ToString();
-                    await command.ExecuteNonQueryAsync();
+                    command.ExecuteNonQuery();
                 }
             }
         }

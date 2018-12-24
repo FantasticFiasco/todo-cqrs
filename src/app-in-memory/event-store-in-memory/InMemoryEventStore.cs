@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Cqrs;
 
 namespace EventStore.InMemory
@@ -17,18 +15,16 @@ namespace EventStore.InMemory
             store = new ConcurrentDictionary<Guid, Stream>();
         }
 
-        public Task<IEnumerable<object>> LoadEventsForAsync<TAggregate>(Guid id)
+        public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
             // Get the current event stream. Note that we never mutate the
             // events array so it's safe to return the real thing.
-            IEnumerable<object> events = store.TryGetValue(id, out var stream)
+            return store.TryGetValue(id, out var stream)
                 ? stream.Events
                 : new object[0];
-
-            return Task.FromResult(events);
         }
 
-        public Task SaveEventsForAsync<TAggregate>(Guid aggregateId, int version, object[] newEvents)
+        public void SaveEventsFor<TAggregate>(Guid aggregateId, int eventsLoaded, object[] newEvents)
         {
             // Get or create stream
             var stream = store.GetOrAdd(aggregateId, _ => new Stream());
@@ -40,13 +36,9 @@ namespace EventStore.InMemory
                 var events = stream.Events;
 
                 // Ensure no events persisted since us
-                // TODO: The version is not part of the event, only the aggregate
-                var currentVersion = events
-                    .Select(e => e.Version)
-                    .DefaultIfEmpty(0)
-                    .Max();
+                var previousEvents = events?.Length ?? 0;
 
-                if (currentVersion != version) throw new Exception("Concurrency conflict; cannot persist these events");
+                if (previousEvents != eventsLoaded) throw new Exception("Concurrency conflict; cannot persist these events");
 
                 // Create a new event list with existing ones plus our new
                 // ones (making new important for lock free algorithm!)
@@ -62,8 +54,6 @@ namespace EventStore.InMemory
                     break;
                 }
             }
-
-            return Task.CompletedTask;
         }
 
         private class Stream
