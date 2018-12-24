@@ -19,3 +19,8 @@ services:
       POSTGRES_PASSWORD: secret
     ports:
       - "5432:5432"
+
+  sql-ui:
+    image: adminer
+    ports:
+      - "8081:8080"
