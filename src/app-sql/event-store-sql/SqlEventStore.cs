@@ -31,19 +31,15 @@ namespace EventStore.Sql
                 using (command.OpenConnection(connectionString))
                 using (var reader = command.ExecuteReader())
                 {
-                    var events = new List<object>();
-
                     while (reader.Read())
                     {
-                        events.Add(Deserialize(reader.GetString(0), reader.GetString(1)));
+                        yield return Deserialize(reader.GetString(0), reader.GetString(1));
                     }
-
-                    return events;
                 }
             }
         }
 
-        public void SaveEventsFor<TAggregate>(Guid id, int version, object[] newEvents)
+        public void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents)
         {
             using (var command = new NpgsqlCommand())
             {
@@ -60,7 +56,7 @@ namespace EventStore.Sql
                         VALUES
                         (@id, @version{i}, @type{i}, @body{i})");
 
-                    command.Parameters.AddWithValue($"version{i}", version + i);
+                    command.Parameters.AddWithValue($"version{i}", eventsLoaded + i);
                     command.Parameters.AddWithValue($"type{i}", newEvents[i].GetType().AssemblyQualifiedName);
                     command.Parameters.AddWithValue($"body{i}", Serialize(newEvents[i]));
                 }
