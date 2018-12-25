@@ -2,20 +2,6 @@ version: "3"
 
 services:
 
-  todo:
-    build:
-      context: ./src
-      dockerfile: Dockerfile.no-sql
-    ports:
-      - "8080:80"
-    environment:
-      DB_HOST: no-sql
-      DB_USER: root
-      DB_PASSWORD: secret
-    depends_on:
-      - no-sql
-    restart: on-failure
-
   no-sql:
     image: mongo
     environment:
@@ -30,3 +16,20 @@ services:
       ME_CONFIG_MONGODB_SERVER: no-sql
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: secret
+    depends_on:
+      - no-sql
+    restart: on-failure
+
+  todo:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.no-sql
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: no-sql
+      DB_USER: root
+      DB_PASSWORD: secret
+    depends_on:
+      - no-sql
+    restart: on-failure
