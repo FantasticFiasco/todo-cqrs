@@ -17,7 +17,7 @@ namespace Todo.Web
         public static void AddCqrs(this IServiceCollection self, IConfiguration configuration)
         {
             var connectionString = BuildConnectionString(configuration);
-            var eventStore = new NoSqlEventStore(connectionString);
+            var eventStore = new NoSqlEventStore(connectionString );
             var todoList = new TodoList();
 
             var messageDispatcher = new MessageDispatcher(eventStore);
@@ -30,10 +30,11 @@ namespace Todo.Web
 
         private static string BuildConnectionString(IConfiguration configuration)
         {
+            var host = configuration["DB_HOST"];
             var username = configuration["DB_USER"];
             var password = configuration["DB_PASSWORD"];
 
-            return $"mongodb://{username}:{password}@localhost:27017";
+            return $"mongodb://{username}:{password}@{host}:27017";
         }
     }
 }

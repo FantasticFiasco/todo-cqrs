@@ -9,6 +9,7 @@ services:
     ports:
       - "8080:80"
     environment:
+      DB_HOST: no-sql
       DB_USER: root
       DB_PASSWORD: secret
     depends_on:

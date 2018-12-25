@@ -21,7 +21,7 @@ namespace EventStore.Sql
             using (var command = new NpgsqlCommand())
             {
                 command.CommandText = @"
-                    SELECT type, body
+                    SELECT body, type
                     FROM event
                     WHERE id = @id
                     ORDER BY version";
@@ -72,7 +72,7 @@ namespace EventStore.Sql
         private static string Serialize(object obj) =>
             JsonConvert.SerializeObject(obj);
 
-        private static object Deserialize(string typeName, string body) =>
+        private static object Deserialize(string body, string typeName) =>
             JsonConvert.DeserializeObject(body, Type.GetType(typeName));
     }
 }
