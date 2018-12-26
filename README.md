@@ -10,6 +10,7 @@
 - [Implementations](#implementations)
   - [Single process using in-memory event store](#single-process-using-in-memory-event-store)
   - [Single process using SQL event store](#single-process-using-sql-event-store)
+  - [Single process using NoSQL event store](#single-process-using-nosql-event-store)
 
 ## Introduction
 
@@ -19,6 +20,7 @@ These are the implementations, ordered according to complexity:
 
 1. [Single process using in-memory event store](#single-process-using-in-memory-event-store)
 1. [Single process using SQL event store](#single-process-using-sql-event-store)
+1. [Single process using NoSQL event store](#single-process-using-nosql-event-store)
 
 ## What you will end up with
 
@@ -127,3 +129,17 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 - Server: `sql`
 - Username: `root`
 - Password: `secret`
+
+### Single process using NoSQL event store
+
+TODO
+
+#### Requirements
+
+TODO
+
+#### Solution
+
+TODO
+
+#### Running the application
