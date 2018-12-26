@@ -86,7 +86,7 @@ Before running any of the implementations, please make sure [Docker](https://www
 
 #### Requirements
 
-- State does not need to be durable, we can live with having it being lost if the application is terminated
+- State does not need to be durable, we can accept losing it given application is terminated
 
 #### Solution
 
@@ -106,7 +106,7 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 #### Requirements
 
-- State must be durable, we must retain state even if application is terminated
+- State must be durable, we must retain it even if application is terminated
 - It is acceptable that state is rebuilt using some manual process after application termination, since it isn't mission critical
 
 #### Solution
@@ -132,14 +132,24 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 ### Single process using NoSQL event store
 
-TODO
-
 #### Requirements
 
-TODO
+- State must be durable, we must retain it even if application is terminated
+- It is acceptable that state is rebuilt using some manual process after application termination, since it isn't mission critical
+- Since the state isn't relational by nature, the solutions architect has deemed a relation database to be inappropriate, and requires the usage of a NoSQL document database
 
 #### Solution
 
-TODO
+The code needed to fulfill the requirements can be found in `TodoCQRS.NoSql.sln`. It has replaced the SQL event store with one that persists events in a [MongoDB](https://www.mongodb.com/) document database, thus living up to the requirements of being NoSQL. The read model is still being held in memory, thus if the application is terminated then all evens will have to be manually replayed to get the current state of the application.
 
 #### Running the application
+
+Run the following command in the root of the repository to start the application.
+
+```bash
+$ docker-compose -f ./docker-compose.app-no-sql.yml up
+```
+
+The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
+
+[Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).
