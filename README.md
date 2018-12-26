@@ -86,7 +86,7 @@ Before running any of the implementations, please make sure [Docker](https://www
 
 #### Requirements
 
-- State does not need to be durable, we can accept losing it given application is terminated
+- State does not need to be durable, we can accept losing it given application termination
 
 #### Solution
 
