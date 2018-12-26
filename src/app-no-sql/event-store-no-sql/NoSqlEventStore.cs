@@ -21,9 +21,9 @@ namespace EventStore.NoSql
 
         public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
-            // TODO: The items returned are unordered, please fix
             return GetCollection(id)
                 .Find(FilterDefinition<Event>.Empty)
+                .Sort("{version: 1}")
                 .ToList()
                 .Select(e => Deserialize(e.Body, e.Type));
         }
