@@ -97,7 +97,7 @@ namespace Cqrs
                         {
                             eventStore.SaveEventsFor<TAggregate>(
                                 agg.Id,
-                                agg.EventsLoaded,
+                                agg.Version,
                                 resultEvents.ToArray());
                         }
 

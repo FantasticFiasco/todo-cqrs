@@ -15,7 +15,11 @@ namespace Todo.Web.GraphQL
             // GraphQL
             services.AddSingleton<IDependencyResolver>(serviceProvider => new FuncDependencyResolver(serviceProvider.GetRequiredService));
             services.AddSingleton<ISchema, TodoSchema>();
-            services.AddGraphQL();
+            services.AddGraphQL(options =>
+            {
+                // You would typically disable this in production
+                options.ExposeExceptions = true;
+            });
 
             // Queries
             services.AddSingleton<TodoQuery>();

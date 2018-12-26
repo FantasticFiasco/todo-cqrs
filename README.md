@@ -10,6 +10,7 @@
 - [Implementations](#implementations)
   - [Single process using in-memory event store](#single-process-using-in-memory-event-store)
   - [Single process using SQL event store](#single-process-using-sql-event-store)
+  - [Single process using NoSQL event store](#single-process-using-nosql-event-store)
 
 ## Introduction
 
@@ -19,6 +20,7 @@ These are the implementations, ordered according to complexity:
 
 1. [Single process using in-memory event store](#single-process-using-in-memory-event-store)
 1. [Single process using SQL event store](#single-process-using-sql-event-store)
+1. [Single process using NoSQL event store](#single-process-using-nosql-event-store)
 
 ## What you will end up with
 
@@ -84,11 +86,14 @@ Before running any of the implementations, please make sure [Docker](https://www
 
 #### Requirements
 
-- State does not need to be durable, we can live with having it being lost if the application is terminated
+- State must strongly consistent, i.e. changes introduced by commands must immediately be reflected in the read model
+- State does not need to be durable, we can accept losing it given application termination
 
 #### Solution
 
-The code needed to fulfill the requirements can be found in `TodoCQRS.InMemory.sln`. It contains a very basic in-memory event store that holds all published events. The read model is also held in memory, in the same process as the event store.
+The code needed to fulfill the requirements can be found in `TodoCQRS.InMemory.sln`. It contains a very basic in-memory event store that holds all published events.
+
+The read model is also held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being handled, the read model also becomes unavailable.
 
 #### Running the application
 
@@ -104,12 +109,17 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 #### Requirements
 
-- State must be durable, we must retain state even if application is terminated
+- State must strongly consistent, i.e. changes introduced by commands must immediately be reflected in the read model
+- State must be durable, we must retain it even if application is terminated
 - It is acceptable that state is rebuilt using some manual process after application termination, since it isn't mission critical
 
 #### Solution
 
-The code needed to fulfill the requirements can be found in `TodoCQRS.Sql.sln`. It has replaced the in-memory event store with one that persists events in a [PostgreSQL](https://www.postgresql.org/) database, thus living up to the requirements of being durable. The read model is still being held in memory, thus if the application is terminated then all evens will have to be manually replayed to get the current state of the application.
+The code needed to fulfill the requirements can be found in `TodoCQRS.Sql.sln`. It has replaced the in-memory event store with one that persists events in a [PostgreSQL](https://www.postgresql.org/) database, thus living up to the requirements of being durable.
+
+The read model is still being held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being handled, the read model also becomes unavailable.
+
+All evens will have to be manually replayed after application termination to get the current state of the application, all according to the requirements.
 
 #### Running the application
 
@@ -127,3 +137,32 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 - Server: `sql`
 - Username: `root`
 - Password: `secret`
+
+### Single process using NoSQL event store
+
+#### Requirements
+
+- State must strongly consistent, i.e. changes introduced by commands must immediately be reflected in the read model
+- State must be durable, we must retain it even if application is terminated
+- It is acceptable that state is rebuilt using some manual process after application termination, since it isn't mission critical
+- Since the state isn't relational by nature, the solutions architect has deemed a relational database to be inappropriate, and requires the usage of a NoSQL document database
+
+#### Solution
+
+The code needed to fulfill the requirements can be found in `TodoCQRS.NoSql.sln`. It has replaced the SQL event store with one that persists events in a [MongoDB](https://www.mongodb.com/) document database, thus living up to the requirements of being NoSQL.
+
+The read model is still being held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being handled, the read model also becomes unavailable.
+
+All evens will have to be manually replayed after application termination to get the current state of the application, all according to the requirements.
+
+#### Running the application
+
+Run the following command in the root of the repository to start the application.
+
+```bash
+$ docker-compose -f ./docker-compose.app-no-sql.yml up
+```
+
+The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
+
+[Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).

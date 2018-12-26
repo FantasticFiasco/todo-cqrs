@@ -2,25 +2,30 @@ version: "3"
 
 services:
 
+  sql:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+
+  sql-ui:
+    image: adminer
+    ports:
+      - "8081:8080"
+    depends_on:
+      - sql
+    restart: on-failure
+
   todo:
     build:
       context: ./src
       dockerfile: Dockerfile.sql
     ports:
       - "8080:80"
+    environment:
+      DB_HOST: sql
+      DB_USER: root
+      DB_PASSWORD: secret
     depends_on:
       - sql
     restart: on-failure
-
-  sql:
-    image: postgres
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: secret
-    ports:
-      - "5432:5432"
-
-  sql-ui:
-    image: adminer
-    ports:
-      - "8081:8080"

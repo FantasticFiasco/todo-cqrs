@@ -15,9 +15,9 @@ namespace Cqrs
         public Guid Id { get; internal set; }
 
         /// <summary>
-        /// The number of events loaded into this aggregate.
+        /// Get the aggregate's version, i.e. the sequence number of the last applied event.
         /// </summary>
-        public int EventsLoaded { get; private set; }
+        public int Version { get; private set; }
 
         /// <summary>
         /// Enumerates the supplied events and applies them in order to the aggregate.
@@ -43,7 +43,7 @@ namespace Cqrs
             if (applier == null) throw new InvalidOperationException($"Aggregate {GetType().Name} does not know how to apply event {ev.GetType().Name}");
 
             applier.Apply(ev);
-            EventsLoaded++;
+            Version++;
         }
     }
 }

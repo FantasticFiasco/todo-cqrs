@@ -21,10 +21,10 @@ namespace EventStore.Sql
             using (var command = new NpgsqlCommand())
             {
                 command.CommandText = @"
-                    SELECT type, body
+                    SELECT body, type
                     FROM event
                     WHERE id = @id
-                    ORDER BY sequence_number";
+                    ORDER BY version";
 
                 command.Parameters.AddWithValue("id", id);
 
@@ -33,7 +33,9 @@ namespace EventStore.Sql
                 {
                     while (reader.Read())
                     {
-                        yield return Deserialize(reader.GetString(0), reader.GetString(1));
+                        yield return JsonConvert.DeserializeObject(
+                            reader.GetString(0),
+                            Type.GetType(reader.GetString(1)));
                     }
                 }
             }
@@ -52,15 +54,13 @@ namespace EventStore.Sql
                 {
                     commandTextBuilder.Append($@"
                         INSERT INTO event
-                        (id, sequence_number, type, body)
+                        (id, version, type, body)
                         VALUES
-                        (@id, @sequenceNumber{i}, @type{i}, @body{i})");
+                        (@id, @version{i}, @type{i}, @body{i})");
 
-                    var e = newEvents[i];
-
-                    command.Parameters.AddWithValue($"sequenceNumber{i}", eventsLoaded + i);
-                    command.Parameters.AddWithValue($"type{i}", e.GetType().AssemblyQualifiedName);
-                    command.Parameters.AddWithValue($"body{i}", Serialize(e));
+                    command.Parameters.AddWithValue($"version{i}", eventsLoaded + i);
+                    command.Parameters.AddWithValue($"type{i}", newEvents[i].GetType().AssemblyQualifiedName);
+                    command.Parameters.AddWithValue($"body{i}", JsonConvert.SerializeObject(newEvents[i]));
                 }
 
                 using (command.OpenConnection(connectionString))
@@ -70,11 +70,5 @@ namespace EventStore.Sql
                 }
             }
         }
-
-        private static string Serialize(object obj) =>
-            JsonConvert.SerializeObject(obj);
-
-        private static object Deserialize(string typeName, string body) =>
-            JsonConvert.DeserializeObject(body, Type.GetType(typeName));
     }
 }

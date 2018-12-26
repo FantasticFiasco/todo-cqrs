@@ -19,7 +19,7 @@ jobs:
       arguments: --configuration Release
 
 - job: e2eLint
-  displayName: E2E lint
+  displayName: E2E Lint
   pool:
     vmImage: Ubuntu 16.04
   steps:
@@ -29,7 +29,7 @@ jobs:
       yarn lint
 
 - job: e2eInMemoryEventStore
-  displayName: E2E in-memory event store
+  displayName: E2E In-Memory Event Store
   pool:
     vmImage: Ubuntu 16.04
   steps:
@@ -40,12 +40,23 @@ jobs:
       yarn test
 
 - job: e2eSqlEventStore
-  displayName: E2E SQL event store
+  displayName: E2E SQL Event Store
   pool:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
       docker-compose -f ./docker-compose.app-sql.yml up --detach
+      cd ./test/e2e
+      yarn
+      yarn test
+
+- job: e2eNoSqlEventStore
+  displayName: E2E NoSQL Event Store
+  pool:
+    vmImage: Ubuntu 16.04
+  steps:
+  - bash: |
+      docker-compose -f ./docker-compose.app-no-sql.yml up --detach
       cd ./test/e2e
       yarn
       yarn test

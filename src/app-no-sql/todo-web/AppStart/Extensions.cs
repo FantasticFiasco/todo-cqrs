@@ -1,5 +1,5 @@
 using Cqrs;
-using EventStore.Sql;
+using EventStore.NoSql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Todo.ReadModel;
@@ -9,17 +9,15 @@ namespace Todo.Web
 {
     public static class Extensions
     {
-        public static void AddDatabase(this IServiceCollection _, IConfiguration configuration)
+        public static void AddDatabase(this IServiceCollection _)
         {
-            var connectionString = BuildConnectionString(configuration);
-            var schema = new Schema(connectionString);
-            schema.Create();
+            Schema.Create();
         }
 
         public static void AddCqrs(this IServiceCollection self, IConfiguration configuration)
         {
             var connectionString = BuildConnectionString(configuration);
-            var eventStore = new SqlEventStore(connectionString);
+            var eventStore = new NoSqlEventStore(connectionString );
             var todoList = new TodoList();
 
             var messageDispatcher = new MessageDispatcher(eventStore);
@@ -36,7 +34,7 @@ namespace Todo.Web
             var username = configuration["DB_USER"];
             var password = configuration["DB_PASSWORD"];
 
-            return $"Host={host};Username={username};Password={password}";
+            return $"mongodb://{username}:{password}@{host}:27017";
         }
     }
 }
