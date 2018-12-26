@@ -25,7 +25,7 @@ namespace EventStore.NoSql
                 .Find(FilterDefinition<Event>.Empty)
                 .Sort("{version: 1}")
                 .ToList()
-                .Select(e => Deserialize(e.Body, e.Type));
+                .Select(e => BsonSerializer.Deserialize(e.Body, Type.GetType(e.Type)));
         }
 
         public void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents)
@@ -36,7 +36,7 @@ namespace EventStore.NoSql
                     {
                         Version = eventsLoaded + i,
                         Type = e.GetType().AssemblyQualifiedName,
-                        Body = Serialize(e),
+                        Body = e.ToBsonDocument(),
                         CreatedAt = DateTime.UtcNow
                     }));
         }
@@ -46,11 +46,5 @@ namespace EventStore.NoSql
             var database = client.GetDatabase(DatabaseName);
             return database.GetCollection<Event>(id.ToString());
         }
-
-        private static BsonDocument Serialize(object obj) =>
-            obj.ToBsonDocument();
-
-        private static object Deserialize(BsonDocument body, string typeName) =>
-            BsonSerializer.Deserialize(body, Type.GetType(typeName));
     }
 }

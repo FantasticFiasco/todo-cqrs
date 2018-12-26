@@ -33,7 +33,9 @@ namespace EventStore.Sql
                 {
                     while (reader.Read())
                     {
-                        yield return Deserialize(reader.GetString(0), reader.GetString(1));
+                        yield return JsonConvert.DeserializeObject(
+                            reader.GetString(0),
+                            Type.GetType(reader.GetString(1)));
                     }
                 }
             }
@@ -58,7 +60,7 @@ namespace EventStore.Sql
 
                     command.Parameters.AddWithValue($"version{i}", eventsLoaded + i);
                     command.Parameters.AddWithValue($"type{i}", newEvents[i].GetType().AssemblyQualifiedName);
-                    command.Parameters.AddWithValue($"body{i}", Serialize(newEvents[i]));
+                    command.Parameters.AddWithValue($"body{i}", JsonConvert.SerializeObject(newEvents[i]));
                 }
 
                 using (command.OpenConnection(connectionString))
@@ -70,9 +72,9 @@ namespace EventStore.Sql
         }
 
         private static string Serialize(object obj) =>
-            JsonConvert.SerializeObject(obj);
+            ;
 
         private static object Deserialize(string body, string typeName) =>
-            JsonConvert.DeserializeObject(body, Type.GetType(typeName));
+            ;
     }
 }
