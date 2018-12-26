@@ -26,7 +26,7 @@ These are the implementations, ordered according to complexity:
 
 All implementations will expose the same GraphQL playground on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground). Using the playground you will be able to query and mutate state using GraphQL, as shown below.
 
-![alt text](./doc/resources/create-todo.png "Create todo")
+![alt text](./doc/resources/add-todo.png "Add todo")
 
 ![alt text](./doc/resources/get-todos.png "Get todo")
 
