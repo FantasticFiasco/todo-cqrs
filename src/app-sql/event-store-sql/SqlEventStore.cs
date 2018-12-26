@@ -70,11 +70,5 @@ namespace EventStore.Sql
                 }
             }
         }
-
-        private static string Serialize(object obj) =>
-            ;
-
-        private static object Deserialize(string body, string typeName) =>
-            ;
     }
 }
