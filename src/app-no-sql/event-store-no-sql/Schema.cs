@@ -6,7 +6,11 @@ namespace EventStore.NoSql
     {
         public static void Create()
         {
-            BsonClassMap.RegisterClassMap<Event>();
+            BsonClassMap.RegisterClassMap<Event>(options =>
+            {
+                options.AutoMap();
+                options.SetIgnoreExtraElements(true);
+            });
         }
     }
 }

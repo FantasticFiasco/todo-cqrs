@@ -48,7 +48,7 @@ namespace EventStore.NoSql
         }
 
         private static BsonDocument Serialize(object obj) =>
-            BsonDocument.Create(obj);
+            obj.ToBsonDocument();
 
         private static object Deserialize(BsonDocument body, string typeName) =>
             BsonSerializer.Deserialize(body, Type.GetType(typeName));
