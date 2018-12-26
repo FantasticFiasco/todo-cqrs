@@ -16,46 +16,51 @@ namespace Todo
         IApplyEvent<TodoCompleted>,
         IApplyEvent<TodoIncompleted>
     {
-        private bool isRemoved;
+        private bool exists;
 
         public IEnumerable Handle(AddTodo command)
         {
+            if (exists) throw new TodoAlreadyExistsException();
+
             yield return new TodoAdded(command.Id, command.Title);
         }
 
         public IEnumerable Handle(RenameTodo command)
         {
-            if (isRemoved) throw new TodoRemovedException();
+            if (!exists) throw new TodoDoesNotExistException();
 
             yield return new TodoRenamed(command.Id, command.NewTitle);
         }
 
         public IEnumerable Handle(CompleteTodo command)
         {
-            if (isRemoved) throw new TodoRemovedException();
+            if (!exists) throw new TodoDoesNotExistException();
 
             yield return new TodoCompleted(command.Id);
         }
 
         public IEnumerable Handle(IncompleteTodo command)
         {
-            if (isRemoved) throw new TodoRemovedException();
+            if (!exists) throw new TodoDoesNotExistException();
 
             yield return new TodoIncompleted(command.Id);
         }
 
         public IEnumerable Handle(RemoveTodo command)
         {
+            if (!exists) throw new TodoDoesNotExistException();
+
             yield return new TodoRemoved(command.Id);
         }
 
         public void Apply(TodoAdded e)
         {
+            exists = true;
         }
 
         public void Apply(TodoRemoved e)
         {
-            isRemoved = true;
+            exists = false;
         }
 
         public void Apply(TodoRenamed e)

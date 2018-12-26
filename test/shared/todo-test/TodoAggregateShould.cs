@@ -28,6 +28,15 @@ namespace Todo.Test
         }
 
         [Fact]
+        public void ThrowExceptionOnAddTodoGivenTodoAdded()
+        {
+            Test(
+                Given(new TodoAdded(id, title)),
+                When(new AddTodo(id, title)),
+                ThenFailWith<TodoAlreadyExistsException>());
+        }
+
+        [Fact]
         public void ReturnTodoRenamedGivenRenameTodo()
         {
             Test(
@@ -37,6 +46,16 @@ namespace Todo.Test
         }
 
         [Fact]
+        public void ThrowExceptionOnRenameTodoGivenNotAdded()
+        {
+            Test(
+                Given(),
+                When(new RenameTodo(id, newTitle)),
+                ThenFailWith<TodoDoesNotExistException>());
+        }
+
+
+        [Fact]
         public void ThrowExceptionOnRenameTodoGivenTodoRemoved()
         {
             Test(
@@ -44,7 +63,7 @@ namespace Todo.Test
                     new TodoAdded(id, title),
                     new TodoRemoved(id)),
                 When(new RenameTodo(id, newTitle)),
-                ThenFailWith<TodoRemovedException>());
+                ThenFailWith<TodoDoesNotExistException>());
         }
 
         [Fact]
@@ -57,6 +76,15 @@ namespace Todo.Test
         }
 
         [Fact]
+        public void ThrowExceptionOnCompleteTodoGivenNotAdded()
+        {
+            Test(
+                Given(),
+                When(new CompleteTodo(id)),
+                ThenFailWith<TodoDoesNotExistException>());
+        }
+
+        [Fact]
         public void ThrowExceptionOnCompleteTodoGivenTodoRemoved()
         {
             Test(
@@ -64,7 +92,7 @@ namespace Todo.Test
                     new TodoAdded(id, title),
                     new TodoRemoved(id)),
                 When(new CompleteTodo(id)),
-                ThenFailWith<TodoRemovedException>());
+                ThenFailWith<TodoDoesNotExistException>());
         }
 
         [Fact]
@@ -79,6 +107,15 @@ namespace Todo.Test
         }
 
         [Fact]
+        public void ThrowExceptionOnIncompleteTodoGivenNotAdded()
+        {
+            Test(
+                Given(),
+                When(new IncompleteTodo(id)),
+                ThenFailWith<TodoDoesNotExistException>());
+        }
+
+        [Fact]
         public void ThrowExceptionOnIncompleteTodoGivenTodoRemoved()
         {
             Test(
@@ -86,7 +123,7 @@ namespace Todo.Test
                     new TodoAdded(id, title),
                     new TodoRemoved(id)),
                 When(new IncompleteTodo(id)),
-                ThenFailWith<TodoRemovedException>());
+                ThenFailWith<TodoDoesNotExistException>());
         }
 
         [Fact]
@@ -107,6 +144,26 @@ namespace Todo.Test
                     new TodoCompleted(id)),
                 When(new RemoveTodo(id)),
                 Then(new TodoRemoved(id)));
+        }
+
+        [Fact]
+        public void ThrowExceptionOnRemoveTodoGivenNotAdded()
+        {
+            Test(
+                Given(),
+                When(new RemoveTodo(id)),
+                ThenFailWith<TodoDoesNotExistException>());
+        }
+
+        [Fact]
+        public void ThrowExceptionOnRemoveTodoGivenTodoRemoved()
+        {
+            Test(
+                Given(
+                    new TodoAdded(id, title),
+                    new TodoRemoved(id)),
+                When(new RemoveTodo(id)),
+                ThenFailWith<TodoDoesNotExistException>());
         }
     }
 }
