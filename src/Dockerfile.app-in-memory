@@ -1,8 +1,8 @@
 FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
 
-COPY app-in-memory/event-store-in-memory/EventStore.InMemory.csproj ./app-in-memory/event-store-in-memory/
 COPY app-in-memory/todo-web/Todo.Web.csproj ./app-in-memory/todo-web/
+COPY event-stores/event-store-in-memory/EventStore.InMemory.csproj ./event-stores/event-store-in-memory/
 COPY shared/cqrs/Cqrs.csproj ./shared/cqrs/
 COPY shared/todo/Todo.csproj ./shared/todo/
 COPY shared/todo-events/Todo.Events.csproj ./shared/todo-events/

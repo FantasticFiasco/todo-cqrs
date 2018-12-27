@@ -1,8 +1,8 @@
 FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
 
-COPY app-no-sql/event-store-no-sql/EventStore.NoSql.csproj ./app-no-sql/event-store-no-sql/
 COPY app-no-sql/todo-web/Todo.Web.csproj ./app-no-sql/todo-web/
+COPY event-stores/event-store-no-sql/EventStore.NoSql.csproj ./event-stores/event-store-no-sql/
 COPY shared/cqrs/Cqrs.csproj ./shared/cqrs/
 COPY shared/todo/Todo.csproj ./shared/todo/
 COPY shared/todo-events/Todo.Events.csproj ./shared/todo-events/
