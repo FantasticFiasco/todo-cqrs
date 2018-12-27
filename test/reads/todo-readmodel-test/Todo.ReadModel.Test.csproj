@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\shared\todo-readmodel\Todo.ReadModel.csproj" />
+    <ProjectReference Include="..\..\..\src\reads\todo-readmodel\Todo.ReadModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

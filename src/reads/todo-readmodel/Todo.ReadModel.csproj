@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cqrs\Cqrs.csproj" />
-    <ProjectReference Include="..\todo-events\Todo.Events.csproj" />
+    <ProjectReference Include="..\..\writes\cqrs\Cqrs.csproj" />
+    <ProjectReference Include="..\..\writes\todo-events\Todo.Events.csproj" />
   </ItemGroup>
 
 </Project>
