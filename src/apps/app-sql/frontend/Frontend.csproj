@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\event-stores\event-store-sql\EventStore.Sql.csproj" />
-    <ProjectReference Include="..\..\shared\todo-web-graphql\Todo.GraphQL.csproj" />
+    <ProjectReference Include="..\..\..\graphql\web-graphql\Web.GraphQL.csproj" />
+    <ProjectReference Include="..\..\..\writes\event-store-sql\EventStore.Sql.csproj" />
   </ItemGroup>
 
   <ItemGroup>
