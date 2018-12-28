@@ -7,7 +7,7 @@ COPY shared/cqrs/Cqrs.csproj ./shared/cqrs/
 COPY shared/todo/Todo.csproj ./shared/todo/
 COPY shared/todo-events/Todo.Events.csproj ./shared/todo-events/
 COPY shared/todo-readmodel/Todo.ReadModel.csproj ./shared/todo-readmodel/
-COPY shared/todo-web-graphql/Todo.Web.GraphQL.csproj ./shared/todo-web-graphql/
+COPY shared/todo-web-graphql/Todo.GraphQL.csproj ./shared/todo-web-graphql/
 RUN dotnet restore ./app-no-sql/todo-web/Todo.Web.csproj
 
 COPY . ./

@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{AACAD2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{629B7C51-D3ED-431A-9891-DEB1CFA95D22}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.Web.GraphQL", "src\shared\todo-web-graphql\Todo.Web.GraphQL.csproj", "{47472343-46C9-4134-BB67-0DE2B2FCFA7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.GraphQL", "src\shared\todo-web-graphql\Todo.GraphQL.csproj", "{47472343-46C9-4134-BB67-0DE2B2FCFA7B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app-no-sql", "app-no-sql", "{85981B5E-0E94-45A9-BB2E-D3563663C1FE}"
 EndProject

@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.Web", "src\app-sql\tod
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{629B7C51-D3ED-431A-9891-DEB1CFA95D22}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.Web.GraphQL", "src\shared\todo-web-graphql\Todo.Web.GraphQL.csproj", "{918DD516-5918-47AF-9D91-B2DA460EE906}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.GraphQL", "src\shared\todo-web-graphql\Todo.GraphQL.csproj", "{918DD516-5918-47AF-9D91-B2DA460EE906}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "event-stores", "event-stores", "{B389EF49-65B2-424A-B482-0E4F9F4BF7A4}"
 EndProject
