@@ -7,6 +7,16 @@ jobs:
   steps:
   - script: echo -e "$(curl --silent https://raw.githubusercontent.com/FantasticFiasco/logo/master/logo.raw)"
 
+- job: build
+  displayName: Build Solutions
+  pool:
+    vmImage: Ubuntu 16.04
+  steps:
+  - bash: dotnet build 0.All.sln --configuration Release
+  - bash: dotnet build 1.InMemoryEventStore.InMemoryReadModel.sln --configuration Release
+  - bash: dotnet build 2.SqlEventStore.InMemoryReadModel.sln --configuration Release
+  - bash: dotnet build 3.NoSqlEventStore.InMemoryReadModel.sln --configuration Release
+
 - job: test
   displayName: Test
   pool:
