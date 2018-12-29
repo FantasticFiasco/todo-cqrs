@@ -13,9 +13,13 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - bash: dotnet build 0.All.sln --configuration Release
+    displayName: Build 0.All.sln
   - bash: dotnet build 1.InMemoryEventStore.InMemoryReadModel.sln --configuration Release
+    displayName: Build 1.InMemoryEventStore.InMemoryReadModel.sln
   - bash: dotnet build 2.SqlEventStore.InMemoryReadModel.sln --configuration Release
+    displayName: Build 2.SqlEventStore.InMemoryReadModel.sln
   - bash: dotnet build 3.NoSqlEventStore.InMemoryReadModel.sln --configuration Release
+    displayName: Build 3.NoSqlEventStore.InMemoryReadModel.sln
 
 - job: test
   displayName: Test
@@ -37,6 +41,7 @@ jobs:
       cd ./test/e2e
       yarn
       yarn lint
+    displayName: Run lint
 
 - job: e2eInMemoryEventStore
   displayName: E2E In-Memory Event Store
@@ -48,6 +53,7 @@ jobs:
       cd ./test/e2e
       yarn
       yarn test
+    displayName: Run e2e tests
 
 - job: e2eSqlEventStore
   displayName: E2E SQL Event Store
@@ -59,6 +65,7 @@ jobs:
       cd ./test/e2e
       yarn
       yarn test
+    displayName: Run e2e tests
 
 - job: e2eNoSqlEventStore
   displayName: E2E NoSQL Event Store
@@ -70,3 +77,4 @@ jobs:
       cd ./test/e2e
       yarn
       yarn test
+    displayName: Run e2e tests
