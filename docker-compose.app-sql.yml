@@ -19,7 +19,7 @@ services:
   todo:
     build:
       context: ./src
-      dockerfile: Dockerfile.sql
+      dockerfile: Dockerfile.app-sql
     ports:
       - "8080:80"
     environment:
