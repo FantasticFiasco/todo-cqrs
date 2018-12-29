@@ -19,7 +19,7 @@ services:
   todo:
     build:
       context: ./src
-      dockerfile: Dockerfile.app-sql
+      dockerfile: Dockerfile.2.sql-event-store.in-memory-readmodel
     ports:
       - "8080:80"
     environment:

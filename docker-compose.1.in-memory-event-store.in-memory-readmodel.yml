@@ -5,6 +5,6 @@ services:
   todo:
     build:
       context: ./src
-      dockerfile: Dockerfile.app-in-memory
+      dockerfile: Dockerfile.1.in-memory-event-store.in-memory-readmodel
     ports:
       - "8080:80"
