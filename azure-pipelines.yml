@@ -44,7 +44,7 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
-      docker-compose -f ./docker-compose.app-in-memory.yml up --detach
+      docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up --detach
       cd ./test/e2e
       yarn
       yarn test
@@ -55,7 +55,7 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
-      docker-compose -f ./docker-compose.app-sql.yml up --detach
+      docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up --detach
       cd ./test/e2e
       yarn
       yarn test
@@ -66,7 +66,7 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
-      docker-compose -f ./docker-compose.app-no-sql.yml up --detach
+      docker-compose -f ./docker-compose.3.nosql-event-store.in-memory-readmodel.yml up --detach
       cd ./test/e2e
       yarn
       yarn test
