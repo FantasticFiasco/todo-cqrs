@@ -1,7 +1,7 @@
 FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
 
-COPY apps/app-no-sql/frontend/Frontend.csproj ./apps/app-no-sql/frontend/
+COPY apps/3.nosql-event-store.in-memory-readmodel/frontend/Frontend.csproj ./apps/3.nosql-event-store.in-memory-readmodel/frontend/
 COPY graphql/web-graphql/Web.GraphQL.csproj ./graphql/web-graphql/
 COPY reads/readmodel-in-memory/ReadModel.InMemory.csproj ./reads/readmodel-in-memory/
 COPY writes/cqrs/Cqrs.csproj ./writes/cqrs/
@@ -9,12 +9,12 @@ COPY writes/event-store-no-sql/EventStore.NoSql.csproj ./writes/event-store-no-s
 COPY writes/todo/Todo.csproj ./writes/todo/
 COPY writes/todo-events/Todo.Events.csproj ./writes/todo-events/
 
-RUN dotnet restore ./apps/app-no-sql/frontend/Frontend.csproj
+RUN dotnet restore ./apps/3.nosql-event-store.in-memory-readmodel/frontend/Frontend.csproj
 
 COPY . ./
-RUN dotnet publish -c Release -o out ./apps/app-no-sql/frontend/Frontend.csproj
+RUN dotnet publish -c Release -o out ./apps/3.nosql-event-store.in-memory-readmodel/frontend/Frontend.csproj
 
 FROM microsoft/dotnet:aspnetcore-runtime
 WORKDIR /app
-COPY --from=build-env /app/apps/app-no-sql/frontend/out .
+COPY --from=build-env /app/apps/3.nosql-event-store.in-memory-readmodel/frontend/out .
 ENTRYPOINT ["dotnet", "Frontend.dll"]
