@@ -1,19 +1,20 @@
 FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
 
-COPY app-in-memory/todo-web/Todo.Web.csproj ./app-in-memory/todo-web/
-COPY event-stores/event-store-in-memory/EventStore.InMemory.csproj ./event-stores/event-store-in-memory/
-COPY shared/cqrs/Cqrs.csproj ./shared/cqrs/
-COPY shared/todo/Todo.csproj ./shared/todo/
-COPY shared/todo-events/Todo.Events.csproj ./shared/todo-events/
-COPY shared/todo-readmodel/Todo.ReadModel.csproj ./shared/todo-readmodel/
-COPY shared/todo-web-graphql/Todo.GraphQL.csproj ./shared/todo-web-graphql/
-RUN dotnet restore ./app-in-memory/todo-web/Todo.Web.csproj
+COPY apps/app-in-memory/frontend/Frontend.csproj ./apps/app-in-memory/frontend/
+COPY graphql/web-graphql/Web.GraphQL.csproj ./graphql/web-graphql/
+COPY reads/readmodel-in-memory/ReadModel.InMemory.csproj ./reads/readmodel-in-memory/
+COPY writes/cqrs/Cqrs.csproj ./writes/cqrs/
+COPY writes/event-store-in-memory/EventStore.InMemory.csproj ./writes/event-store-in-memory/
+COPY writes/todo/Todo.csproj ./writes/todo/
+COPY writes/todo-events/Todo.Events.csproj ./writes/todo-events/
+
+RUN dotnet restore ./apps/app-in-memory/frontend/Frontend.csproj
 
 COPY . ./
-RUN dotnet publish -c Release -o out ./app-in-memory/todo-web/Todo.Web.csproj
+RUN dotnet publish -c Release -o out ./apps/app-in-memory/frontend/Frontend.csproj
 
 FROM microsoft/dotnet:aspnetcore-runtime
 WORKDIR /app
-COPY --from=build-env /app/app-in-memory/todo-web/out .
-ENTRYPOINT ["dotnet", "Todo.Web.dll"]
+COPY --from=build-env /apps/app-in-memory/frontend/out .
+ENTRYPOINT ["dotnet", "Frontend.dll"]
