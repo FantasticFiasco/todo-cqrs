@@ -2,9 +2,10 @@ using Cqrs;
 using EventStore.Sql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Todo.ReadModel;
+using ReadModel.InMemory;
+using Todo;
 
-namespace Todo
+namespace Frontend
 {
     public static class Extensions
     {
