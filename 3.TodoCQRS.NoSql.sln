@@ -9,41 +9,37 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{862B5404-C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app-no-sql", "app-no-sql", "{85981B5E-0E94-45A9-BB2E-D3563663C1FE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStore.NoSql", "src\event-stores\event-store-no-sql\EventStore.NoSql.csproj", "{2D99772A-0C82-4A70-8919-D820CB878FDF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "event-stores", "event-stores", "{2CFB1C86-8F55-460E-9FE3-B0EF7EF9590A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{08A2C21D-AF89-4CF7-836E-216C362B656F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend", "src\apps\app-no-sql\frontend\Frontend.csproj", "{719626A6-098B-4E50-A41D-56EB0102F913}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "src\apps\app-no-sql\frontend\Frontend.csproj", "{719626A6-098B-4E50-A41D-56EB0102F913}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "writes", "writes", "{76F4A3EE-6F1A-4B91-BF72-D0382BE03675}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reads", "reads", "{A6AC73B9-8FAB-4E4B-85E3-852F0B8C98EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel.InMemory", "src\reads\readmodel-in-memory\ReadModel.InMemory.csproj", "{816CAF73-A6EB-492B-B0CB-05A154419D00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadModel.InMemory", "src\reads\readmodel-in-memory\ReadModel.InMemory.csproj", "{816CAF73-A6EB-492B-B0CB-05A154419D00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cqrs", "src\writes\cqrs\Cqrs.csproj", "{6D31BED8-D9A9-48A2-8CA6-D96D47298C51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs", "src\writes\cqrs\Cqrs.csproj", "{6D31BED8-D9A9-48A2-8CA6-D96D47298C51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo", "src\writes\todo\Todo.csproj", "{1E2DB0F9-2673-4B23-96B9-BA6D8BFEF0D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo", "src\writes\todo\Todo.csproj", "{1E2DB0F9-2673-4B23-96B9-BA6D8BFEF0D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Events", "src\writes\todo-events\Todo.Events.csproj", "{E4B5A171-531C-4987-9E54-7204E68F8944}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.Events", "src\writes\todo-events\Todo.Events.csproj", "{E4B5A171-531C-4987-9E54-7204E68F8944}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "graphql", "graphql", "{5335FEDB-96DF-4FF4-9D0E-606FD26D098B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.GraphQL", "src\graphql\web-graphql\Web.GraphQL.csproj", "{B1EBD18D-8A1C-4CC2-8D78-775125619CD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.GraphQL", "src\graphql\web-graphql\Web.GraphQL.csproj", "{B1EBD18D-8A1C-4CC2-8D78-775125619CD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventStore.NoSql", "src\writes\event-store-no-sql\EventStore.NoSql.csproj", "{2F065F85-98B1-4C68-8101-FF3C2D6E3664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStore.NoSql", "src\writes\event-store-no-sql\EventStore.NoSql.csproj", "{2F065F85-98B1-4C68-8101-FF3C2D6E3664}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "writes", "writes", "{BF8CD06B-28CE-4E82-9109-A57DAE4AF038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cqrs.Test", "test\writes\cqrs-test\Cqrs.Test.csproj", "{6C422FBB-9165-47C3-BF7F-93F55C1E4AA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs.Test", "test\writes\cqrs-test\Cqrs.Test.csproj", "{6C422FBB-9165-47C3-BF7F-93F55C1E4AA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Test", "test\writes\todo-test\Todo.Test.csproj", "{2361DDE9-18B0-4D57-AFAA-D39EE5CB2AC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todo.Test", "test\writes\todo-test\Todo.Test.csproj", "{2361DDE9-18B0-4D57-AFAA-D39EE5CB2AC5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reads", "reads", "{C1C6DA10-6788-401B-859B-86AAB309AEDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel.InMemory.Test", "test\reads\readmodel-in-memory\ReadModel.InMemory.Test.csproj", "{60D6630A-F7AA-41AC-BDA3-BA5C26FF5CE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadModel.InMemory.Test", "test\reads\readmodel-in-memory\ReadModel.InMemory.Test.csproj", "{60D6630A-F7AA-41AC-BDA3-BA5C26FF5CE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +47,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2D99772A-0C82-4A70-8919-D820CB878FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D99772A-0C82-4A70-8919-D820CB878FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D99772A-0C82-4A70-8919-D820CB878FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D99772A-0C82-4A70-8919-D820CB878FDF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{719626A6-098B-4E50-A41D-56EB0102F913}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{719626A6-098B-4E50-A41D-56EB0102F913}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{719626A6-098B-4E50-A41D-56EB0102F913}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -100,10 +92,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2D99772A-0C82-4A70-8919-D820CB878FDF} = {2CFB1C86-8F55-460E-9FE3-B0EF7EF9590A}
-		{2CFB1C86-8F55-460E-9FE3-B0EF7EF9590A} = {F753231E-84D8-4226-AE81-F74C5A793E6E}
-		{08A2C21D-AF89-4CF7-836E-216C362B656F} = {F753231E-84D8-4226-AE81-F74C5A793E6E}
 		{85981B5E-0E94-45A9-BB2E-D3563663C1FE} = {08A2C21D-AF89-4CF7-836E-216C362B656F}
+		{08A2C21D-AF89-4CF7-836E-216C362B656F} = {F753231E-84D8-4226-AE81-F74C5A793E6E}
 		{719626A6-098B-4E50-A41D-56EB0102F913} = {85981B5E-0E94-45A9-BB2E-D3563663C1FE}
 		{76F4A3EE-6F1A-4B91-BF72-D0382BE03675} = {F753231E-84D8-4226-AE81-F74C5A793E6E}
 		{A6AC73B9-8FAB-4E4B-85E3-852F0B8C98EC} = {F753231E-84D8-4226-AE81-F74C5A793E6E}
