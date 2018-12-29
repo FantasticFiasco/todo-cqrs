@@ -4,9 +4,9 @@ using GraphQL.Server.Ui.Playground;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using GraphQL.Schema;
+using Web.GraphQL.Schema;
 
-namespace GraphQL
+namespace Web.GraphQL
 {
     public static class Extensions
     {

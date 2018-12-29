@@ -1,10 +1,10 @@
 using Cqrs;
 using EventStore.InMemory;
 using Microsoft.Extensions.DependencyInjection;
+using ReadModel.InMemory;
 using Todo;
-using Todo.ReadModel;
 
-namespace Web
+namespace Frontend
 {
     public static class Extensions
     {

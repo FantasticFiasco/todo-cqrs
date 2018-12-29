@@ -1,6 +1,6 @@
 using System;
 
-namespace Todo.ReadModel
+namespace ReadModel.InMemory
 {
     public class TodoItem : IEquatable<TodoItem>
     {

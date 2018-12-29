@@ -1,9 +1,8 @@
 using System;
-using EventStore.InMemory;
 using Shouldly;
 using Xunit;
 
-namespace EventStore
+namespace EventStore.InMemory
 {
     public class InMemoryEventStoreShould
     {

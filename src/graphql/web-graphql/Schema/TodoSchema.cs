@@ -1,6 +1,6 @@
 using GraphQL;
 
-namespace GraphQL.Schema
+namespace Web.GraphQL.Schema
 {
     public class TodoSchema : global::GraphQL.Types.Schema
     {

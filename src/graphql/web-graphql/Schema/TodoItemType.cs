@@ -1,7 +1,7 @@
 using GraphQL.Types;
-using Todo.ReadModel;
+using ReadModel.InMemory;
 
-namespace GraphQL.Schema
+namespace Web.GraphQL.Schema
 {
     public class TodoItemType : ObjectGraphType<TodoItem>
     {

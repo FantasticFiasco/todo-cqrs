@@ -4,7 +4,7 @@ using System.Linq;
 using Cqrs;
 using Todo.Events;
 
-namespace Todo.ReadModel
+namespace ReadModel.InMemory
 {
     public class TodoList :
         ITodoList,

@@ -1,7 +1,7 @@
 ﻿using GraphQL.Types;
 using Todo;
 
-namespace GraphQL.Schema
+namespace Web.GraphQL.Schema
 {
     public class RemoveTodoType : ObjectGraphType<RemoveTodo>
     {
