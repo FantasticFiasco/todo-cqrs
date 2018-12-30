@@ -13,20 +13,30 @@ namespace Frontend
         {
             var eventStore = BuildEventStore();
             var readModel = BuildReadModel();
-
-            var messageDispatcher = new MessageDispatcher(eventStore);
-            messageDispatcher.ScanInstance(new TodoAggregate());
-            messageDispatcher.ScanInstance(new EventConsumer(readModel));
+            var messageDispatcher = BuildMessageDispatcher(eventStore, readModel);
 
             self
                 .AddSingleton(_ => messageDispatcher)
-                .AddSingleton<ITodoList>(_ => readModel);
+                .AddSingleton(_ => readModel);
         }
 
         private static IEventStore BuildEventStore() =>
             new InMemoryEventStore();
 
-        private static InMemoryTodoList BuildReadModel() =>
+        private static ITodoList BuildReadModel() =>
             new InMemoryTodoList();
+
+        private static MessageDispatcher BuildMessageDispatcher(IEventStore eventStore, ITodoList readModel)
+        {
+            var messageDispatcher = new MessageDispatcher(eventStore);
+
+            // Let the message dispatcher scan the aggregate and register the IHandleCommand implementations
+            messageDispatcher.ScanInstance(new TodoAggregate());
+
+            // Let the message dispatcher scan the event consumer and register the ISubscribeTo implementations
+            messageDispatcher.ScanInstance(new EventConsumer((InMemoryTodoList)readModel));
+
+            return messageDispatcher;
+        }
     }
 }
