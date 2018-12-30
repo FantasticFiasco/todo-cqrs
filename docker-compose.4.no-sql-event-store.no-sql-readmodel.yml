@@ -5,13 +5,16 @@ services:
   todo:
     build:
       context: ./src
-      dockerfile: Dockerfile.3.no-sql-event-store.in-memory-readmodel
+      dockerfile: Dockerfile.4.no-sql-event-store.no-sql-readmodel
     ports:
       - "8080:80"
     environment:
       EVENT_STORE_HOST: event-store
       EVENT_STORE_USER: root
       EVENT_STORE_PASSWORD: secret
+      READ_MODEL_HOST: event-store
+      READ_MODEL_USER: root
+      READ_MODEL_PASSWORD: secret
     depends_on:
       - event-store
     restart: on-failure

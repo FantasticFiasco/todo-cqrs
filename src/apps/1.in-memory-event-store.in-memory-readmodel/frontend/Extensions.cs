@@ -16,17 +16,17 @@ namespace Frontend
 
             var messageDispatcher = new MessageDispatcher(eventStore);
             messageDispatcher.ScanInstance(new TodoAggregate());
-            messageDispatcher.ScanInstance(readModel);
+            messageDispatcher.ScanInstance(new EventConsumer(readModel));
 
             self
                 .AddSingleton(_ => messageDispatcher)
-                .AddSingleton(_ => readModel);
+                .AddSingleton<ITodoList>(_ => readModel);
         }
 
         private static IEventStore BuildEventStore() =>
             new InMemoryEventStore();
 
-        private static ITodoList BuildReadModel() =>
+        private static InMemoryTodoList BuildReadModel() =>
             new InMemoryTodoList();
     }
 }

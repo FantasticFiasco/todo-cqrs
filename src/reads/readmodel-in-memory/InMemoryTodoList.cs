@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Cqrs;
-using Todo.Events;
 
 namespace ReadModel.InMemory
 {
-    public class InMemoryTodoList :
-        ITodoList,
-        ISubscribeTo<TodoAdded>,
-        ISubscribeTo<TodoRenamed>,
-        ISubscribeTo<TodoCompleted>,
-        ISubscribeTo<TodoIncompleted>,
-        ISubscribeTo<TodoRemoved>
+    /// <summary>
+    /// In-memory implementation of <see cref="ITodoList"/>.
+    /// </summary>
+    public class InMemoryTodoList : ITodoList
     {
         private readonly Dictionary<Guid, TodoItem> todoItemById;
 
@@ -34,31 +29,26 @@ namespace ReadModel.InMemory
             return Task.FromResult(todoItem);
         }
 
-        public void Handle(TodoAdded e)
+        internal void Add(Guid id, string title)
         {
-            var todoItem = new TodoItem(e.Id, e.Title, false);
+            var todoItem = new TodoItem(id, title, false);
 
             todoItemById.Add(todoItem.Id, todoItem);
         }
 
-        public void Handle(TodoRenamed e)
+        internal void Rename(Guid id, string newTitle)
         {
-            todoItemById[e.Id].Title = e.NewTitle;
+            todoItemById[id].Title = newTitle;
         }
 
-        public void Handle(TodoCompleted e)
+        internal void SetCompleted(Guid id, bool isCompleted)
         {
-            todoItemById[e.Id].IsCompleted = true;
+            todoItemById[id].IsCompleted = isCompleted;
         }
 
-        public void Handle(TodoIncompleted e)
+        internal void Remove(Guid id)
         {
-            todoItemById[e.Id].IsCompleted = false;
-        }
-
-        public void Handle(TodoRemoved e)
-        {
-            todoItemById.Remove(e.Id);
+            todoItemById.Remove(id);
         }
     }
 }
