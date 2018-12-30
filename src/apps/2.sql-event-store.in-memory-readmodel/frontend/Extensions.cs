@@ -33,9 +33,9 @@ namespace Frontend
 
         private static string BuildConnectionString(IConfiguration configuration)
         {
-            var host = configuration["DB_HOST"];
-            var username = configuration["DB_USER"];
-            var password = configuration["DB_PASSWORD"];
+            var host = configuration["EVENT_STORE_HOST"];
+            var username = configuration["EVENT_STORE_USER"];
+            var password = configuration["EVENT_STORE_PASSWORD"];
 
             return $"Host={host};Username={username};Password={password}";
         }

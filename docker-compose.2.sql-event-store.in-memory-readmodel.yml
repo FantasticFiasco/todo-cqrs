@@ -2,20 +2,6 @@ version: "3"
 
 services:
 
-  sql:
-    image: postgres
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: secret
-
-  sql-ui:
-    image: adminer
-    ports:
-      - "8081:8080"
-    depends_on:
-      - sql
-    restart: on-failure
-
   todo:
     build:
       context: ./src
@@ -23,9 +9,23 @@ services:
     ports:
       - "8080:80"
     environment:
-      DB_HOST: sql
-      DB_USER: root
-      DB_PASSWORD: secret
+      EVENT_STORE_HOST: event-store
+      EVENT_STORE_USER: root
+      EVENT_STORE_PASSWORD: secret
     depends_on:
-      - sql
+      - event-store
+    restart: on-failure
+
+  event-store:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+
+  event-store-ui:
+    image: adminer
+    ports:
+      - "8081:8080"
+    depends_on:
+      - event-store
     restart: on-failure
