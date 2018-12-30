@@ -1,14 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using ReadModel.NoSql.Private;
 
 namespace ReadModel.NoSql
 {
     public class NoSqlTodoList : ITodoList
     {
-        private const string DatabaseName = "todo";
-        private const string CollectionName = "item";
-
         private readonly MongoClient client;
 
         public NoSqlTodoList(string connectionString)
@@ -18,7 +16,8 @@ namespace ReadModel.NoSql
 
         public async Task<TodoItem[]> GetAllAsync()
         {
-            var items = await GetCollection()
+            var items = await client
+                .GetCollection()
                 .Find(FilterDefinition<TodoItem>.Empty)
                 .ToListAsync();
 
@@ -27,15 +26,10 @@ namespace ReadModel.NoSql
 
         public async Task<TodoItem> GetAsync(Guid id)
         {
-            return await GetCollection()
-                .Find(item => item.Id == id)
+            return await client
+                .GetCollection()
+                .Find(Builders<TodoItem>.Filter.Eq(item => item.Id, id))
                 .SingleOrDefaultAsync();
-        }
-
-        private IMongoCollection<TodoItem> GetCollection()
-        {
-            var database = client.GetDatabase(DatabaseName);
-            return database.GetCollection<TodoItem>(CollectionName);
         }
     }
 }

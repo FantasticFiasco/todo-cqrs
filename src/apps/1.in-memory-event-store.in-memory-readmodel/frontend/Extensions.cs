@@ -20,11 +20,15 @@ namespace Frontend
                 .AddSingleton(_ => readModel);
         }
 
-        private static IEventStore BuildEventStore() =>
-            new InMemoryEventStore();
+        private static IEventStore BuildEventStore()
+        {
+            return new InMemoryEventStore();
+        }
 
-        private static ITodoList BuildReadModel() =>
-            new InMemoryTodoList();
+        private static ITodoList BuildReadModel()
+        {
+            return new InMemoryTodoList();
+        }
 
         private static MessageDispatcher BuildMessageDispatcher(IEventStore eventStore, ITodoList readModel)
         {

@@ -31,9 +31,9 @@ namespace ReadModel.InMemory
 
         internal void Add(Guid id, string title)
         {
-            var todoItem = new TodoItem(id, title, false);
+            var item = new TodoItem(id, title, false);
 
-            todoItemById.Add(todoItem.Id, todoItem);
+            todoItemById.Add(item.Id, item);
         }
 
         internal void Rename(Guid id, string newTitle)
