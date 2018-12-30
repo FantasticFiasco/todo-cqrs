@@ -1,11 +1,12 @@
 using System;
+using System.Threading.Tasks;
 
 namespace ReadModel
 {
     public interface ITodoList
     {
-        TodoItem[] GetAll();
+        Task<TodoItem[]> GetAllAsync();
 
-        TodoItem Get(Guid id);
+        Task<TodoItem> GetAsync(Guid id);
     }
 }

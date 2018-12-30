@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Cqrs;
 using Todo.Events;
 
@@ -21,16 +22,16 @@ namespace ReadModel.InMemory
             todoItemById = new Dictionary<Guid, TodoItem>();
         }
 
-        public TodoItem[] GetAll()
+        public Task<TodoItem[]> GetAllAsync()
         {
-            return todoItemById.Values.ToArray();
+            return Task.FromResult(todoItemById.Values.ToArray());
         }
 
-        public TodoItem Get(Guid id)
+        public Task<TodoItem> GetAsync(Guid id)
         {
             todoItemById.TryGetValue(id, out var todoItem);
 
-            return todoItem;
+            return Task.FromResult(todoItem);
         }
 
         public void Handle(TodoAdded e)
