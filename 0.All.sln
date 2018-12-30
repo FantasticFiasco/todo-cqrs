@@ -59,6 +59,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel", "src\reads\read
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel.NoSql", "src\reads\readmodel-no-sql\ReadModel.NoSql.csproj", "{A6198E99-3B7B-43FE-8B07-EE784309E4A4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.no-sql-event-store.no-sql-readmodel", "4.no-sql-event-store.no-sql-readmodel", "{AC86BD31-A23A-4303-AC68-D246668BD12D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend", "src\apps\4.no-sql-event-store.no-sql-readmodel\frontend\Frontend.csproj", "{E33039FE-F1F3-4547-A013-B91523815237}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +137,10 @@ Global
 		{A6198E99-3B7B-43FE-8B07-EE784309E4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6198E99-3B7B-43FE-8B07-EE784309E4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6198E99-3B7B-43FE-8B07-EE784309E4A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E33039FE-F1F3-4547-A013-B91523815237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E33039FE-F1F3-4547-A013-B91523815237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E33039FE-F1F3-4547-A013-B91523815237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E33039FE-F1F3-4547-A013-B91523815237}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,6 +172,8 @@ Global
 		{B1A75A3C-2707-4EEB-B51F-5EADC41E2979} = {2E2DF3A3-ED7E-4938-8E65-652CA8DECFD9}
 		{77797FC1-F7E7-456E-BDFC-65A0A00F5118} = {DBA6BE74-0F23-48B9-B52F-267E0E18759F}
 		{A6198E99-3B7B-43FE-8B07-EE784309E4A4} = {DBA6BE74-0F23-48B9-B52F-267E0E18759F}
+		{AC86BD31-A23A-4303-AC68-D246668BD12D} = {F14AB36E-BFB8-442E-BB0C-B1DDC29550D4}
+		{E33039FE-F1F3-4547-A013-B91523815237} = {AC86BD31-A23A-4303-AC68-D246668BD12D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E23D2172-9A43-4806-9739-B39D6DA6FEAC}

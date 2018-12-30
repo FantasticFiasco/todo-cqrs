@@ -1,26 +1,25 @@
 using Cqrs;
-using EventStore.Sql;
+using EventStore.NoSql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReadModel;
-using ReadModel.InMemory;
+using ReadModel.NoSql;
 using Todo;
 
 namespace Frontend
 {
     public static class Extensions
     {
-        public static void AddDatabase(this IServiceCollection _, IConfiguration configuration)
+        public static void AddDatabase(this IServiceCollection _)
         {
-            var connectionString = BuildConnectionString(configuration);
-            var schema = new Schema(connectionString);
-            schema.Create();
+            EventStore.NoSql.Schema.Create();
+            ReadModel.NoSql.Schema.Create();
         }
 
         public static void AddCqrs(this IServiceCollection self, IConfiguration configuration)
         {
             var eventStore = BuildEventStore(configuration);
-            var readModel = BuildReadModel();
+            var readModel = BuildReadModel(configuration);
 
             var messageDispatcher = new MessageDispatcher(eventStore);
             messageDispatcher.ScanInstance(new TodoAggregate());
@@ -31,22 +30,24 @@ namespace Frontend
                 .AddSingleton(_ => readModel);
         }
 
-        private static string BuildConnectionString(IConfiguration configuration)
+        private static IEventStore BuildEventStore(IConfiguration configuration)
         {
             var host = configuration["EVENT_STORE_HOST"];
             var username = configuration["EVENT_STORE_USER"];
             var password = configuration["EVENT_STORE_PASSWORD"];
+            var connectionString = $"mongodb://{username}:{password}@{host}:27017";
 
-            return $"Host={host};Username={username};Password={password}";
+            return new NoSqlEventStore(connectionString);
         }
 
-        private static IEventStore BuildEventStore(IConfiguration configuration)
+        private static ITodoList BuildReadModel(IConfiguration configuration)
         {
-            var connectionString = BuildConnectionString(configuration);
-            return new SqlEventStore(connectionString);
-        }
+            var host = configuration["READ_MODEL_HOST"];
+            var username = configuration["READ_MODEL_USER"];
+            var password = configuration["READ_MODEL_PASSWORD"];
+            var connectionString = $"mongodb://{username}:{password}@{host}:27017";
 
-        private static ITodoList BuildReadModel() =>
-            new InMemoryTodoList();
+            return new NoSqlTodoList(connectionString);
+        }
     }
 }

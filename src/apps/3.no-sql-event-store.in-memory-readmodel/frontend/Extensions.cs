@@ -17,26 +17,29 @@ namespace Frontend
 
         public static void AddCqrs(this IServiceCollection self, IConfiguration configuration)
         {
-            var connectionString = BuildConnectionString(configuration);
-            var eventStore = new NoSqlEventStore(connectionString );
-            var readModel = new InMemoryTodoList();
+            var eventStore = BuildEventStore(configuration);
+            var readModel = BuildReadModel();
 
             var messageDispatcher = new MessageDispatcher(eventStore);
-            messageDispatcher.ScanInstance(readModel);
             messageDispatcher.ScanInstance(new TodoAggregate());
+            messageDispatcher.ScanInstance(readModel);
 
             self
                 .AddSingleton(_ => messageDispatcher)
-                .AddSingleton<ITodoList>(_ => readModel);
+                .AddSingleton(_ => readModel);
         }
 
-        private static string BuildConnectionString(IConfiguration configuration)
+        private static IEventStore BuildEventStore(IConfiguration configuration)
         {
             var host = configuration["EVENT_STORE_HOST"];
             var username = configuration["EVENT_STORE_USER"];
             var password = configuration["EVENT_STORE_PASSWORD"];
+            var connectionString = $"mongodb://{username}:{password}@{host}:27017";
 
-            return $"mongodb://{username}:{password}@{host}:27017";
+            return new NoSqlEventStore(connectionString);
         }
+
+        private static ITodoList BuildReadModel() =>
+            new InMemoryTodoList();
     }
 }

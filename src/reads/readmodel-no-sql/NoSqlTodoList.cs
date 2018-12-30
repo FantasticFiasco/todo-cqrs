@@ -11,9 +11,9 @@ namespace ReadModel.NoSql
 
         private readonly MongoClient client;
 
-        public NoSqlTodoList(MongoClient client)
+        public NoSqlTodoList(string connectionString)
         {
-            this.client = client;
+            client = new MongoClient(connectionString);
         }
 
         public async Task<TodoItem[]> GetAllAsync()

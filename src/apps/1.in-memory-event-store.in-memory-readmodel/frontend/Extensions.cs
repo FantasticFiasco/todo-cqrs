@@ -11,16 +11,22 @@ namespace Frontend
     {
         public static void AddCqrs(this IServiceCollection self)
         {
-            var eventStore = new InMemoryEventStore();
-            var readModel = new InMemoryTodoList();
+            var eventStore = BuildEventStore();
+            var readModel = BuildReadModel();
 
             var messageDispatcher = new MessageDispatcher(eventStore);
-            messageDispatcher.ScanInstance(readModel);
             messageDispatcher.ScanInstance(new TodoAggregate());
+            messageDispatcher.ScanInstance(readModel);
 
             self
                 .AddSingleton(_ => messageDispatcher)
-                .AddSingleton<ITodoList>(_ => readModel);
+                .AddSingleton(_ => readModel);
         }
+
+        private static IEventStore BuildEventStore() =>
+            new InMemoryEventStore();
+
+        private static ITodoList BuildReadModel() =>
+            new InMemoryTodoList();
     }
 }
