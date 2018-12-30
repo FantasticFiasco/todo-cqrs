@@ -18,8 +18,9 @@ namespace Frontend
             messageDispatcher.ScanInstance(readModel);
             messageDispatcher.ScanInstance(new TodoAggregate());
 
-            self.AddSingleton<ITodoList>(_ => readModel);
-            self.AddSingleton(_ => messageDispatcher);
+            self
+                .AddSingleton(_ => messageDispatcher)
+                .AddSingleton<ITodoList>(_ => readModel);
         }
     }
 }
