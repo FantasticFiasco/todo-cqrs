@@ -47,9 +47,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.sql-event-store.in-memory
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "src\apps\2.sql-event-store.in-memory-readmodel\frontend\Frontend.csproj", "{306AAEC0-1BFF-412E-ACC0-9D2C2EE69492}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.nosql-event-store.in-memory-readmodel", "3.nosql-event-store.in-memory-readmodel", "{D5ED651F-02E5-4318-B5A7-470BBC03C798}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.no-sql-event-store.in-memory-readmodel", "3.no-sql-event-store.in-memory-readmodel", "{D5ED651F-02E5-4318-B5A7-470BBC03C798}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "src\apps\3.nosql-event-store.in-memory-readmodel\frontend\Frontend.csproj", "{27D0EE7A-A4AE-45FB-97C5-FC1251096B96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "src\apps\3.no-sql-event-store.in-memory-readmodel\frontend\Frontend.csproj", "{27D0EE7A-A4AE-45FB-97C5-FC1251096B96}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStore.NoSql", "src\writes\event-store-no-sql\EventStore.NoSql.csproj", "{8A0C0E23-8D6E-461A-810C-B387833EA4F4}"
 EndProject

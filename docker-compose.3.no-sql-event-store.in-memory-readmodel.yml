@@ -23,7 +23,7 @@ services:
   todo:
     build:
       context: ./src
-      dockerfile: Dockerfile.3.nosql-event-store.in-memory-readmodel
+      dockerfile: Dockerfile.3.no-sql-event-store.in-memory-readmodel
     ports:
       - "8080:80"
     environment:

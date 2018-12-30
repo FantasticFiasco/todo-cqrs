@@ -157,7 +157,7 @@ All evens will have to be manually replayed after application termination to get
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f ./docker-compose.3.nosql-event-store.in-memory-readmodel.yml up
+$ docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up
 ```
 
 The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).

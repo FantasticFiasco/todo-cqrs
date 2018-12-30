@@ -73,7 +73,7 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
-      docker-compose -f ./docker-compose.3.nosql-event-store.in-memory-readmodel.yml up --detach
+      docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up --detach
       cd ./test/e2e
       yarn
       yarn test
