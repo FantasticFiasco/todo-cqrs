@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Shouldly;
 using Todo.Events;
 using Xunit;
@@ -14,28 +15,28 @@ namespace ReadModel.InMemory
         }
 
         [Fact]
-        public void HandleAddedTodoItem()
+        public async Task HandleAddedTodoItem()
         {
             // Act
             inMemoryTodoList.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
 
             // Assert
-            inMemoryTodoList.GetAll().ShouldBe(new[] { ObjectMother.BuyCheese });
+            (await inMemoryTodoList.GetAllAsync()).ShouldBe(new[] { ObjectMother.BuyCheese });
         }
 
         [Fact]
-        public void HandleAddedTodoItems()
+        public async Task HandleAddedTodoItems()
         {
             // Act
             inMemoryTodoList.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
             inMemoryTodoList.Handle(new TodoAdded(ObjectMother.WashCar.Id, ObjectMother.WashCar.Title));
 
             // Assert
-            inMemoryTodoList.GetAll().ShouldBe(new[] { ObjectMother.BuyCheese, ObjectMother.WashCar });
+            (await inMemoryTodoList.GetAllAsync()).ShouldBe(new[] { ObjectMother.BuyCheese, ObjectMother.WashCar });
         }
 
         [Fact]
-        public void HandleCompletedTodoItem()
+        public async Task HandleCompletedTodoItem()
         {
             // Arrange
             inMemoryTodoList.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
@@ -45,11 +46,11 @@ namespace ReadModel.InMemory
             inMemoryTodoList.Handle(new TodoCompleted(ObjectMother.BuyCheese.Id));
 
             // Assert
-            inMemoryTodoList.GetAll().ShouldBe(new[] { ObjectMother.BuyCheese.ButCompleted(), ObjectMother.WashCar });
+            (await inMemoryTodoList.GetAllAsync()).ShouldBe(new[] { ObjectMother.BuyCheese.ButCompleted(), ObjectMother.WashCar });
         }
 
         [Fact]
-        public void HandleIncompletedTodoItem()
+        public async Task HandleIncompletedTodoItem()
         {
             // Arrange
             inMemoryTodoList.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
@@ -60,11 +61,11 @@ namespace ReadModel.InMemory
             inMemoryTodoList.Handle(new TodoIncompleted(ObjectMother.BuyCheese.Id));
 
             // Assert
-            inMemoryTodoList.GetAll().ShouldBe(new[] { ObjectMother.BuyCheese, ObjectMother.WashCar });
+            (await inMemoryTodoList.GetAllAsync()).ShouldBe(new[] { ObjectMother.BuyCheese, ObjectMother.WashCar });
         }
 
         [Fact]
-        public void HandleRemoveIncompletedTodoItem()
+        public async Task HandleRemoveIncompletedTodoItem()
         {
             // Arrange
             inMemoryTodoList.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
@@ -73,11 +74,11 @@ namespace ReadModel.InMemory
             inMemoryTodoList.Handle(new TodoRemoved(ObjectMother.BuyCheese.Id));
 
             // Assert
-            inMemoryTodoList.GetAll().ShouldBeEmpty();
+            (await inMemoryTodoList.GetAllAsync()).ShouldBeEmpty();
         }
 
         [Fact]
-        public void HandleRemoveCompletedTodoItem()
+        public async Task HandleRemoveCompletedTodoItem()
         {
             // Arrange
             inMemoryTodoList.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
@@ -87,11 +88,11 @@ namespace ReadModel.InMemory
             inMemoryTodoList.Handle(new TodoRemoved(ObjectMother.BuyCheese.Id));
 
             // Assert
-            inMemoryTodoList.GetAll().ShouldBeEmpty();
+            (await inMemoryTodoList.GetAllAsync()).ShouldBeEmpty();
         }
 
         [Fact]
-        public void HandleRenamedTodoItem()
+        public async Task HandleRenamedTodoItem()
         {
             // Arrange
             inMemoryTodoList.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
@@ -102,7 +103,7 @@ namespace ReadModel.InMemory
             inMemoryTodoList.Handle(new TodoRenamed(ObjectMother.BuyCheese.Id, newTitle));
 
             // Assert
-            inMemoryTodoList.GetAll().ShouldBe(new[] { ObjectMother.BuyCheese.ButWithTitle(newTitle) });
+            (await inMemoryTodoList.GetAllAsync()).ShouldBe(new[] { ObjectMother.BuyCheese.ButWithTitle(newTitle) });
         }
     }
 }
