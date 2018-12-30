@@ -7,10 +7,7 @@
 - [Introduction](#introduction)
 - [What you will end up with](#what-you-will-end-up-with)
 - [Acceptance criteria](#acceptance-criteria)
-- [Implementations](#implementations)
-  - [Single process using in-memory event store](#single-process-using-in-memory-event-store)
-  - [Single process using SQL event store](#single-process-using-sql-event-store)
-  - [Single process using NoSQL event store](#single-process-using-nosql-event-store)
+- [Implementations](#Implementations)
 
 ## Introduction
 
@@ -18,9 +15,9 @@ This repository contains various implementations meeting the acceptance criteria
 
 These are the implementations, ordered according to complexity:
 
-1. [Single process using in-memory event store](#single-process-using-in-memory-event-store)
-1. [Single process using SQL event store](#single-process-using-sql-event-store)
-1. [Single process using NoSQL event store](#single-process-using-nosql-event-store)
+1. [Single process using in-memory event store and in-memory read model](#single-process-using-in-memory-event-store-and-in-memory-read-model)
+1. [Single process using SQL event store and in-memory read model](#single-process-using-sql-event-store-and-in-memory-read-model)
+1. [Single process using NoSQL event store and in-memory read model](#single-process-using-nosql-event-store-and-in-memory-read-model)
 
 ## What you will end up with
 
@@ -82,7 +79,7 @@ Then only the revised item is listed
 
 Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
 
-### Single process using in-memory event store
+### Single process using in-memory event store and in-memory read model
 
 #### Requirements
 
@@ -91,21 +88,21 @@ Before running any of the implementations, please make sure [Docker](https://www
 
 #### Solution
 
-The code needed to fulfill the requirements can be found in `TodoCQRS.InMemory.sln`. It contains a very basic in-memory event store that holds all published events.
+The code needed to fulfill the requirements can be found in `1.InMemoryEventStore.InMemoryReadModel.sln`. It contains a very basic in-memory event store that holds all published events.
 
-The read model is also held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being handled, the read model also becomes unavailable.
+The read model is also held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being processed, the read model also becomes unavailable.
 
 #### Running the application
 
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f ./docker-compose.app-in-memory.yml up
+$ docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up
 ```
 
 The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
-### Single process using SQL event store
+### Single process using SQL event store and in-memory read model
 
 #### Requirements
 
@@ -115,9 +112,9 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 #### Solution
 
-The code needed to fulfill the requirements can be found in `TodoCQRS.Sql.sln`. It has replaced the in-memory event store with one that persists events in a [PostgreSQL](https://www.postgresql.org/) database, thus living up to the requirements of being durable.
+The code needed to fulfill the requirements can be found in `2.SqlEventStore.InMemoryReadModel.sln`. It has replaced the in-memory event store with one that persists events in a [PostgreSQL](https://www.postgresql.org/) database, thus living up to the requirements of being durable.
 
-The read model is still being held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being handled, the read model also becomes unavailable.
+The read model is still being held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being processed, the read model also becomes unavailable.
 
 All evens will have to be manually replayed after application termination to get the current state of the application, all according to the requirements.
 
@@ -126,19 +123,19 @@ All evens will have to be manually replayed after application termination to get
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f ./docker-compose.app-sql.yml up
+$ docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up
 ```
 
 The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
-[Adminer](https://www.adminer.org/), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081), where one enters the following information to view the PostgreSQL database.
+[Adminer](https://www.adminer.org/), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081), where the following information is entered to view the PostgreSQL database.
 
 - System: `PostgreSQL`
 - Server: `sql`
 - Username: `root`
 - Password: `secret`
 
-### Single process using NoSQL event store
+### Single process using NoSQL event store and in-memory read model
 
 #### Requirements
 
@@ -149,9 +146,9 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 #### Solution
 
-The code needed to fulfill the requirements can be found in `TodoCQRS.NoSql.sln`. It has replaced the SQL event store with one that persists events in a [MongoDB](https://www.mongodb.com/) document database, thus living up to the requirements of being NoSQL.
+The code needed to fulfill the requirements can be found in `3.NoSqlEventStore.InMemoryReadModel.sln`. It has replaced the SQL event store with one that persists events in a [MongoDB](https://www.mongodb.com/) document database, thus living up to the requirements of being NoSQL.
 
-The read model is still being held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being handled, the read model also becomes unavailable.
+The read model is still being held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being processed, the read model also becomes unavailable.
 
 All evens will have to be manually replayed after application termination to get the current state of the application, all according to the requirements.
 
@@ -160,7 +157,7 @@ All evens will have to be manually replayed after application termination to get
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f ./docker-compose.app-no-sql.yml up
+$ docker-compose -f ./docker-compose.3.nosql-event-store.in-memory-readmodel.yml up
 ```
 
 The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
