@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\writes\cqrs\Cqrs.csproj" />
     <ProjectReference Include="..\..\writes\todo-events\Todo.Events.csproj" />
+    <ProjectReference Include="..\readmodel\ReadModel.csproj" />
   </ItemGroup>
 
 </Project>

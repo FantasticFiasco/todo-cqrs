@@ -22,12 +22,12 @@ namespace Web.GraphQL
             });
 
             // Queries
-            services.AddSingleton<TodoQuery>();
+            services.AddSingleton<Query>();
             services.AddSingleton<TodoItemType>();
             services.AddSingleton<IdGraphType>();
 
             // Mutations
-            services.AddSingleton<TodoMutation>();
+            services.AddSingleton<Mutation>();
             services.AddSingleton<AddTodoType>();
             services.AddSingleton<CompleteTodoType>();
             services.AddSingleton<IncompleteTodoType>();

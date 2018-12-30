@@ -1,6 +1,6 @@
 using System;
 
-namespace ReadModel.InMemory
+namespace ReadModel
 {
     public interface ITodoList
     {

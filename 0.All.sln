@@ -55,6 +55,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStore.NoSql", "src\wri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStore.Sql", "src\writes\event-store-sql\EventStore.Sql.csproj", "{B1A75A3C-2707-4EEB-B51F-5EADC41E2979}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel", "src\reads\readmodel\ReadModel.csproj", "{77797FC1-F7E7-456E-BDFC-65A0A00F5118}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{B1A75A3C-2707-4EEB-B51F-5EADC41E2979}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1A75A3C-2707-4EEB-B51F-5EADC41E2979}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1A75A3C-2707-4EEB-B51F-5EADC41E2979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77797FC1-F7E7-456E-BDFC-65A0A00F5118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77797FC1-F7E7-456E-BDFC-65A0A00F5118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77797FC1-F7E7-456E-BDFC-65A0A00F5118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77797FC1-F7E7-456E-BDFC-65A0A00F5118}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +156,7 @@ Global
 		{27D0EE7A-A4AE-45FB-97C5-FC1251096B96} = {D5ED651F-02E5-4318-B5A7-470BBC03C798}
 		{8A0C0E23-8D6E-461A-810C-B387833EA4F4} = {2E2DF3A3-ED7E-4938-8E65-652CA8DECFD9}
 		{B1A75A3C-2707-4EEB-B51F-5EADC41E2979} = {2E2DF3A3-ED7E-4938-8E65-652CA8DECFD9}
+		{77797FC1-F7E7-456E-BDFC-65A0A00F5118} = {DBA6BE74-0F23-48B9-B52F-267E0E18759F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E23D2172-9A43-4806-9739-B39D6DA6FEAC}

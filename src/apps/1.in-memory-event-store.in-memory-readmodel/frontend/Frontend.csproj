@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\graphql\web-graphql\Web.GraphQL.csproj" />
+    <ProjectReference Include="..\..\..\reads\readmodel-in-memory\ReadModel.InMemory.csproj" />
     <ProjectReference Include="..\..\..\writes\event-store-in-memory\EventStore.InMemory.csproj" />
   </ItemGroup>
 

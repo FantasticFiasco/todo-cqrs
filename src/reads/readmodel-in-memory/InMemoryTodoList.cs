@@ -6,7 +6,7 @@ using Todo.Events;
 
 namespace ReadModel.InMemory
 {
-    public class TodoList :
+    public class InMemoryTodoList :
         ITodoList,
         ISubscribeTo<TodoAdded>,
         ISubscribeTo<TodoRenamed>,
@@ -16,7 +16,7 @@ namespace ReadModel.InMemory
     {
         private readonly Dictionary<Guid, TodoItem> todoItemById;
 
-        public TodoList()
+        public InMemoryTodoList()
         {
             todoItemById = new Dictionary<Guid, TodoItem>();
         }

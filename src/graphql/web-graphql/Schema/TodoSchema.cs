@@ -7,8 +7,8 @@ namespace Web.GraphQL.Schema
         public TodoSchema(IDependencyResolver resolver)
             : base(resolver)
         {
-            Query = resolver.Resolve<TodoQuery>();
-            Mutation = resolver.Resolve<TodoMutation>();
+            Query = resolver.Resolve<Query>();
+            Mutation = resolver.Resolve<Mutation>();
         }
     }
 }

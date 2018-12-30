@@ -5,9 +5,9 @@ using Todo;
 
 namespace Web.GraphQL.Schema
 {
-    public class TodoMutation : ObjectGraphType
+    public class Mutation : ObjectGraphType
     {
-        public TodoMutation(MessageDispatcher messageDispatcher)
+        public Mutation(MessageDispatcher messageDispatcher)
         {
             Name = "Mutation";
 

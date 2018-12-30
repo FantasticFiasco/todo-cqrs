@@ -1,6 +1,7 @@
 using Cqrs;
 using EventStore.InMemory;
 using Microsoft.Extensions.DependencyInjection;
+using ReadModel;
 using ReadModel.InMemory;
 using Todo;
 
@@ -10,13 +11,14 @@ namespace Frontend
     {
         public static void AddCqrs(this IServiceCollection self)
         {
-            var todoList = new TodoList();
+            var eventStore = new InMemoryEventStore();
+            var readModel = new InMemoryTodoList();
 
-            var messageDispatcher = new MessageDispatcher(new InMemoryEventStore());
-            messageDispatcher.ScanInstance(todoList);
+            var messageDispatcher = new MessageDispatcher(eventStore);
+            messageDispatcher.ScanInstance(readModel);
             messageDispatcher.ScanInstance(new TodoAggregate());
 
-            self.AddSingleton<ITodoList>(_ => todoList);
+            self.AddSingleton<ITodoList>(_ => readModel);
             self.AddSingleton(_ => messageDispatcher);
         }
     }

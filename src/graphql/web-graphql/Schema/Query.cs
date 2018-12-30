@@ -1,12 +1,12 @@
 using System;
 using GraphQL.Types;
-using ReadModel.InMemory;
+using ReadModel;
 
 namespace Web.GraphQL.Schema
 {
-    public class TodoQuery : ObjectGraphType<object>
+    public class Query : ObjectGraphType<object>
     {
-        public TodoQuery(ITodoList todoList)
+        public Query(ITodoList todoList)
         {
             Name = "Query";
 
