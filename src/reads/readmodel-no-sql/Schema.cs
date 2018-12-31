@@ -8,6 +8,7 @@ namespace ReadModel.NoSql
         {
             BsonClassMap.RegisterClassMap<TodoItem>(options =>
             {
+                options.MapMember(from => from.Id).SetElementName("id");
                 options.MapMember(from => from.Title).SetElementName("title");
                 options.MapMember(from => from.IsCompleted).SetElementName("isCompleted");
             });
