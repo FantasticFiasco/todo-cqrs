@@ -28,7 +28,7 @@ namespace EventStore.Sql
                 command.CommandText = @"
                     SELECT body, type
                     FROM event
-                    WHERE id = @idconnectionString
+                    WHERE id = @id
                     ORDER BY version";
 
                 command.Parameters.AddWithValue("id", id);
