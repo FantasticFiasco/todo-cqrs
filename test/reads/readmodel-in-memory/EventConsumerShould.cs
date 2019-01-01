@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging.Abstractions;
 using Shouldly;
 using Todo.Events;
 using Xunit;
@@ -13,7 +14,7 @@ namespace ReadModel.InMemory
         public EventConsumerShould()
         {
             todoList = new InMemoryTodoList();
-            eventConsumer = new EventConsumer(todoList);
+            eventConsumer = new EventConsumer(todoList, NullLogger<EventConsumer>.Instance);
         }
 
         [Fact]
