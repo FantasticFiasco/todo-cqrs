@@ -14,5 +14,10 @@ namespace Todo.Events
         }
 
         public Guid Id { get; set; }
+
+        public override string ToString()
+        {
+            return $"{nameof(TodoIncompleted)}#{Id}";
+        }
     }
 }

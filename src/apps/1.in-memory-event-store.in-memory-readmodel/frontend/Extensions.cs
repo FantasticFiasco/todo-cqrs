@@ -17,7 +17,8 @@ namespace Frontend
             // Read model
             self
                 .AddSingleton<EventConsumer>()
-                .AddSingleton<ITodoList, InMemoryTodoList>();
+                .AddSingleton<InMemoryTodoList>()
+                .AddSingleton<ITodoList>(provider => provider.GetService<InMemoryTodoList>());
 
             // Message dispatcher
             self.AddSingleton(provider =>

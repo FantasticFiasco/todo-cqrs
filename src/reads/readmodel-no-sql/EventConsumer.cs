@@ -69,7 +69,7 @@ namespace ReadModel.NoSql
         public void Handle(TodoRemoved e)
         {
             logger.LogInformation("Consume todo removed event with body {body}", e);
-            
+
             client
                 .GetCollection()
                 .DeleteOne(Builders<TodoItem>.Filter.Eq(item => item.Id, e.Id));
