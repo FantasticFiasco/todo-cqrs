@@ -1,4 +1,3 @@
-using System;
 using MongoDB.Bson;
 
 namespace EventStore.NoSql
@@ -22,10 +21,5 @@ namespace EventStore.NoSql
         /// Gets or sets the event body, i.e. the actual event published from the aggregate.
         /// </summary>
         public BsonDocument Body { get; set; }
-
-        /// <summary>
-        /// Gets or sets the time the event was saved to the database.
-        /// </summary>
-        public DateTime CreatedAt { get; set; }
     }
 }

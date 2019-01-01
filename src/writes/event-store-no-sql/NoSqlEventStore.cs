@@ -46,8 +46,7 @@ namespace EventStore.NoSql
                     {
                         Version = eventsLoaded + i,
                         Type = e.GetType().AssemblyQualifiedName,
-                        Body = e.ToBsonDocument(),
-                        CreatedAt = DateTime.UtcNow
+                        Body = e.ToBsonDocument()
                     }));
         }
 
