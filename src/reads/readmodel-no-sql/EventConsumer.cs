@@ -24,7 +24,7 @@ namespace ReadModel.NoSql
 
         public void Handle(TodoAdded e)
         {
-            logger.LogInformation("Consume todo added event with body {body}", e);
+            Log(e);
 
             var item = new TodoItem(e.Id, e.Title, false);
 
@@ -35,7 +35,7 @@ namespace ReadModel.NoSql
 
         public void Handle(TodoRenamed e)
         {
-            logger.LogInformation("Consume todo renamed event with body {body}", e);
+            Log(e);
 
             client
                 .GetCollection()
@@ -46,7 +46,7 @@ namespace ReadModel.NoSql
 
         public void Handle(TodoCompleted e)
         {
-            logger.LogInformation("Consume todo completed event with body {body}", e);
+            Log(e);
 
             client
                 .GetCollection()
@@ -57,7 +57,7 @@ namespace ReadModel.NoSql
 
         public void Handle(TodoIncompleted e)
         {
-            logger.LogInformation("Consume todo incompleted event with body {body}", e);
+            Log(e);
 
             client
                 .GetCollection()
@@ -68,11 +68,16 @@ namespace ReadModel.NoSql
 
         public void Handle(TodoRemoved e)
         {
-            logger.LogInformation("Consume todo removed event with body {body}", e);
+            Log(e);
 
             client
                 .GetCollection()
                 .DeleteOne(Builders<TodoItem>.Filter.Eq(item => item.Id, e.Id));
+        }
+
+        private void Log<T>(T e)
+        {
+            logger.LogInformation("Consume {event}", e);
         }
     }
 }

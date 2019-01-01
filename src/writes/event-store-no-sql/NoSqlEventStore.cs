@@ -24,18 +24,21 @@ namespace EventStore.NoSql
 
         public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
-            logger.LogInformation("Load events for aggregate with id {id}", id);
-
-            return GetCollection(id)
+            var events = GetCollection(id)
                 .Find(FilterDefinition<Event>.Empty)
                 .Sort("{version: 1}")
                 .ToList()
-                .Select(e => BsonSerializer.Deserialize(e.Body, Type.GetType(e.Type)));
+                .Select(e => BsonSerializer.Deserialize(e.Body, Type.GetType(e.Type)))
+                .ToArray();
+
+            logger.LogInformation("Loaded {count} events for aggregate {id}", events.Length, id);
+
+            return events;
         }
 
         public void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents)
         {
-            logger.LogInformation("Save {count} events for aggregate with id {id}", newEvents.Length, id);
+            logger.LogInformation("Save {count} event(s) for aggregate with id {id}", newEvents.Length, id);
 
             GetCollection(id)
                 .InsertMany(
