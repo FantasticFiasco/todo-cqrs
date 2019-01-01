@@ -10,7 +10,7 @@ namespace EventStore.Sql
 
         public Schema(string connectionString)
         {
-            this.connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            this.connectionString = connectionString;
         }
 
         public void Create()

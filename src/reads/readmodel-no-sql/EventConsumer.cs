@@ -1,4 +1,5 @@
 ﻿using Cqrs;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using ReadModel.NoSql.Private;
 using Todo.Events;
@@ -13,14 +14,18 @@ namespace ReadModel.NoSql
         ISubscribeTo<TodoRemoved>
     {
         private readonly MongoClient client;
+        private readonly ILogger<EventConsumer> logger;
 
-        public EventConsumer(string connectionString)
+        public EventConsumer(string connectionString, ILogger<EventConsumer> logger)
         {
             client = new MongoClient(connectionString);
+            this.logger = logger;
         }
 
         public void Handle(TodoAdded e)
         {
+            logger.LogInformation("Consume todo added event with body {body}", e);
+
             var item = new TodoItem(e.Id, e.Title, false);
 
             client
@@ -30,6 +35,8 @@ namespace ReadModel.NoSql
 
         public void Handle(TodoRenamed e)
         {
+            logger.LogInformation("Consume todo renamed event with body {body}", e);
+
             client
                 .GetCollection()
                 .UpdateOne(
@@ -39,6 +46,8 @@ namespace ReadModel.NoSql
 
         public void Handle(TodoCompleted e)
         {
+            logger.LogInformation("Consume todo completed event with body {body}", e);
+
             client
                 .GetCollection()
                 .UpdateOne(
@@ -48,6 +57,8 @@ namespace ReadModel.NoSql
 
         public void Handle(TodoIncompleted e)
         {
+            logger.LogInformation("Consume todo incompleted event with body {body}", e);
+
             client
                 .GetCollection()
                 .UpdateOne(
@@ -57,6 +68,8 @@ namespace ReadModel.NoSql
 
         public void Handle(TodoRemoved e)
         {
+            logger.LogInformation("Consume todo removed event with body {body}", e);
+            
             client
                 .GetCollection()
                 .DeleteOne(Builders<TodoItem>.Filter.Eq(item => item.Id, e.Id));

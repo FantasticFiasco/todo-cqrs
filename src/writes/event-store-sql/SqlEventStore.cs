@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Cqrs;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Npgsql;
 
@@ -10,14 +11,18 @@ namespace EventStore.Sql
     public class SqlEventStore : IEventStore
     {
         private readonly string connectionString;
+        private readonly ILogger<SqlEventStore> logger;
 
-        public SqlEventStore(string connectionString)
+        public SqlEventStore(string connectionString, ILogger<SqlEventStore> logger)
         {
-            this.connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            this.connectionString = connectionString;
+            this.logger = logger;
         }
 
         public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
+            logger.LogInformation("Load events for aggregate with id {id}", id);
+
             using (var command = new NpgsqlCommand())
             {
                 command.CommandText = @"
@@ -43,6 +48,8 @@ namespace EventStore.Sql
 
         public void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents)
         {
+            logger.LogInformation("Save {count} events for aggregate with id {id}", newEvents.Length, id);
+
             using (var command = new NpgsqlCommand())
             {
                 var commandTextBuilder = new StringBuilder();

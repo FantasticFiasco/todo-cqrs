@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cqrs;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
@@ -13,14 +14,18 @@ namespace EventStore.NoSql
         private const string DatabaseName = "event";
 
         private readonly MongoClient client;
+        private readonly ILogger<NoSqlEventStore> logger;
 
-        public NoSqlEventStore(string connectionString)
+        public NoSqlEventStore(string connectionString, ILogger<NoSqlEventStore> logger)
         {
             client = new MongoClient(connectionString);
+            this.logger = logger;
         }
 
         public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
+            logger.LogInformation("Load events for aggregate with id {id}", id);
+
             return GetCollection(id)
                 .Find(FilterDefinition<Event>.Empty)
                 .Sort("{version: 1}")
@@ -30,6 +35,8 @@ namespace EventStore.NoSql
 
         public void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents)
         {
+            logger.LogInformation("Save {count} events for aggregate with id {id}", newEvents.Length, id);
+
             GetCollection(id)
                 .InsertMany(
                     newEvents.Select((e, i) => new Event

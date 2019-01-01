@@ -11,36 +11,30 @@ namespace Frontend
     {
         public static void AddCqrs(this IServiceCollection self)
         {
-            var eventStore = BuildEventStore();
-            var readModel = BuildReadModel();
-            var messageDispatcher = BuildMessageDispatcher(eventStore, readModel);
+            // Write model
+            self.AddSingleton<IEventStore, InMemoryEventStore>();
 
+            // Read model
             self
-                .AddSingleton(_ => messageDispatcher)
-                .AddSingleton(_ => readModel);
-        }
+                .AddSingleton<EventConsumer>()
+                .AddSingleton<ITodoList, InMemoryTodoList>();
 
-        private static IEventStore BuildEventStore()
-        {
-            return new InMemoryEventStore();
-        }
+            // Message dispatcher
+            self.AddSingleton(provider =>
+            {
+                // Create the message dispatcher
+                var eventStore = provider.GetService<IEventStore>();
+                var messageDispatcher = new MessageDispatcher(eventStore);
 
-        private static ITodoList BuildReadModel()
-        {
-            return new InMemoryTodoList();
-        }
+                // Let the message dispatcher scan the aggregate and register IHandleCommand implementations
+                messageDispatcher.ScanInstance(new TodoAggregate());
 
-        private static MessageDispatcher BuildMessageDispatcher(IEventStore eventStore, ITodoList readModel)
-        {
-            var messageDispatcher = new MessageDispatcher(eventStore);
+                // Let the message dispatcher scan the event consumer and register ISubscribeTo implementations
+                var eventConsumer = provider.GetService<EventConsumer>();
+                messageDispatcher.ScanInstance(eventConsumer);
 
-            // Let the message dispatcher scan the aggregate and register the IHandleCommand implementations
-            messageDispatcher.ScanInstance(new TodoAggregate());
-
-            // Let the message dispatcher scan the event consumer and register the ISubscribeTo implementations
-            messageDispatcher.ScanInstance(new EventConsumer((InMemoryTodoList)readModel));
-
-            return messageDispatcher;
+                return messageDispatcher;
+            });
         }
     }
 }
