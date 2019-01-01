@@ -1,14 +1,13 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using Npgsql;
 
 namespace EventStore.Sql
 {
     public class Schema
     {
-        private readonly string connectionString;
+        private readonly ConnectionString connectionString;
 
-        public Schema(string connectionString)
+        public Schema(ConnectionString connectionString)
         {
             this.connectionString = connectionString;
         }

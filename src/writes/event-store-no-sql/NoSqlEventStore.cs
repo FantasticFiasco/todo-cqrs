@@ -16,7 +16,7 @@ namespace EventStore.NoSql
         private readonly MongoClient client;
         private readonly ILogger<NoSqlEventStore> logger;
 
-        public NoSqlEventStore(string connectionString, ILogger<NoSqlEventStore> logger)
+        public NoSqlEventStore(ConnectionString connectionString, ILogger<NoSqlEventStore> logger)
         {
             client = new MongoClient(connectionString);
             this.logger = logger;

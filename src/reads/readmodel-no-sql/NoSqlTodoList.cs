@@ -9,7 +9,7 @@ namespace ReadModel.NoSql
     {
         private readonly MongoClient client;
 
-        public NoSqlTodoList(string connectionString)
+        public NoSqlTodoList(ConnectionString connectionString)
         {
             client = new MongoClient(connectionString);
         }

@@ -18,60 +18,51 @@ namespace Frontend
 
         public static void AddCqrs(this IServiceCollection self, IConfiguration configuration)
         {
-            var eventStore = BuildEventStore(configuration);
-            var eventConsumer = BuildEventConsumer(configuration);
-            var readModel = BuildReadModel(configuration);
-            var messageDispatcher = BuildMessageDispatcher(eventStore, eventConsumer);
-
+            // Write model
             self
-                .AddSingleton(_ => messageDispatcher)
-                .AddSingleton(_ => readModel);
+                .AddSingleton(_ => BuildEventStoreConnectionString(configuration))
+                .AddSingleton<IEventStore, NoSqlEventStore>();
+
+            // Read model
+            self
+                .AddSingleton(_ => BuildReadModelConnectionString(configuration))
+                .AddSingleton<EventConsumer>()
+                .AddSingleton<ITodoList, NoSqlTodoList>();
+
+            // Message dispatcher
+            self.AddSingleton(provider =>
+            {
+                // Create the message dispatcher
+                var eventStore = provider.GetService<IEventStore>();
+                var messageDispatcher = new MessageDispatcher(eventStore);
+
+                // Let the message dispatcher scan the aggregate and register IHandleCommand implementations
+                messageDispatcher.ScanInstance(new TodoAggregate());
+
+                // Let the message dispatcher scan the event consumer and register ISubscribeTo implementations
+                var eventConsumer = provider.GetService<EventConsumer>();
+                messageDispatcher.ScanInstance(eventConsumer);
+
+                return messageDispatcher;
+            });
         }
 
-        private static IEventStore BuildEventStore(IConfiguration configuration)
+        private static EventStore.NoSql.ConnectionString BuildEventStoreConnectionString(IConfiguration configuration)
         {
             var host = configuration["EVENT_STORE_HOST"];
             var username = configuration["EVENT_STORE_USER"];
             var password = configuration["EVENT_STORE_PASSWORD"];
-            var connectionString = $"mongodb://{username}:{password}@{host}:27017";
 
-            return new NoSqlEventStore(connectionString);
+            return new EventStore.NoSql.ConnectionString(host, username, password);
         }
 
-        private static EventConsumer BuildEventConsumer(IConfiguration configuration)
-        {
-            var connectionString = BuildReadModelConnectionString(configuration);
-
-            return new EventConsumer(connectionString);
-        }
-
-        private static ITodoList BuildReadModel(IConfiguration configuration)
-        {
-            var connectionString = BuildReadModelConnectionString(configuration);
-
-            return new NoSqlTodoList(connectionString);
-        }
-
-        private static string BuildReadModelConnectionString(IConfiguration configuration)
+        private static ReadModel.NoSql.ConnectionString BuildReadModelConnectionString(IConfiguration configuration)
         {
             var host = configuration["READ_MODEL_HOST"];
             var username = configuration["READ_MODEL_USER"];
             var password = configuration["READ_MODEL_PASSWORD"];
 
-            return $"mongodb://{username}:{password}@{host}:27017";
-        }
-
-        private static MessageDispatcher BuildMessageDispatcher(IEventStore eventStore, EventConsumer eventConsumer)
-        {
-            var messageDispatcher = new MessageDispatcher(eventStore);
-
-            // Let the message dispatcher scan the aggregate and register the IHandleCommand implementations
-            messageDispatcher.ScanInstance(new TodoAggregate());
-
-            // Let the message dispatcher scan the event consumer and register the ISubscribeTo implementations
-            messageDispatcher.ScanInstance(eventConsumer);
-
-            return messageDispatcher;
+            return new ReadModel.NoSql.ConnectionString(host, username, password);
         }
     }
 }

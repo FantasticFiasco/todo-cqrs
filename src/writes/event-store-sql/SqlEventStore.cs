@@ -10,10 +10,10 @@ namespace EventStore.Sql
 {
     public class SqlEventStore : IEventStore
     {
-        private readonly string connectionString;
+        private readonly ConnectionString connectionString;
         private readonly ILogger<SqlEventStore> logger;
 
-        public SqlEventStore(string connectionString, ILogger<SqlEventStore> logger)
+        public SqlEventStore(ConnectionString connectionString, ILogger<SqlEventStore> logger)
         {
             this.connectionString = connectionString;
             this.logger = logger;
@@ -28,7 +28,7 @@ namespace EventStore.Sql
                 command.CommandText = @"
                     SELECT body, type
                     FROM event
-                    WHERE id = @id
+                    WHERE id = @idconnectionString
                     ORDER BY version";
 
                 command.Parameters.AddWithValue("id", id);

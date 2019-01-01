@@ -12,53 +12,49 @@ namespace Frontend
     {
         public static void AddDatabase(this IServiceCollection _, IConfiguration configuration)
         {
-            var connectionString = BuildConnectionString(configuration);
+            var connectionString = BuildEventStoreConnectionString(configuration);
             var schema = new Schema(connectionString);
             schema.Create();
         }
 
         public static void AddCqrs(this IServiceCollection self, IConfiguration configuration)
         {
-            var eventStore = BuildEventStore(configuration);
-            var readModel = BuildReadModel();
-            var messageDispatcher = BuildMessageDispatcher(eventStore, readModel);
-
+            // Write model
             self
-                .AddSingleton(_ => messageDispatcher)
-                .AddSingleton(_ => readModel);
+                .AddSingleton(_ => BuildEventStoreConnectionString(configuration))
+                .AddSingleton<IEventStore, SqlEventStore>();
+
+            // Read model
+            self
+                .AddSingleton<EventConsumer>()
+                .AddSingleton<InMemoryTodoList>()
+                .AddSingleton<ITodoList>(provider => provider.GetService<InMemoryTodoList>());
+
+            // Message dispatcher
+            self.AddSingleton(provider =>
+            {
+                // Create the message dispatcher
+                var eventStore = provider.GetService<IEventStore>();
+                var messageDispatcher = new MessageDispatcher(eventStore);
+
+                // Let the message dispatcher scan the aggregate and register IHandleCommand implementations
+                messageDispatcher.ScanInstance(new TodoAggregate());
+
+                // Let the message dispatcher scan the event consumer and register ISubscribeTo implementations
+                var eventConsumer = provider.GetService<EventConsumer>();
+                messageDispatcher.ScanInstance(eventConsumer);
+
+                return messageDispatcher;
+            });
         }
 
-        private static string BuildConnectionString(IConfiguration configuration)
+        private static ConnectionString BuildEventStoreConnectionString(IConfiguration configuration)
         {
             var host = configuration["EVENT_STORE_HOST"];
             var username = configuration["EVENT_STORE_USER"];
             var password = configuration["EVENT_STORE_PASSWORD"];
 
-            return $"Host={host};Username={username};Password={password}";
-        }
-
-        private static IEventStore BuildEventStore(IConfiguration configuration)
-        {
-            var connectionString = BuildConnectionString(configuration);
-            return new SqlEventStore(connectionString);
-        }
-
-        private static ITodoList BuildReadModel()
-        {
-            return new InMemoryTodoList();
-        }
-
-        private static MessageDispatcher BuildMessageDispatcher(IEventStore eventStore, ITodoList readModel)
-        {
-            var messageDispatcher = new MessageDispatcher(eventStore);
-
-            // Let the message dispatcher scan the aggregate and register the IHandleCommand implementations
-            messageDispatcher.ScanInstance(new TodoAggregate());
-
-            // Let the message dispatcher scan the event consumer and register the ISubscribeTo implementations
-            messageDispatcher.ScanInstance(new EventConsumer((InMemoryTodoList)readModel));
-
-            return messageDispatcher;
+            return new ConnectionString(host, username, password);
         }
     }
 }

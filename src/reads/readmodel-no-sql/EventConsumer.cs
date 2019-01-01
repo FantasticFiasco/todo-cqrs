@@ -16,7 +16,7 @@ namespace ReadModel.NoSql
         private readonly MongoClient client;
         private readonly ILogger<EventConsumer> logger;
 
-        public EventConsumer(string connectionString, ILogger<EventConsumer> logger)
+        public EventConsumer(ConnectionString connectionString, ILogger<EventConsumer> logger)
         {
             client = new MongoClient(connectionString);
             this.logger = logger;
