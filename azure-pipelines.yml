@@ -70,7 +70,7 @@ jobs:
     displayName: Run e2e tests
 
 - job: e2eNoSqlEventStoreInMemoryReadModel
-  displayName: E2E NoSQL Event Store/ In-Memory Read Model
+  displayName: E2E NoSQL Event Store / In-Memory Read Model
   pool:
     vmImage: Ubuntu 16.04
   steps:
@@ -82,7 +82,7 @@ jobs:
     displayName: Run e2e tests
 
 - job: e2eNoSqlEventStoreNoSqlReadModel
-  displayName: E2E NoSQL Event Store/ NoSQL Read Model
+  displayName: E2E NoSQL Event Store / NoSQL Read Model
   pool:
     vmImage: Ubuntu 16.04
   steps:
