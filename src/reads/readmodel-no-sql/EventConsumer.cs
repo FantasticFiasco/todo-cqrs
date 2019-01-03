@@ -39,7 +39,7 @@ namespace ReadModel.NoSql
 
             client
                 .GetCollection()
-                .UpdateOne(
+                .FindOneAndUpdate(
                     Builders<TodoItem>.Filter.Eq(item => item.Id, e.Id),
                     Builders<TodoItem>.Update.Set(item => item.Title, e.NewTitle));
         }
@@ -50,7 +50,7 @@ namespace ReadModel.NoSql
 
             client
                 .GetCollection()
-                .UpdateOne(
+                .FindOneAndUpdate(
                     Builders<TodoItem>.Filter.Eq(item => item.Id, e.Id),
                     Builders<TodoItem>.Update.Set(item => item.IsCompleted, true));
         }
@@ -61,7 +61,7 @@ namespace ReadModel.NoSql
 
             client
                 .GetCollection()
-                .UpdateOne(
+                .FindOneAndUpdate(
                     Builders<TodoItem>.Filter.Eq(item => item.Id, e.Id),
                     Builders<TodoItem>.Update.Set(item => item.IsCompleted, false));
         }
@@ -72,7 +72,7 @@ namespace ReadModel.NoSql
 
             client
                 .GetCollection()
-                .DeleteOne(Builders<TodoItem>.Filter.Eq(item => item.Id, e.Id));
+                .FindOneAndDelete(Builders<TodoItem>.Filter.Eq(item => item.Id, e.Id));
         }
 
         private void Log<T>(T e)

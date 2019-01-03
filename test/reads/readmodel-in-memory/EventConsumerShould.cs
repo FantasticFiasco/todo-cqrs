@@ -13,7 +13,7 @@ namespace ReadModel.InMemory
 
         public EventConsumerShould()
         {
-            todoList = new InMemoryTodoList();
+            todoList = new InMemoryTodoList(NullLogger<InMemoryTodoList>.Instance);
             eventConsumer = new EventConsumer(todoList, NullLogger<EventConsumer>.Instance);
         }
 
