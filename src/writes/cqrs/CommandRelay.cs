@@ -6,103 +6,94 @@ using System.Reflection;
 namespace Cqrs
 {
     /// <summary>
+    /// TODO: Rewrite
+    ///
     /// This implements a basic message dispatcher, driving the overall command handling
     /// and event application/distribution process. It is suitable for a simple, single
     /// node application that can safely build its subscriber list at startup and keep
     /// it in memory. Depends on some kind of event storage mechanism.
     /// </summary>
-    public class MessageDispatcher
+    public class CommandRelay
     {
         private readonly IEventStore eventStore;
         private readonly Dictionary<Type, Action<object>> commandHandlers;
         private readonly Dictionary<Type, List<Action<object>>> eventSubscribers;
 
         /// <summary>
-        /// Initializes a message dispatcher, which will use the specified event store
-        /// implementation.
+        /// Initializes a new instance of the <see cref="CommandRelay"/> class.
         /// </summary>
-        public MessageDispatcher(IEventStore eventStore)
+        public CommandRelay(IEventStore eventStore)
         {
-            this.eventStore = eventStore;
+            this.eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
 
             commandHandlers = new Dictionary<Type, Action<object>>();
             eventSubscribers = new Dictionary<Type, List<Action<object>>>();
         }
 
         /// <summary>
-        /// Tries to send the specified command to its handler. Throws an exception
-        /// if there is no handler registered for the command.
+        /// Invokes command by sending it to its registered handler.
         /// </summary>
-        public void SendCommand<TCommand>(TCommand c)
+        /// <typeparam name="TCommand">
+        /// The type of the command.
+        /// </typeparam>
+        /// <exception cref="Exception">
+        /// No registered handler for command is found.
+        /// </exception>
+        public void SendCommand<TCommand>(TCommand command)
         {
-            if (commandHandlers.ContainsKey(typeof(TCommand)))
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
+            if (!commandHandlers.TryGetValue(typeof(TCommand), out var handler))
             {
-                commandHandlers[typeof(TCommand)](c);
+                throw new Exception($"No command handler registered for {typeof(TCommand).Name}");
             }
-            else
-            {
-                throw new Exception("No command handler registered for " + typeof(TCommand).Name);
-            }
+
+            handler(command);
         }
 
         /// <summary>
-        /// Publishes the specified event to all of its subscribers.
+        /// Registers an aggregate as being the handler for a particular command.
         /// </summary>
-        /// <param name="e"></param>
-        private void PublishEvent(object e)
-        {
-            var eventType = e.GetType();
-
-            if (eventSubscribers.ContainsKey(eventType))
-            {
-                foreach (var sub in eventSubscribers[eventType])
-                {
-                    sub(e);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Registers an aggregate as being the handler for a particular
-        /// command.
-        /// </summary>
+        /// <typeparam name="TCommand">
+        /// The type of the command.
+        /// </typeparam>
+        /// <typeparam name="TAggregate">
+        /// The type of the aggregate handling the particular command.
+        /// </typeparam>
         public void AddHandlerFor<TCommand, TAggregate>()
             where TAggregate : Aggregate, new()
         {
-            if (commandHandlers.ContainsKey(typeof(TCommand))) throw new Exception("Command handler already registered for " + typeof(TCommand).Name);
+            if (commandHandlers.ContainsKey(typeof(TCommand))) throw new Exception($"Command handler already registered for {typeof(TCommand).Name}");
 
             commandHandlers.Add(
                 typeof(TCommand),
-                c =>
+                command =>
                     {
-                        // Create an empty aggregate.
-                        var agg = new TAggregate();
+                        // Create an empty aggregate
+                        var aggregate = new TAggregate();
 
-                        // Load the aggregate with events.
-                        agg.Id = ((dynamic)c).Id;
-                        agg.ApplyEvents(eventStore.LoadEventsFor<TAggregate>(agg.Id));
+                        // Load the aggregate with events
+                        aggregate.Id = ((dynamic)command).Id;
+                        aggregate.ApplyEvents(eventStore.LoadEventsFor<TAggregate>(aggregate.Id));
 
                         // With everything set up, we invoke the command handler, collecting the
-                        // events that it produces.
-                        var resultEvents = new List<object>();
+                        // events that it produces
+                        var events = ((IHandleCommand<TCommand>)aggregate)
+                            .Handle((TCommand)command)
+                            .Cast<object>()
+                            .ToArray();
 
-                        foreach (var e in (agg as IHandleCommand<TCommand>).Handle((TCommand) c))
-                        {
-                            resultEvents.Add(e);
-                        }
-
-
-                        // Store the events in the event store.
-                        if (resultEvents.Count > 0)
+                        // Store the events in the event store
+                        if (events.Length > 0)
                         {
                             eventStore.SaveEventsFor<TAggregate>(
-                                agg.Id,
-                                agg.Version,
-                                resultEvents.ToArray());
+                                aggregate.Id,
+                                aggregate.Version,
+                                events);
                         }
 
-                        // Publish them to all subscribers.
-                        foreach (var e in resultEvents)
+                        // Publish them to all subscribers
+                        foreach (var e in events)
                         {
                             PublishEvent(e);
                         }
@@ -110,17 +101,20 @@ namespace Cqrs
         }
 
         /// <summary>
-        /// Adds an object that subscribes to the specified event, by virtue of implementing
-        /// the ISubscribeTo interface.
+        /// Adds an object that subscribes to the specified event, by virtue of implementing the
+        /// <see cref="ISubscribeTo{T}"/> interface.
         /// </summary>
         public void AddSubscriberFor<TEvent>(ISubscribeTo<TEvent> subscriber)
         {
-            if (!eventSubscribers.ContainsKey(typeof(TEvent)))
+            var eventType = typeof(TEvent);
+
+            if (!eventSubscribers.TryGetValue(eventType, out var eventSubscribersOfType))
             {
-                eventSubscribers.Add(typeof(TEvent), new List<Action<object>>());
+                eventSubscribersOfType = new List<Action<object>>();
+                eventSubscribers.Add(eventType, eventSubscribersOfType);
             }
 
-            eventSubscribers[typeof(TEvent)].Add(e => subscriber.Handle((TEvent)e));
+            eventSubscribersOfType.Add(e => subscriber.Handle((TEvent)e));
         }
 
         /// <summary>
@@ -195,7 +189,6 @@ namespace Cqrs
                     .Invoke(this, new object[] { });
             }
 
-
             // Scan for and register subscribers.
             var subscriber =
                 from i in instance.GetType().GetInterfaces()
@@ -213,13 +206,29 @@ namespace Cqrs
         }
 
         /// <summary>
+        /// Publishes the specified event to all of its subscribers.
+        /// </summary>
+        private void PublishEvent(object e)
+        {
+            var eventType = e.GetType();
+
+            if (eventSubscribers.ContainsKey(eventType))
+            {
+                foreach (var eventSubscriber in eventSubscribers[eventType])
+                {
+                    eventSubscriber(e);
+                }
+            }
+        }
+
+        /// <summary>
         /// Creates an instance of the specified type. If you are using some kind
         /// of DI container, and want to use it to create instances of the handler
         /// or subscriber, you can plug it in here.
         /// </summary>
-        private static object CreateInstanceOf(Type t)
+        private static object CreateInstanceOf(Type type)
         {
-            return Activator.CreateInstance(t);
+            return Activator.CreateInstance(type);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Web.GraphQL.Schema
 {
     public class Mutation : ObjectGraphType
     {
-        public Mutation(MessageDispatcher messageDispatcher)
+        public Mutation(CommandRelay commandRelay)
         {
             Name = "Mutation";
 
@@ -22,7 +22,7 @@ namespace Web.GraphQL.Schema
                     var title = context.GetArgument<string>("title");
 
                     var command = new AddTodo(id, title);
-                    messageDispatcher.SendCommand(command);
+                    commandRelay.SendCommand(command);
 
                     return command;
                 });
@@ -39,7 +39,7 @@ namespace Web.GraphQL.Schema
                     var newTitle = context.GetArgument<string>("newTitle");
 
                     var command = new RenameTodo(id, newTitle);
-                    messageDispatcher.SendCommand(command);
+                    commandRelay.SendCommand(command);
 
                     return command;
                 });
@@ -54,7 +54,7 @@ namespace Web.GraphQL.Schema
                     var id = Guid.Parse(context.GetArgument<string>("id"));
 
                     var command = new CompleteTodo(id);
-                    messageDispatcher.SendCommand(command);
+                    commandRelay.SendCommand(command);
 
                     return command;
                 });
@@ -69,7 +69,7 @@ namespace Web.GraphQL.Schema
                     var id = Guid.Parse(context.GetArgument<string>("id"));
 
                     var command = new IncompleteTodo(id);
-                    messageDispatcher.SendCommand(command);
+                    commandRelay.SendCommand(command);
 
                     return command;
                 });
@@ -84,7 +84,7 @@ namespace Web.GraphQL.Schema
                     var id = Guid.Parse(context.GetArgument<string>("id"));
 
                     var command = new RemoveTodo(id);
-                    messageDispatcher.SendCommand(command);
+                    commandRelay.SendCommand(command);
 
                     return command;
                 });

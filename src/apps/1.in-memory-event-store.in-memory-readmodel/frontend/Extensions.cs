@@ -27,16 +27,16 @@ namespace Frontend
             {
                 // Create the message dispatcher
                 var eventStore = provider.GetService<IEventStore>();
-                var messageDispatcher = new MessageDispatcher(eventStore);
+                var commandRelay = new CommandRelay(eventStore);
 
                 // Let the message dispatcher scan the aggregate and register IHandleCommand implementations
-                messageDispatcher.ScanInstance(new TodoAggregate());
+                commandRelay.ScanInstance(new TodoAggregate());
 
                 // Let the message dispatcher scan the event consumer and register ISubscribeTo implementations
                 var eventConsumer = provider.GetService<EventConsumer>();
-                messageDispatcher.ScanInstance(eventConsumer);
+                commandRelay.ScanInstance(eventConsumer);
 
-                return messageDispatcher;
+                return commandRelay;
             });
         }
     }
