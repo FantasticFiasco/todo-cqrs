@@ -171,8 +171,8 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 - State must be strongly consistent, i.e. changes introduced by commands must immediately be reflected in the read model
 - State must be durable, we must retain it even if application is terminated
-- **State must automatically be available on restart after application termination**
 - Since the state isn't relational by nature, the solutions architect has deemed a relational database to be inappropriate, and requires the usage of a NoSQL document database
+- **State must automatically be available on restart after application termination**
 
 #### Solution
 
