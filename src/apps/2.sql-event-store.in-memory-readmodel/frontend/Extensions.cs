@@ -28,6 +28,8 @@ namespace Frontend
             self
                 .AddSingleton<EventConsumer>()
                 .AddSingleton<InMemoryTodoList>()
+                // Workaround to resolve the same Singleton instance using both its type and its
+                // implemented interface
                 .AddSingleton<ITodoList>(provider => provider.GetService<InMemoryTodoList>());
 
             // Message dispatcher
