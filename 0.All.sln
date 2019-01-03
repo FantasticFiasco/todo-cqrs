@@ -47,13 +47,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.sql-event-store.in-memory
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "src\apps\2.sql-event-store.in-memory-readmodel\frontend\Frontend.csproj", "{306AAEC0-1BFF-412E-ACC0-9D2C2EE69492}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.nosql-event-store.in-memory-readmodel", "3.nosql-event-store.in-memory-readmodel", "{D5ED651F-02E5-4318-B5A7-470BBC03C798}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.no-sql-event-store.in-memory-readmodel", "3.no-sql-event-store.in-memory-readmodel", "{D5ED651F-02E5-4318-B5A7-470BBC03C798}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "src\apps\3.nosql-event-store.in-memory-readmodel\frontend\Frontend.csproj", "{27D0EE7A-A4AE-45FB-97C5-FC1251096B96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "src\apps\3.no-sql-event-store.in-memory-readmodel\frontend\Frontend.csproj", "{27D0EE7A-A4AE-45FB-97C5-FC1251096B96}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStore.NoSql", "src\writes\event-store-no-sql\EventStore.NoSql.csproj", "{8A0C0E23-8D6E-461A-810C-B387833EA4F4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStore.Sql", "src\writes\event-store-sql\EventStore.Sql.csproj", "{B1A75A3C-2707-4EEB-B51F-5EADC41E2979}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel", "src\reads\readmodel\ReadModel.csproj", "{77797FC1-F7E7-456E-BDFC-65A0A00F5118}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel.NoSql", "src\reads\readmodel-no-sql\ReadModel.NoSql.csproj", "{A6198E99-3B7B-43FE-8B07-EE784309E4A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.no-sql-event-store.no-sql-readmodel", "4.no-sql-event-store.no-sql-readmodel", "{AC86BD31-A23A-4303-AC68-D246668BD12D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend", "src\apps\4.no-sql-event-store.no-sql-readmodel\frontend\Frontend.csproj", "{E33039FE-F1F3-4547-A013-B91523815237}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +129,18 @@ Global
 		{B1A75A3C-2707-4EEB-B51F-5EADC41E2979}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1A75A3C-2707-4EEB-B51F-5EADC41E2979}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1A75A3C-2707-4EEB-B51F-5EADC41E2979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77797FC1-F7E7-456E-BDFC-65A0A00F5118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77797FC1-F7E7-456E-BDFC-65A0A00F5118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77797FC1-F7E7-456E-BDFC-65A0A00F5118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77797FC1-F7E7-456E-BDFC-65A0A00F5118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6198E99-3B7B-43FE-8B07-EE784309E4A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6198E99-3B7B-43FE-8B07-EE784309E4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6198E99-3B7B-43FE-8B07-EE784309E4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6198E99-3B7B-43FE-8B07-EE784309E4A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E33039FE-F1F3-4547-A013-B91523815237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E33039FE-F1F3-4547-A013-B91523815237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E33039FE-F1F3-4547-A013-B91523815237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E33039FE-F1F3-4547-A013-B91523815237}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +170,10 @@ Global
 		{27D0EE7A-A4AE-45FB-97C5-FC1251096B96} = {D5ED651F-02E5-4318-B5A7-470BBC03C798}
 		{8A0C0E23-8D6E-461A-810C-B387833EA4F4} = {2E2DF3A3-ED7E-4938-8E65-652CA8DECFD9}
 		{B1A75A3C-2707-4EEB-B51F-5EADC41E2979} = {2E2DF3A3-ED7E-4938-8E65-652CA8DECFD9}
+		{77797FC1-F7E7-456E-BDFC-65A0A00F5118} = {DBA6BE74-0F23-48B9-B52F-267E0E18759F}
+		{A6198E99-3B7B-43FE-8B07-EE784309E4A4} = {DBA6BE74-0F23-48B9-B52F-267E0E18759F}
+		{AC86BD31-A23A-4303-AC68-D246668BD12D} = {F14AB36E-BFB8-442E-BB0C-B1DDC29550D4}
+		{E33039FE-F1F3-4547-A013-B91523815237} = {AC86BD31-A23A-4303-AC68-D246668BD12D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E23D2172-9A43-4806-9739-B39D6DA6FEAC}

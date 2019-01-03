@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\graphql\web-graphql\Web.GraphQL.csproj" />
+    <ProjectReference Include="..\..\..\reads\readmodel-no-sql\ReadModel.NoSql.csproj" />
     <ProjectReference Include="..\..\..\writes\event-store-no-sql\EventStore.NoSql.csproj" />
   </ItemGroup>
 

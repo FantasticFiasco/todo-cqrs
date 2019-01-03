@@ -124,7 +124,7 @@ namespace Cqrs
         }
 
         /// <summary>
-        /// Looks thorugh the specified assembly for all public types that implement
+        /// Looks thorough the specified assembly for all public types that implement
         /// the IHandleCommand or ISubscribeTo generic interfaces. Registers each of
         /// the implementations as a command handler or event subscriber.
         /// </summary>

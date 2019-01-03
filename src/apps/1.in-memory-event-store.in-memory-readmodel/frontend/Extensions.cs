@@ -1,6 +1,7 @@
 using Cqrs;
 using EventStore.InMemory;
 using Microsoft.Extensions.DependencyInjection;
+using ReadModel;
 using ReadModel.InMemory;
 using Todo;
 
@@ -10,14 +11,33 @@ namespace Frontend
     {
         public static void AddCqrs(this IServiceCollection self)
         {
-            var todoList = new TodoList();
+            // Write model
+            self.AddSingleton<IEventStore, InMemoryEventStore>();
 
-            var messageDispatcher = new MessageDispatcher(new InMemoryEventStore());
-            messageDispatcher.ScanInstance(todoList);
-            messageDispatcher.ScanInstance(new TodoAggregate());
+            // Read model
+            self
+                .AddSingleton<EventConsumer>()
+                .AddSingleton<InMemoryTodoList>()
+                // Workaround to resolve the same Singleton instance using both its type and its
+                // implemented interface
+                .AddSingleton<ITodoList>(provider => provider.GetService<InMemoryTodoList>());
 
-            self.AddSingleton<ITodoList>(_ => todoList);
-            self.AddSingleton(_ => messageDispatcher);
+            // Message dispatcher
+            self.AddSingleton(provider =>
+            {
+                // Create the message dispatcher
+                var eventStore = provider.GetService<IEventStore>();
+                var messageDispatcher = new MessageDispatcher(eventStore);
+
+                // Let the message dispatcher scan the aggregate and register IHandleCommand implementations
+                messageDispatcher.ScanInstance(new TodoAggregate());
+
+                // Let the message dispatcher scan the event consumer and register ISubscribeTo implementations
+                var eventConsumer = provider.GetService<EventConsumer>();
+                messageDispatcher.ScanInstance(eventConsumer);
+
+                return messageDispatcher;
+            });
         }
     }
 }

@@ -1,5 +1,5 @@
 using GraphQL.Types;
-using ReadModel.InMemory;
+using ReadModel;
 
 namespace Web.GraphQL.Schema
 {

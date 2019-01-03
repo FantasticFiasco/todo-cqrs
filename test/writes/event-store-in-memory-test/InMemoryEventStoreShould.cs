@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Logging.Abstractions;
 using Shouldly;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace EventStore.InMemory
 
         public InMemoryEventStoreShould()
         {
-            eventStore = new InMemoryEventStore();
+            eventStore = new InMemoryEventStore(NullLogger<InMemoryEventStore>.Instance);
             id = Guid.NewGuid();
         }
 

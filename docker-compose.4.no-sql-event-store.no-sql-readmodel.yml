@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+
+  todo:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.4.no-sql-event-store.no-sql-readmodel
+    ports:
+      - "8080:80"
+    environment:
+      EVENT_STORE_HOST: event-store
+      EVENT_STORE_USER: root
+      EVENT_STORE_PASSWORD: secret
+      READ_MODEL_HOST: event-store
+      READ_MODEL_USER: root
+      READ_MODEL_PASSWORD: secret
+    depends_on:
+      - event-store
+    restart: on-failure
+
+  event-store:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+
+  event-store-ui:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: event-store
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: secret
+    depends_on:
+      - event-store
+    restart: on-failure

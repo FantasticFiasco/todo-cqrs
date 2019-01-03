@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Cqrs;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Npgsql;
 
@@ -9,15 +10,19 @@ namespace EventStore.Sql
 {
     public class SqlEventStore : IEventStore
     {
-        private readonly string connectionString;
+        private readonly ConnectionString connectionString;
+        private readonly ILogger<SqlEventStore> logger;
 
-        public SqlEventStore(string connectionString)
+        public SqlEventStore(ConnectionString connectionString, ILogger<SqlEventStore> logger)
         {
-            this.connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            this.connectionString = connectionString;
+            this.logger = logger;
         }
 
         public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
+            logger.LogInformation("Load events for aggregate with id {id}", id);
+
             using (var command = new NpgsqlCommand())
             {
                 command.CommandText = @"
@@ -28,21 +33,29 @@ namespace EventStore.Sql
 
                 command.Parameters.AddWithValue("id", id);
 
+                var events = new List<object>();
+
                 using (command.OpenConnection(connectionString))
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        yield return JsonConvert.DeserializeObject(
+                        events.Add(JsonConvert.DeserializeObject(
                             reader.GetString(0),
-                            Type.GetType(reader.GetString(1)));
+                            Type.GetType(reader.GetString(1))));
                     }
                 }
+
+                logger.LogInformation("Loaded {count} events for aggregate {id}", events.Count, id);
+
+                return events;
             }
         }
 
         public void SaveEventsFor<TAggregate>(Guid id, int eventsLoaded, object[] newEvents)
         {
+            logger.LogInformation("Save {count} event(s) for aggregate with id {id}", newEvents.Length, id);
+
             using (var command = new NpgsqlCommand())
             {
                 var commandTextBuilder = new StringBuilder();

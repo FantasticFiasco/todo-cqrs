@@ -17,5 +17,10 @@ namespace Todo.Events
         public Guid Id { get; set; }
 
         public string NewTitle { get; set; }
+
+        public override string ToString()
+        {
+            return $"{nameof(TodoRenamed)}#{Id} NewTitle: {NewTitle}";
+        }
     }
 }

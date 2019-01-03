@@ -20,6 +20,8 @@ jobs:
     displayName: Build 2.SqlEventStore.InMemoryReadModel.sln
   - bash: dotnet build 3.NoSqlEventStore.InMemoryReadModel.sln --configuration Release
     displayName: Build 3.NoSqlEventStore.InMemoryReadModel.sln
+  - bash: dotnet build 4.NoSqlEventStore.NoSqlReadModel.sln --configuration Release
+    displayName: Build 4.NoSqlEventStore.NoSqlReadModel.sln
 
 - job: test
   displayName: Test
@@ -43,8 +45,8 @@ jobs:
       yarn lint
     displayName: Run lint
 
-- job: e2eInMemoryEventStore
-  displayName: E2E In-Memory Event Store
+- job: e2eInMemoryEventStoreInMemoryReadModel
+  displayName: E2E In-Memory Event Store / In-Memory Read Model
   pool:
     vmImage: Ubuntu 16.04
   steps:
@@ -55,8 +57,8 @@ jobs:
       yarn test
     displayName: Run e2e tests
 
-- job: e2eSqlEventStore
-  displayName: E2E SQL Event Store
+- job: e2eSqlEventStoreInMemoryReadModel
+  displayName: E2E SQL Event Store / In-Memory Read Model
   pool:
     vmImage: Ubuntu 16.04
   steps:
@@ -67,13 +69,25 @@ jobs:
       yarn test
     displayName: Run e2e tests
 
-- job: e2eNoSqlEventStore
-  displayName: E2E NoSQL Event Store
+- job: e2eNoSqlEventStoreInMemoryReadModel
+  displayName: E2E NoSQL Event Store / In-Memory Read Model
   pool:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
-      docker-compose -f ./docker-compose.3.nosql-event-store.in-memory-readmodel.yml up --detach
+      docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up --detach
+      cd ./test/e2e
+      yarn
+      yarn test
+    displayName: Run e2e tests
+
+- job: e2eNoSqlEventStoreNoSqlReadModel
+  displayName: E2E NoSQL Event Store / NoSQL Read Model
+  pool:
+    vmImage: Ubuntu 16.04
+  steps:
+  - bash: |
+      docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up --detach
       cd ./test/e2e
       yarn
       yarn test

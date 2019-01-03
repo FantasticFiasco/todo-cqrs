@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.in-memory-event-store.in-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend", "src\apps\1.in-memory-event-store.in-memory-readmodel\frontend\Frontend.csproj", "{12121524-5446-45E5-AC83-14B2796884A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel", "src\reads\readmodel\ReadModel.csproj", "{1E62ACA0-EDE7-406F-B52D-2BBE04D01714}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{12121524-5446-45E5-AC83-14B2796884A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12121524-5446-45E5-AC83-14B2796884A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12121524-5446-45E5-AC83-14B2796884A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E62ACA0-EDE7-406F-B52D-2BBE04D01714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E62ACA0-EDE7-406F-B52D-2BBE04D01714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E62ACA0-EDE7-406F-B52D-2BBE04D01714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E62ACA0-EDE7-406F-B52D-2BBE04D01714}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -116,6 +122,7 @@ Global
 		{BA532B7B-ADDA-41FF-A8F0-971C9A41F3E5} = {9F4F27D1-2E1F-4479-86C4-9A84523B647A}
 		{2A6284B1-3D6E-4C6D-9147-804089F5C4B1} = {F14AB36E-BFB8-442E-BB0C-B1DDC29550D4}
 		{12121524-5446-45E5-AC83-14B2796884A7} = {2A6284B1-3D6E-4C6D-9147-804089F5C4B1}
+		{1E62ACA0-EDE7-406F-B52D-2BBE04D01714} = {DBA6BE74-0F23-48B9-B52F-267E0E18759F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E23D2172-9A43-4806-9739-B39D6DA6FEAC}
