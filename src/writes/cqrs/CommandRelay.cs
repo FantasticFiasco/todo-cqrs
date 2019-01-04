@@ -12,11 +12,11 @@ namespace Cqrs
     /// node application that can safely build its subscriber list at startup and keep
     /// it in memory. Depends on some kind of event storage mechanism.
     /// </summary>
-    public class CommandRelay
+    public class CommandRelay : ICommandRelay
     {
         private readonly IEventStore eventStore;
         private readonly Dictionary<Type, Action<object>> commandHandlers;
-        private readonly Dictionary<Type, List<Action<object>>> eventSubscribers;
+        private readonly Dictionary<Type, List<Action<object>>> eventPublishers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandRelay"/> class.
@@ -26,7 +26,7 @@ namespace Cqrs
             this.eventStore = eventStore ?? throw new ArgumentNullException(nameof(eventStore));
 
             commandHandlers = new Dictionary<Type, Action<object>>();
-            eventSubscribers = new Dictionary<Type, List<Action<object>>>();
+            eventPublishers = new Dictionary<Type, List<Action<object>>>();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Cqrs
                             aggregate.Version,
                             events);
 
-                        // Publish them to all subscribers
+                        // Publish the events
                         foreach (var e in events)
                         {
                             PublishEvent(e);
@@ -109,19 +109,19 @@ namespace Cqrs
         /// TODO: Rewrite
         ///
         /// Adds an object that subscribes to the specified event, by virtue of implementing the
-        /// <see cref="ISubscribeTo{T}"/> interface.
+        /// <see cref="IPublisher{TEvent}"/> interface.
         /// </summary>
-        public void RegisterSubscriberFor<TEvent>(ISubscribeTo<TEvent> subscriber)
+        public void RegisterPublisherFor<TEvent>(IPublisher<TEvent> publisher)
         {
             var eventType = typeof(TEvent);
 
-            if (!eventSubscribers.TryGetValue(eventType, out var subscribersToEvent))
+            if (!eventPublishers.TryGetValue(eventType, out var publishersOfEvent))
             {
-                subscribersToEvent = new List<Action<object>>();
-                eventSubscribers.Add(eventType, subscribersToEvent);
+                publishersOfEvent = new List<Action<object>>();
+                eventPublishers.Add(eventType, publishersOfEvent);
             }
 
-            subscribersToEvent.Add(e => subscriber.Handle((TEvent)e));
+            publishersOfEvent.Add(e => publisher.Publish((TEvent)e));
         }
 
 
@@ -131,19 +131,19 @@ namespace Cqrs
         /// Looks at the specified object instance, examples what commands it handles
         /// or events it subscribes to, and registers it as a receiver/subscriber.
         /// </summary>
-        public void RegisterSubscribersFor(object instance)
+        public void RegisterPublishersFor(object instance)
         {
-            var subscriber =
+            var publishers =
                 from @interface in instance.GetType().GetInterfaces()
                 where @interface.IsGenericType
-                where @interface.GetGenericTypeDefinition() == typeof(ISubscribeTo<>)
+                where @interface.GetGenericTypeDefinition() == typeof(IPublisher<>)
                 select @interface.GetGenericArguments()[0];
 
-            foreach (var s in subscriber)
+            foreach (var publisher in publishers)
             {
                 GetType()
-                    .GetMethod(nameof(RegisterSubscriberFor))
-                    ?.MakeGenericMethod(s)
+                    .GetMethod(nameof(RegisterPublisherFor))
+                    ?.MakeGenericMethod(publisher)
                     .Invoke(this, new[] { instance });
             }
         }
@@ -171,17 +171,12 @@ namespace Cqrs
 
         private void PublishEvent(object e)
         {
-            if (!eventSubscribers.TryGetValue(e.GetType(), out var subscribersToEvent)){ return;}
+            if (!eventPublishers.TryGetValue(e.GetType(), out var publishersOfEvent)){ return;}
 
-            foreach (var subscriberToEvent in subscribersToEvent)
+            foreach (var publisherOfEvent in publishersOfEvent)
             {
-                subscriberToEvent(e);
+                publisherOfEvent(e);
             }
-        }
-
-        private static object CreateInstanceOf(Type type)
-        {
-            return Activator.CreateInstance(type);
         }
     }
 }

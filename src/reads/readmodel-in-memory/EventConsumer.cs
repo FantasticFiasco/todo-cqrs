@@ -9,11 +9,11 @@ namespace ReadModel.InMemory
     /// model accordingly.
     /// </summary>
     public class EventConsumer :
-        ISubscribeTo<TodoAdded>,
-        ISubscribeTo<TodoRenamed>,
-        ISubscribeTo<TodoCompleted>,
-        ISubscribeTo<TodoIncompleted>,
-        ISubscribeTo<TodoRemoved>
+        IPublisher<TodoAdded>,
+        IPublisher<TodoRenamed>,
+        IPublisher<TodoCompleted>,
+        IPublisher<TodoIncompleted>,
+        IPublisher<TodoRemoved>
     {
         private readonly InMemoryTodoList todoList;
         private readonly ILogger<EventConsumer> logger;
@@ -24,35 +24,35 @@ namespace ReadModel.InMemory
             this.logger = logger;
         }
 
-        public void Handle(TodoAdded e)
+        public void Publish(TodoAdded e)
         {
             Log(e);
 
             todoList.Add(e.Id, e.Title);
         }
 
-        public void Handle(TodoRenamed e)
+        public void Publish(TodoRenamed e)
         {
             Log(e);
 
             todoList.Rename(e.Id, e.NewTitle);
         }
 
-        public void Handle(TodoCompleted e)
+        public void Publish(TodoCompleted e)
         {
             Log(e);
 
             todoList.SetCompleted(e.Id, true);
         }
 
-        public void Handle(TodoIncompleted e)
+        public void Publish(TodoIncompleted e)
         {
             Log(e);
 
             todoList.SetCompleted(e.Id, false);
         }
 
-        public void Handle(TodoRemoved e)
+        public void Publish(TodoRemoved e)
         {
             Log(e);
 

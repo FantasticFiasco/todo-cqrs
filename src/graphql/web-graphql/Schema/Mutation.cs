@@ -7,7 +7,7 @@ namespace Web.GraphQL.Schema
 {
     public class Mutation : ObjectGraphType
     {
-        public Mutation(CommandRelay commandRelay)
+        public Mutation(ICommandRelay commandRelay)
         {
             Name = "Mutation";
 

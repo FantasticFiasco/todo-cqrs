@@ -23,7 +23,7 @@ namespace Frontend
                 .AddSingleton<ITodoList>(provider => provider.GetService<InMemoryTodoList>());
 
             // Command relay
-            self.AddSingleton(provider =>
+            self.AddSingleton<ICommandRelay>(provider =>
             {
                 // Create the command relay
                 var eventStore = provider.GetService<IEventStore>();
@@ -34,7 +34,7 @@ namespace Frontend
 
                 // Let the command relay scan the event consumer and register ISubscribeTo implementations
                 var eventConsumer = provider.GetService<EventConsumer>();
-                commandRelay.RegisterSubscribersFor(eventConsumer);
+                commandRelay.RegisterPublishersFor(eventConsumer);
 
                 return commandRelay;
             });

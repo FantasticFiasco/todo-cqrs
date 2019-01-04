@@ -7,11 +7,11 @@ using Todo.Events;
 namespace ReadModel.NoSql
 {
     public class EventConsumer :
-        ISubscribeTo<TodoAdded>,
-        ISubscribeTo<TodoRenamed>,
-        ISubscribeTo<TodoCompleted>,
-        ISubscribeTo<TodoIncompleted>,
-        ISubscribeTo<TodoRemoved>
+        IPublisher<TodoAdded>,
+        IPublisher<TodoRenamed>,
+        IPublisher<TodoCompleted>,
+        IPublisher<TodoIncompleted>,
+        IPublisher<TodoRemoved>
     {
         private readonly MongoClient client;
         private readonly ILogger<EventConsumer> logger;
@@ -22,7 +22,7 @@ namespace ReadModel.NoSql
             this.logger = logger;
         }
 
-        public void Handle(TodoAdded e)
+        public void Publish(TodoAdded e)
         {
             Log(e);
 
@@ -33,7 +33,7 @@ namespace ReadModel.NoSql
                 .InsertOne(item);
         }
 
-        public void Handle(TodoRenamed e)
+        public void Publish(TodoRenamed e)
         {
             Log(e);
 
@@ -44,7 +44,7 @@ namespace ReadModel.NoSql
                     Builders<TodoItem>.Update.Set(item => item.Title, e.NewTitle));
         }
 
-        public void Handle(TodoCompleted e)
+        public void Publish(TodoCompleted e)
         {
             Log(e);
 
@@ -55,7 +55,7 @@ namespace ReadModel.NoSql
                     Builders<TodoItem>.Update.Set(item => item.IsCompleted, true));
         }
 
-        public void Handle(TodoIncompleted e)
+        public void Publish(TodoIncompleted e)
         {
             Log(e);
 
@@ -66,7 +66,7 @@ namespace ReadModel.NoSql
                     Builders<TodoItem>.Update.Set(item => item.IsCompleted, false));
         }
 
-        public void Handle(TodoRemoved e)
+        public void Publish(TodoRemoved e)
         {
             Log(e);
 
