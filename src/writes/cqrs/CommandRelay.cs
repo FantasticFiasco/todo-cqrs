@@ -30,31 +30,6 @@ namespace Cqrs
         }
 
         /// <summary>
-        /// TODO: Rewrite
-        ///
-        /// Invokes command by sending it to its registered handler.
-        /// </summary>
-        /// <typeparam name="TCommand">
-        /// The type of the command.
-        /// </typeparam>
-        /// <exception cref="Exception">
-        /// No registered handler for command is found.
-        /// </exception>
-        public void SendCommand<TCommand>(TCommand command)
-        {
-            if (command == null) throw new ArgumentNullException(nameof(command));
-
-            if (!commandHandlers.TryGetValue(typeof(TCommand), out var handler))
-            {
-                throw new Exception($"No command handler registered for {typeof(TCommand).Name}");
-            }
-
-            handler(command);
-        }
-
-        /// <summary>
-        /// TODO: Rewrite
-        ///
         /// Registers an aggregate as being the handler for a particular command.
         /// </summary>
         /// <typeparam name="TCommand">
@@ -100,6 +75,13 @@ namespace Cqrs
                     });
         }
 
+        /// <summary>
+        /// Registers an aggregate as being the handler for all its implementations of
+        /// <see cref="IHandleCommand{T}"/>.
+        /// </summary>
+        /// <typeparam name="TAggregate">
+        /// The type of the aggregate handling commands.
+        /// </typeparam>
         public void RegisterHandlersFor<TAggregate>()
             where TAggregate : Aggregate, new()
         {
@@ -164,6 +146,27 @@ namespace Cqrs
                     ?.MakeGenericMethod(s)
                     .Invoke(this, new[] { instance });
             }
+        }
+
+        /// <summary>
+        /// Invokes the intent of a command by sending it to its registered handler.
+        /// </summary>
+        /// <typeparam name="TCommand">
+        /// The type of the command.
+        /// </typeparam>
+        /// <exception cref="Exception">
+        /// No registered handler for command is found.
+        /// </exception>
+        public void SendCommand<TCommand>(TCommand command)
+        {
+            if (command == null) throw new ArgumentNullException(nameof(command));
+
+            if (!commandHandlers.TryGetValue(typeof(TCommand), out var handler))
+            {
+                throw new Exception($"No command handler registered for {typeof(TCommand).Name}");
+            }
+
+            handler(command);
         }
 
         private void PublishEvent(object e)
