@@ -87,14 +87,11 @@ namespace Cqrs
                             .Cast<object>()
                             .ToArray();
 
-                        // Store the events in the event store
-                        if (events.Length > 0)
-                        {
-                            eventStore.SaveEventsFor<TAggregate>(
-                                aggregate.Id,
-                                aggregate.Version,
-                                events);
-                        }
+                        // Save events to the event store
+                        eventStore.SaveEventsFor<TAggregate>(
+                            aggregate.Id,
+                            aggregate.Version,
+                            events);
 
                         // Publish them to all subscribers
                         foreach (var e in events)
@@ -102,6 +99,29 @@ namespace Cqrs
                             PublishEvent(e);
                         }
                     });
+        }
+
+        public void AddHandlersFor<TAggregate>()
+            where TAggregate : Aggregate, new()
+        {
+            var handlers =
+                from @interface in typeof(TAggregate).GetInterfaces()
+                where @interface.IsGenericType
+                where @interface.GetGenericTypeDefinition() == typeof(IHandleCommand<>)
+                let arguments = @interface.GetGenericArguments()
+                select new
+                {
+                    CommandType = arguments[0],
+                    AggregateType = typeof(TAggregate)
+                };
+
+            foreach (var handler in handlers)
+            {
+                GetType()
+                    .GetMethod(nameof(AddHandlerFor))
+                    ?.MakeGenericMethod(handler.CommandType, handler.AggregateType)
+                    .Invoke(this, new object[] { });
+            }
         }
 
         /// <summary>

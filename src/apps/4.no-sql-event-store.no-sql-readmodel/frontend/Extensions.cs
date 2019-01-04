@@ -29,17 +29,17 @@ namespace Frontend
                 .AddSingleton<EventConsumer>()
                 .AddSingleton<ITodoList, NoSqlTodoList>();
 
-            // Message dispatcher
+            // Command relay
             self.AddSingleton(provider =>
             {
-                // Create the message dispatcher
+                // Create the command relay
                 var eventStore = provider.GetService<IEventStore>();
                 var commandRelay = new CommandRelay(eventStore);
 
-                // Let the message dispatcher scan the aggregate and register IHandleCommand implementations
-                commandRelay.ScanInstance(new TodoAggregate());
+                // Let the command relay scan the aggregate and register IHandleCommand<T> implementations
+                commandRelay.AddHandlersFor<TodoAggregate>();
 
-                // Let the message dispatcher scan the event consumer and register ISubscribeTo implementations
+                // Let the command relay scan the event consumer and register ISubscribeTo implementations
                 var eventConsumer = provider.GetService<EventConsumer>();
                 commandRelay.ScanInstance(eventConsumer);
 
