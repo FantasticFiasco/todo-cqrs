@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Cqrs
 {
@@ -64,7 +63,7 @@ namespace Cqrs
         /// <typeparam name="TAggregate">
         /// The type of the aggregate handling the particular command.
         /// </typeparam>
-        public void AddHandlerFor<TCommand, TAggregate>()
+        public void RegisterHandlerFor<TCommand, TAggregate>()
             where TAggregate : Aggregate, new()
         {
             if (commandHandlers.ContainsKey(typeof(TCommand))) throw new Exception($"Command handler already registered for {typeof(TCommand).Name}");
@@ -101,7 +100,7 @@ namespace Cqrs
                     });
         }
 
-        public void AddHandlersFor<TAggregate>()
+        public void RegisterHandlersFor<TAggregate>()
             where TAggregate : Aggregate, new()
         {
             var handlers =
@@ -118,7 +117,7 @@ namespace Cqrs
             foreach (var handler in handlers)
             {
                 GetType()
-                    .GetMethod(nameof(AddHandlerFor))
+                    .GetMethod(nameof(RegisterHandlerFor))
                     ?.MakeGenericMethod(handler.CommandType, handler.AggregateType)
                     .Invoke(this, new object[] { });
             }
@@ -130,7 +129,7 @@ namespace Cqrs
         /// Adds an object that subscribes to the specified event, by virtue of implementing the
         /// <see cref="ISubscribeTo{T}"/> interface.
         /// </summary>
-        public void AddSubscriberFor<TEvent>(ISubscribeTo<TEvent> subscriber)
+        public void RegisterSubscriberFor<TEvent>(ISubscribeTo<TEvent> subscriber)
         {
             var eventType = typeof(TEvent);
 
@@ -143,53 +142,6 @@ namespace Cqrs
             subscribersToEvent.Add(e => subscriber.Handle((TEvent)e));
         }
 
-        /// <summary>
-        /// TODO: Rewrite
-        ///
-        /// Looks thorough the specified assembly for all public types that implement
-        /// the IHandleCommand or ISubscribeTo generic interfaces. Registers each of
-        /// the implementations as a command handler or event subscriber.
-        /// </summary>
-        public void ScanAssembly(Assembly ass)
-        {
-            // Scan for and register handlers.
-            var handlers =
-                from t in ass.GetTypes()
-                from i in t.GetInterfaces()
-                where i.IsGenericType
-                where i.GetGenericTypeDefinition() == typeof(IHandleCommand<>)
-                let args = i.GetGenericArguments()
-                select new
-                {
-                    CommandType = args[0],
-                    AggregateType = t
-                };
-
-            foreach (var h in handlers)
-                GetType().GetMethod("AddHandlerFor")
-                    ?.MakeGenericMethod(h.CommandType, h.AggregateType)
-                    .Invoke(this, new object[] { });
-
-            // Scan for and register subscribers.
-            var subscriber =
-                from t in ass.GetTypes()
-                from i in t.GetInterfaces()
-                where i.IsGenericType
-                where i.GetGenericTypeDefinition() == typeof(ISubscribeTo<>)
-                select new
-                {
-                    Type = t,
-                    EventType = i.GetGenericArguments()[0]
-                };
-
-            foreach (var s in subscriber)
-            {
-                GetType()
-                    .GetMethod("AddSubscriberFor")
-                    ?.MakeGenericMethod(s.EventType)
-                    .Invoke(this, new[] { CreateInstanceOf(s.Type) });
-            }
-        }
 
         /// <summary>
         /// TODO: Rewrite
@@ -197,39 +149,18 @@ namespace Cqrs
         /// Looks at the specified object instance, examples what commands it handles
         /// or events it subscribes to, and registers it as a receiver/subscriber.
         /// </summary>
-        public void ScanInstance(object instance)
+        public void RegisterSubscribersFor(object instance)
         {
-            // Scan for and register handlers.
-            var handlers =
-                from i in instance.GetType().GetInterfaces()
-                where i.IsGenericType
-                where i.GetGenericTypeDefinition() == typeof(IHandleCommand<>)
-                let args = i.GetGenericArguments()
-                select new
-                {
-                    CommandType = args[0],
-                    AggregateType = instance.GetType()
-                };
-
-            foreach (var h in handlers)
-            {
-                GetType()
-                    .GetMethod("AddHandlerFor")
-                    ?.MakeGenericMethod(h.CommandType, h.AggregateType)
-                    .Invoke(this, new object[] { });
-            }
-
-            // Scan for and register subscribers.
             var subscriber =
-                from i in instance.GetType().GetInterfaces()
-                where i.IsGenericType
-                where i.GetGenericTypeDefinition() == typeof(ISubscribeTo<>)
-                select i.GetGenericArguments()[0];
+                from @interface in instance.GetType().GetInterfaces()
+                where @interface.IsGenericType
+                where @interface.GetGenericTypeDefinition() == typeof(ISubscribeTo<>)
+                select @interface.GetGenericArguments()[0];
 
             foreach (var s in subscriber)
             {
                 GetType()
-                    .GetMethod("AddSubscriberFor")
+                    .GetMethod(nameof(RegisterSubscriberFor))
                     ?.MakeGenericMethod(s)
                     .Invoke(this, new[] { instance });
             }

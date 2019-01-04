@@ -30,11 +30,11 @@ namespace Frontend
                 var commandRelay = new CommandRelay(eventStore);
 
                 // Let the command relay scan the aggregate and register IHandleCommand<T> implementations
-                commandRelay.AddHandlersFor<TodoAggregate>();
+                commandRelay.RegisterHandlersFor<TodoAggregate>();
 
                 // Let the command relay scan the event consumer and register ISubscribeTo implementations
                 var eventConsumer = provider.GetService<EventConsumer>();
-                commandRelay.ScanInstance(eventConsumer);
+                commandRelay.RegisterSubscribersFor(eventConsumer);
 
                 return commandRelay;
             });
