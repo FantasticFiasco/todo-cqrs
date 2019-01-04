@@ -31,6 +31,8 @@ namespace Cqrs
         }
 
         /// <summary>
+        /// TODO: Rewrite
+        ///
         /// Invokes command by sending it to its registered handler.
         /// </summary>
         /// <typeparam name="TCommand">
@@ -52,6 +54,8 @@ namespace Cqrs
         }
 
         /// <summary>
+        /// TODO: Rewrite
+        ///
         /// Registers an aggregate as being the handler for a particular command.
         /// </summary>
         /// <typeparam name="TCommand">
@@ -101,6 +105,8 @@ namespace Cqrs
         }
 
         /// <summary>
+        /// TODO: Rewrite
+        ///
         /// Adds an object that subscribes to the specified event, by virtue of implementing the
         /// <see cref="ISubscribeTo{T}"/> interface.
         /// </summary>
@@ -108,16 +114,18 @@ namespace Cqrs
         {
             var eventType = typeof(TEvent);
 
-            if (!eventSubscribers.TryGetValue(eventType, out var eventSubscribersOfType))
+            if (!eventSubscribers.TryGetValue(eventType, out var subscribersToEvent))
             {
-                eventSubscribersOfType = new List<Action<object>>();
-                eventSubscribers.Add(eventType, eventSubscribersOfType);
+                subscribersToEvent = new List<Action<object>>();
+                eventSubscribers.Add(eventType, subscribersToEvent);
             }
 
-            eventSubscribersOfType.Add(e => subscriber.Handle((TEvent)e));
+            subscribersToEvent.Add(e => subscriber.Handle((TEvent)e));
         }
 
         /// <summary>
+        /// TODO: Rewrite
+        ///
         /// Looks thorough the specified assembly for all public types that implement
         /// the IHandleCommand or ISubscribeTo generic interfaces. Registers each of
         /// the implementations as a command handler or event subscriber.
@@ -164,6 +172,8 @@ namespace Cqrs
         }
 
         /// <summary>
+        /// TODO: Rewrite
+        ///
         /// Looks at the specified object instance, examples what commands it handles
         /// or events it subscribes to, and registers it as a receiver/subscriber.
         /// </summary>
@@ -205,27 +215,16 @@ namespace Cqrs
             }
         }
 
-        /// <summary>
-        /// Publishes the specified event to all of its subscribers.
-        /// </summary>
         private void PublishEvent(object e)
         {
-            var eventType = e.GetType();
+            if (!eventSubscribers.TryGetValue(e.GetType(), out var subscribersToEvent)){ return;}
 
-            if (eventSubscribers.ContainsKey(eventType))
+            foreach (var subscriberToEvent in subscribersToEvent)
             {
-                foreach (var eventSubscriber in eventSubscribers[eventType])
-                {
-                    eventSubscriber(e);
-                }
+                subscriberToEvent(e);
             }
         }
 
-        /// <summary>
-        /// Creates an instance of the specified type. If you are using some kind
-        /// of DI container, and want to use it to create instances of the handler
-        /// or subscriber, you can plug it in here.
-        /// </summary>
         private static object CreateInstanceOf(Type type)
         {
             return Activator.CreateInstance(type);
