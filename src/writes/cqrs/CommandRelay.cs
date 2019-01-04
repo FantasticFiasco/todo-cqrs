@@ -29,15 +29,7 @@ namespace Cqrs
             eventPublishers = new Dictionary<Type, List<Action<object>>>();
         }
 
-        /// <summary>
-        /// Registers an aggregate as being the handler for a particular command.
-        /// </summary>
-        /// <typeparam name="TCommand">
-        /// The type of the command.
-        /// </typeparam>
-        /// <typeparam name="TAggregate">
-        /// The type of the aggregate handling the particular command.
-        /// </typeparam>
+        /// <inheritdoc />
         public void RegisterHandlerFor<TCommand, TAggregate>()
             where TAggregate : Aggregate, new()
         {
@@ -48,10 +40,12 @@ namespace Cqrs
                 command =>
                     {
                         // Create an empty aggregate
-                        var aggregate = new TAggregate();
+                        var aggregate = new TAggregate
+                        {
+                            Id = ((dynamic)command).Id
+                        };
 
                         // Load the aggregate with events
-                        aggregate.Id = ((dynamic)command).Id;
                         aggregate.ApplyEvents(eventStore.LoadEventsFor<TAggregate>(aggregate.Id));
 
                         // With everything set up, we invoke the command handler, collecting the
@@ -75,13 +69,7 @@ namespace Cqrs
                     });
         }
 
-        /// <summary>
-        /// Registers an aggregate as being the handler for all its implementations of
-        /// <see cref="IHandleCommand{T}"/>.
-        /// </summary>
-        /// <typeparam name="TAggregate">
-        /// The type of the aggregate handling commands.
-        /// </typeparam>
+        /// <inheritdoc />
         public void RegisterHandlersFor<TAggregate>()
             where TAggregate : Aggregate, new()
         {
@@ -89,10 +77,9 @@ namespace Cqrs
                 from @interface in typeof(TAggregate).GetInterfaces()
                 where @interface.IsGenericType
                 where @interface.GetGenericTypeDefinition() == typeof(IHandleCommand<>)
-                let arguments = @interface.GetGenericArguments()
                 select new
                 {
-                    CommandType = arguments[0],
+                    CommandType = @interface.GetGenericArguments().First(),
                     AggregateType = typeof(TAggregate)
                 };
 
@@ -105,12 +92,7 @@ namespace Cqrs
             }
         }
 
-        /// <summary>
-        /// TODO: Rewrite
-        ///
-        /// Adds an object that subscribes to the specified event, by virtue of implementing the
-        /// <see cref="IPublisher{TEvent}"/> interface.
-        /// </summary>
+        /// <inheritdoc />
         public void RegisterPublisherFor<TEvent>(IPublisher<TEvent> publisher)
         {
             var eventType = typeof(TEvent);
@@ -124,20 +106,14 @@ namespace Cqrs
             publishersOfEvent.Add(e => publisher.Publish((TEvent)e));
         }
 
-
-        /// <summary>
-        /// TODO: Rewrite
-        ///
-        /// Looks at the specified object instance, examples what commands it handles
-        /// or events it subscribes to, and registers it as a receiver/subscriber.
-        /// </summary>
+        /// <inheritdoc />
         public void RegisterPublishersFor(object instance)
         {
             var publishers =
                 from @interface in instance.GetType().GetInterfaces()
                 where @interface.IsGenericType
                 where @interface.GetGenericTypeDefinition() == typeof(IPublisher<>)
-                select @interface.GetGenericArguments()[0];
+                select @interface.GetGenericArguments().First();
 
             foreach (var publisher in publishers)
             {
@@ -148,15 +124,7 @@ namespace Cqrs
             }
         }
 
-        /// <summary>
-        /// Invokes the intent of a command by sending it to its registered handler.
-        /// </summary>
-        /// <typeparam name="TCommand">
-        /// The type of the command.
-        /// </typeparam>
-        /// <exception cref="Exception">
-        /// No registered handler for command is found.
-        /// </exception>
+        /// <inheritdoc />
         public void SendCommand<TCommand>(TCommand command)
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
