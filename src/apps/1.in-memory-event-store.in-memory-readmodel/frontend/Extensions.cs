@@ -16,7 +16,7 @@ namespace Frontend
 
             // Read model
             self
-                .AddSingleton<EventConsumer>()
+                .AddSingleton<InMemoryEventProcessor>()
                 .AddSingleton<InMemoryTodoList>()
                 // Workaround to resolve the same Singleton instance using both its type and its
                 // implemented interface
@@ -33,8 +33,8 @@ namespace Frontend
                 commandRelay.RegisterHandlersFor<TodoAggregate>();
 
                 // Let the command relay scan the event consumer and register publishers
-                var eventConsumer = provider.GetService<EventConsumer>();
-                commandRelay.RegisterPublishersFor(eventConsumer);
+                var eventProcessor = provider.GetService<InMemoryEventProcessor>();
+                commandRelay.RegisterPublishersFor(eventProcessor);
 
                 return commandRelay;
             });

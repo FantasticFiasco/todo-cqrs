@@ -26,7 +26,7 @@ namespace Frontend
             // Read model
             self
                 .AddSingleton(_ => BuildReadModelConnectionString(configuration))
-                .AddSingleton<EventConsumer>()
+                .AddSingleton<InMemoryEventProcessor>()
                 .AddSingleton<ITodoList, NoSqlTodoList>();
 
             // Command relay
@@ -40,8 +40,8 @@ namespace Frontend
                 commandRelay.RegisterHandlersFor<TodoAggregate>();
 
                 // Let the command relay scan the event consumer and register publishers
-                var eventConsumer = provider.GetService<EventConsumer>();
-                commandRelay.RegisterPublishersFor(eventConsumer);
+                var eventProcessor = provider.GetService<InMemoryEventProcessor>();
+                commandRelay.RegisterPublishersFor(eventProcessor);
 
                 return commandRelay;
             });
