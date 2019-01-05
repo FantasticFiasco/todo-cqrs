@@ -32,7 +32,7 @@ namespace Frontend
                 // Let the command relay scan the aggregate and register command handlers
                 commandRelay.RegisterHandlersFor<TodoAggregate>();
 
-                // Let the command relay scan the event consumer and register publishers
+                // Let the command relay scan the event processor and register publishers
                 var eventProcessor = provider.GetService<InMemoryEventProcessor>();
                 commandRelay.RegisterPublishersFor(eventProcessor);
 
