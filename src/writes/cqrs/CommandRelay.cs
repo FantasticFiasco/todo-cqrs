@@ -5,12 +5,7 @@ using System.Linq;
 namespace Cqrs
 {
     /// <summary>
-    /// TODO: Rewrite
-    ///
-    /// This implements a basic message dispatcher, driving the overall command handling
-    /// and event application/distribution process. It is suitable for a simple, single
-    /// node application that can safely build its subscriber list at startup and keep
-    /// it in memory. Depends on some kind of event storage mechanism.
+    /// Class responsible for relying sent commands to registered aggregate handlers.
     /// </summary>
     public class CommandRelay : ICommandRelay
     {
