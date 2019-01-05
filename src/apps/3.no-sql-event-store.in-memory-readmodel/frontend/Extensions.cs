@@ -37,10 +37,10 @@ namespace Frontend
                 var eventStore = provider.GetService<IEventStore>();
                 var commandRelay = new CommandRelay(eventStore);
 
-                // Let the command relay scan the aggregate and register IHandleCommand<T> implementations
+                // Let the command relay scan the aggregate and register command handlers
                 commandRelay.RegisterHandlersFor<TodoAggregate>();
 
-                // Let the command relay scan the event consumer and register ISubscribeTo implementations
+                // Let the command relay scan the event consumer and register publishers
                 var eventConsumer = provider.GetService<EventConsumer>();
                 commandRelay.RegisterPublishersFor(eventConsumer);
 
