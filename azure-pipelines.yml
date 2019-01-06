@@ -22,6 +22,8 @@ jobs:
     displayName: Build 3.NoSqlEventStore.InMemoryReadModel.sln
   - bash: dotnet build 4.NoSqlEventStore.NoSqlReadModel.sln --configuration Release
     displayName: Build 4.NoSqlEventStore.NoSqlReadModel.sln
+  - bash: dotnet build 5.Distributed.NoSqlEventStore.NoSqlReadModel.sln --configuration Release
+    displayName: Build 5.Distributed.NoSqlReadModel.sln
 
 - job: test
   displayName: Test
@@ -51,7 +53,7 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
-      docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up --detach
+      docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up --build --detach
       cd ./test/e2e
       yarn
       yarn test
@@ -63,7 +65,7 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
-      docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up --detach
+      docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up --build --detach
       cd ./test/e2e
       yarn
       yarn test
@@ -75,7 +77,7 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
-      docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up --detach
+      docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up --build --detach
       cd ./test/e2e
       yarn
       yarn test
@@ -87,7 +89,19 @@ jobs:
     vmImage: Ubuntu 16.04
   steps:
   - bash: |
-      docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up --detach
+      docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up --build --detach
+      cd ./test/e2e
+      yarn
+      yarn test
+    displayName: Run e2e tests
+
+- job: e2eDistributedNoSqlEventStoreNoSqlReadModel
+  displayName: E2E Distributed NoSQL Event Store / NoSQL Read Model
+  pool:
+    vmImage: Ubuntu 16.04
+  steps:
+  - bash: |
+      docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml up --build --detach
       cd ./test/e2e
       yarn
       yarn test

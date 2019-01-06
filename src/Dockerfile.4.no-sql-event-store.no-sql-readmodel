@@ -1,16 +1,5 @@
 FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
-
-COPY apps/4.no-sql-event-store.no-sql-readmodel/frontend/Frontend.csproj ./apps/4.no-sql-event-store.no-sql-readmodel/frontend/
-COPY graphql/web-graphql/Web.GraphQL.csproj ./graphql/web-graphql/
-COPY reads/readmodel-no-sql/ReadModel.NoSql.csproj ./reads/readmodel-no-sql/
-COPY writes/cqrs/Cqrs.csproj ./writes/cqrs/
-COPY writes/event-store-no-sql/EventStore.NoSql.csproj ./writes/event-store-no-sql/
-COPY writes/todo/Todo.csproj ./writes/todo/
-COPY writes/todo-events/Todo.Events.csproj ./writes/todo-events/
-
-RUN dotnet restore ./apps/4.no-sql-event-store.no-sql-readmodel/frontend/Frontend.csproj
-
 COPY . ./
 RUN dotnet publish -c Release -o out ./apps/4.no-sql-event-store.no-sql-readmodel/frontend/Frontend.csproj
 

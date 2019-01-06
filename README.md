@@ -19,6 +19,7 @@ These are the implementations, ordered according to complexity:
 1. [Single process using SQL event store and in-memory read model](#single-process-using-sql-event-store-and-in-memory-read-model)
 1. [Single process using NoSQL event store and in-memory read model](#single-process-using-nosql-event-store-and-in-memory-read-model)
 1. [Single process using NoSQL event store and NoSQL read model](#single-process-using-nosql-event-store-and-nosql-read-model)
+1. [Distributed NoSQL event store and NoSQL read model](#distributed-nosql-event-store-and-nosql-read-model)
 
 ## What you will end up with
 
@@ -84,8 +85,8 @@ Before running any of the implementations, please make sure [Docker](https://www
 
 #### Requirements
 
-- **State must be strongly consistent, i.e. changes introduced by commands must immediately be reflected in the read model**
-- **State does not need to be durable, we can accept losing it given application termination**
+- **State should be strongly consistent, i.e. changes introduced by commands should immediately be reflected in the read model**
+- **State does not need to be durable, clients can accept losing it given application restart**
 
 #### Solution
 
@@ -107,8 +108,8 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 #### Requirements
 
-- State must be strongly consistent, i.e. changes introduced by commands must immediately be reflected in the read model
-- **State must be durable, we must retain it even if application is terminated**
+- State should be strongly consistent, i.e. changes introduced by commands should immediately be reflected in the read model
+- **State should be durable, the application should retain it after application restart**
 - **It is acceptable that state is rebuilt using some manual process after application termination, since it isn't mission critical**
 
 #### Solution
@@ -140,8 +141,8 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 #### Requirements
 
-- State must be strongly consistent, i.e. changes introduced by commands must immediately be reflected in the read model
-- State must be durable, we must retain it even if application is terminated
+- State should be strongly consistent, i.e. changes introduced by commands should immediately be reflected in the read model
+- State should be durable, the application should retain it after application restart
 - It is acceptable that state is rebuilt using some manual process after application termination, since it isn't mission critical
 - **Since the state isn't relational by nature, the solutions architect has deemed a relational database to be inappropriate, and requires the usage of a NoSQL document database**
 
@@ -169,10 +170,10 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 #### Requirements
 
-- State must be strongly consistent, i.e. changes introduced by commands must immediately be reflected in the read model
-- State must be durable, we must retain it even if application is terminated
+- State should be strongly consistent, i.e. changes introduced by commands should immediately be reflected in the read model
+- State should be durable, the application should retain it after application restart
 - Since the state isn't relational by nature, the solutions architect has deemed a relational database to be inappropriate, and requires the usage of a NoSQL document database
-- **State must automatically be available on restart after application termination**
+- **State should automatically be available on restart after application termination**
 
 #### Solution
 
@@ -191,3 +192,33 @@ $ docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml u
 The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
 [Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).
+
+### Distributed NoSQL event store and NoSQL read model
+
+#### Requirements
+
+- **The application read/write quota strongly favors reads, and the solutions architect has deemed it necessary to scale reads vertically without affecting writes**
+- **State can be eventual consistent, i.e. changes introduced by commands might take some time to propagate through the application and be reflected in the read model**
+- State should be durable, the application should retain it after application restart
+- Since the state isn't relational by nature, the solutions architect has deemed a relational database to be inappropriate, and requires the usage of a NoSQL document database
+- State should automatically be available on restart after application termination
+
+#### Solution
+
+The code needed to fulfill the requirements can be found in `5.Distributed.NoSqlEventStore.NoSqlReadModel.sln`. It has moved the command handlers and the read model into their own processes, where the read model is consuming events from a RabbitMQ message queue and updates the read model accordingly.
+
+TODO: Add something about JSON-RPC
+
+Decoupling reads from writes means that the application has moved from being strongly consistent to eventually consistent. This is one of the drawbacks of being a distributed system, but something we embrace to achieve reliability. The read model is no longer entangled in the command handling process. It has its own process, and can continue to serve client reads event if the command handling process by some mishap terminates.
+
+#### Running the application
+
+Run the following command in the root of the repository to start the application.
+
+```bash
+$ docker-compose -f ./docker-compose.5.distributed-no-sql-event-store.no-sql-readmodel.yml up
+```
+
+The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
+
+The [Rabbit Management plugin](https://www.rabbitmq.com/management.html), a graphical RabbitMQ interface, is available on [http://localhost:8082](http://localhost:8082).

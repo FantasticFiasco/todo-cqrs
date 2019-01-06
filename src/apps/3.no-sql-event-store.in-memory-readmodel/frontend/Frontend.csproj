@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\graphql\web-graphql\Web.GraphQL.csproj" />
+    <ProjectReference Include="..\..\..\graphql\graphql-configuration\GraphQL.Configuration.csproj" />
+    <ProjectReference Include="..\..\..\messaging\messaging-in-memory\Messaging.InMemory.csproj" />
     <ProjectReference Include="..\..\..\reads\readmodel-in-memory\ReadModel.InMemory.csproj" />
     <ProjectReference Include="..\..\..\writes\event-store-no-sql\EventStore.NoSql.csproj" />
+    <ProjectReference Include="..\..\shared\Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

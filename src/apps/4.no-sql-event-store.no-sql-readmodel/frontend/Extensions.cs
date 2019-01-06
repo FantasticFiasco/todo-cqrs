@@ -1,5 +1,7 @@
 using Cqrs;
 using EventStore.NoSql;
+using GraphQL.Configuration;
+using Messaging.InMemory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReadModel;
@@ -10,41 +12,54 @@ namespace Frontend
 {
     public static class Extensions
     {
-        public static void AddDatabase(this IServiceCollection _)
+        public static IServiceCollection AddDatabase(this IServiceCollection self)
         {
             EventStore.NoSql.Schema.Create();
             ReadModel.NoSql.Schema.Create();
+
+            return self;
         }
 
-        public static void AddCqrs(this IServiceCollection self, IConfiguration configuration)
+        public static IServiceCollection AddCqrs(this IServiceCollection self, IConfiguration configuration)
         {
             // Write model
             self
                 .AddSingleton(_ => BuildEventStoreConnectionString(configuration))
-                .AddSingleton<IEventStore, NoSqlEventStore>();
-
-            // Read model
-            self
-                .AddSingleton(_ => BuildReadModelConnectionString(configuration))
-                .AddSingleton<InMemoryEventProcessor>()
-                .AddSingleton<ITodoList, NoSqlTodoList>();
+                .AddSingleton<IEventStore, NoSqlEventStore>()
+                .AddSingleton<InMemoryEventPublisher>();
 
             // Command relay
             self.AddSingleton<ICommandRelay>(provider =>
             {
                 // Create the command relay
-                var eventStore = provider.GetService<IEventStore>();
+                var eventStore = provider.GetRequiredService<IEventStore>();
                 var commandRelay = new CommandRelay(eventStore);
 
-                // Let the command relay scan the aggregate and register command handlers
+                // Let the command relay scan the aggregate and register its command handlers
                 commandRelay.RegisterHandlersFor<TodoAggregate>();
 
-                // Let the command relay scan the event processor and register publishers
-                var eventProcessor = provider.GetService<InMemoryEventProcessor>();
-                commandRelay.RegisterPublishersFor(eventProcessor);
+                // Let the command relay scan the event publisher and register its events
+                var publisher = provider.GetRequiredService<InMemoryEventPublisher>();
+                commandRelay.RegisterPublishersFor(publisher);
+
+                // Start consuming events by resolving the service
+                provider.GetRequiredService<InMemoryEventConsumer>();
 
                 return commandRelay;
             });
+
+            // Read model
+            self
+                .AddSingleton(_ => BuildReadModelConnectionString(configuration))
+                .AddSingleton<ITodoList, ITodoListSynchronizer, NoSqlTodoList>()
+                .AddSingleton<InMemoryEventConsumer>();
+
+            // GraphQL
+            self
+                .AddSingleton<IQuery, Query>()
+                .AddSingleton<IMutation, Mutation>();
+
+            return self;
         }
 
         private static EventStore.NoSql.ConnectionString BuildEventStoreConnectionString(IConfiguration configuration)

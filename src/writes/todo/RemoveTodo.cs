@@ -4,11 +4,11 @@ namespace Todo
 {
     public class RemoveTodo
     {
-        public RemoveTodo(Guid id)
-        {
-            Id = id;
-        }
+        public Guid Id { get; set; }
 
-        public Guid Id { get; }
+        public override string ToString()
+        {
+            return $"{nameof(RemoveTodo)}#{Id}";
+        }
     }
 }

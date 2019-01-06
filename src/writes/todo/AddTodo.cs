@@ -4,14 +4,13 @@ namespace Todo
 {
     public class AddTodo
     {
-        public AddTodo(Guid id, string title)
+        public Guid Id { get; set; }
+
+        public string Title { get; set; }
+
+        public override string ToString()
         {
-            Id = id;
-            Title = title;
+            return $"{nameof(AddTodo)}#{Id} Title: {Title}";
         }
-
-        public Guid Id { get; }
-
-        public string Title { get; }
     }
 }

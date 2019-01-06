@@ -23,16 +23,16 @@ namespace Todo.Test
         {
             Test(
                 Given(),
-                When(new AddTodo(id, title)),
-                Then(new TodoAdded(id, title)));
+                When(new AddTodo { Id = id, Title = title }),
+                Then(new TodoAdded { Id = id, Title = title }));
         }
 
         [Fact]
         public void ThrowExceptionOnAddTodoGivenTodoAdded()
         {
             Test(
-                Given(new TodoAdded(id, title)),
-                When(new AddTodo(id, title)),
+                Given(new TodoAdded { Id = id, Title = title }),
+                When(new AddTodo { Id = id, Title = title }),
                 ThenFailWith<TodoAlreadyExistsException>());
         }
 
@@ -40,9 +40,9 @@ namespace Todo.Test
         public void ReturnTodoRenamedGivenRenameTodo()
         {
             Test(
-                Given(new TodoAdded(id, title)),
-                When(new RenameTodo(id, newTitle)),
-                Then(new TodoRenamed(id, newTitle)));
+                Given(new TodoAdded { Id = id, Title = title }),
+                When(new RenameTodo { Id = id, NewTitle = newTitle }),
+                Then(new TodoRenamed { Id = id, NewTitle = newTitle }));
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace Todo.Test
         {
             Test(
                 Given(),
-                When(new RenameTodo(id, newTitle)),
+                When(new RenameTodo { Id = id, NewTitle = newTitle }),
                 ThenFailWith<TodoDoesNotExistException>());
         }
 
@@ -60,9 +60,9 @@ namespace Todo.Test
         {
             Test(
                 Given(
-                    new TodoAdded(id, title),
-                    new TodoRemoved(id)),
-                When(new RenameTodo(id, newTitle)),
+                    new TodoAdded { Id = id, Title = title },
+                    new TodoRemoved { Id = id }),
+                When(new RenameTodo { Id = id, NewTitle = newTitle }),
                 ThenFailWith<TodoDoesNotExistException>());
         }
 
@@ -70,9 +70,9 @@ namespace Todo.Test
         public void ReturnTodoCompletedGivenCompleteTodo()
         {
             Test(
-                Given(new TodoAdded(id, title)),
-                When(new CompleteTodo(id)),
-                Then(new TodoCompleted(id)));
+                Given(new TodoAdded { Id = id, Title = title }),
+                When(new CompleteTodo { Id = id }),
+                Then(new TodoCompleted { Id = id }));
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace Todo.Test
         {
             Test(
                 Given(),
-                When(new CompleteTodo(id)),
+                When(new CompleteTodo { Id = id }),
                 ThenFailWith<TodoDoesNotExistException>());
         }
 
@@ -89,9 +89,9 @@ namespace Todo.Test
         {
             Test(
                 Given(
-                    new TodoAdded(id, title),
-                    new TodoRemoved(id)),
-                When(new CompleteTodo(id)),
+                    new TodoAdded { Id = id, Title = title },
+                    new TodoRemoved { Id = id }),
+                When(new CompleteTodo { Id = id }),
                 ThenFailWith<TodoDoesNotExistException>());
         }
 
@@ -100,10 +100,10 @@ namespace Todo.Test
         {
             Test(
                 Given(
-                    new TodoAdded(id, title),
-                    new TodoCompleted(id)),
-                When(new IncompleteTodo(id)),
-                Then(new TodoIncompleted(id)));
+                    new TodoAdded { Id = id, Title = title},
+                    new TodoCompleted { Id = id }),
+                When(new IncompleteTodo { Id = id }),
+                Then(new TodoIncompleted { Id = id }));
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace Todo.Test
         {
             Test(
                 Given(),
-                When(new IncompleteTodo(id)),
+                When(new IncompleteTodo { Id = id }),
                 ThenFailWith<TodoDoesNotExistException>());
         }
 
@@ -120,9 +120,9 @@ namespace Todo.Test
         {
             Test(
                 Given(
-                    new TodoAdded(id, title),
-                    new TodoRemoved(id)),
-                When(new IncompleteTodo(id)),
+                    new TodoAdded { Id = id, Title = title },
+                    new TodoRemoved { Id = id }),
+                When(new IncompleteTodo { Id = id }),
                 ThenFailWith<TodoDoesNotExistException>());
         }
 
@@ -130,9 +130,9 @@ namespace Todo.Test
         public void ReturnTodoRemovedGivenRemoveIncompletedTodo()
         {
             Test(
-                Given(new TodoAdded(id, title)),
-                When(new RemoveTodo(id)),
-                Then(new TodoRemoved(id)));
+                Given(new TodoAdded { Id = id, Title = title }),
+                When(new RemoveTodo { Id = id }),
+                Then(new TodoRemoved { Id = id }));
         }
 
         [Fact]
@@ -140,10 +140,10 @@ namespace Todo.Test
         {
             Test(
                 Given(
-                    new TodoAdded(id, title),
-                    new TodoCompleted(id)),
-                When(new RemoveTodo(id)),
-                Then(new TodoRemoved(id)));
+                    new TodoAdded { Id = id, Title = title },
+                    new TodoCompleted { Id = id }),
+                When(new RemoveTodo { Id = id }),
+                Then(new TodoRemoved { Id = id }));
         }
 
         [Fact]
@@ -151,7 +151,7 @@ namespace Todo.Test
         {
             Test(
                 Given(),
-                When(new RemoveTodo(id)),
+                When(new RemoveTodo { Id = id }),
                 ThenFailWith<TodoDoesNotExistException>());
         }
 
@@ -160,9 +160,9 @@ namespace Todo.Test
         {
             Test(
                 Given(
-                    new TodoAdded(id, title),
-                    new TodoRemoved(id)),
-                When(new RemoveTodo(id)),
+                    new TodoAdded { Id = id, Title = title },
+                    new TodoRemoved { Id = id }),
+                When(new RemoveTodo { Id = id }),
                 ThenFailWith<TodoDoesNotExistException>());
         }
     }

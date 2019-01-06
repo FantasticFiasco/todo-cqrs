@@ -1,0 +1,87 @@
+version: "3"
+
+services:
+
+  todo-frontend:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.5.distributed.no-sql-event-store.no-sql-readmodel.frontend
+    ports:
+      - "8080:80"
+    environment:
+      READS_HOST: todo-reads
+      WRITES_HOST: todo-writes
+    depends_on:
+      - todo-writes
+      - todo-reads
+      - todo-reads-synchronizer
+    restart: on-failure
+
+  todo-writes:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.5.distributed.no-sql-event-store.no-sql-readmodel.writes
+    environment:
+      EVENT_STORE_HOST: event-store-and-read-model
+      EVENT_STORE_USER: root
+      EVENT_STORE_PASSWORD: secret
+      MESSAGING_HOST: messaging
+      MESSAGING_USER: root
+      MESSAGING_PASSWORD: secret
+    depends_on:
+      - event-store-and-read-model
+      - messaging
+    restart: on-failure
+
+  todo-reads:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.5.distributed.no-sql-event-store.no-sql-readmodel.reads
+    environment:
+      READ_MODEL_HOST: event-store-and-read-model
+      READ_MODEL_USER: root
+      READ_MODEL_PASSWORD: secret
+    depends_on:
+      - event-store-and-read-model
+    restart: on-failure
+
+  todo-reads-synchronizer:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.5.distributed.no-sql-event-store.no-sql-readmodel.reads-synchronizer
+    environment:
+      MESSAGING_HOST: messaging
+      MESSAGING_USER: root
+      MESSAGING_PASSWORD: secret
+      READ_MODEL_HOST: event-store-and-read-model
+      READ_MODEL_USER: root
+      READ_MODEL_PASSWORD: secret
+    depends_on:
+      - messaging
+    restart: on-failure
+
+  event-store-and-read-model:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+
+  event-store-and-read-model-ui:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: event-store-and-read-model
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: secret
+    depends_on:
+      - event-store-and-read-model
+    restart: on-failure
+
+  messaging:
+    image: rabbitmq:management
+    environment:
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: secret
+    ports:
+      - "8082:15672"

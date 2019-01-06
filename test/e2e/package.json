@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "tslint **/*.ts",
-    "test": "mocha --require ts-node/register *.ts"
+    "test": "mocha --require ts-node/register *.ts --timeout 10000"
   },
   "author": "Mattias Kindborg <mattias.kindborg@gmail.com> (https://twitter.com/FantasticFiasco)",
   "license": "Apache-2.0",
