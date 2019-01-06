@@ -1,17 +1,16 @@
 namespace Cqrs
 {
     /// <summary>
-    /// TODO: Rewrite
+    /// Interface responsible for publishing events of a particular type.
     /// </summary>
     /// <typeparam name="TEvent">
-    /// TODO: Rewrite
+    /// The event type to publish.
     /// </typeparam>
     public interface IPublisher<in TEvent>
     {
         /// <summary>
-        /// TODO: Rewrite
+        /// Publishes an event.
         /// </summary>
-        /// <param name="e">TODO: Rewrite</param>
         void Publish(TEvent e);
     }
 }
