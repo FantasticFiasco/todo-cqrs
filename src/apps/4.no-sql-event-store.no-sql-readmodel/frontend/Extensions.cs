@@ -26,24 +26,24 @@ namespace Frontend
             // Read model
             self
                 .AddSingleton(_ => BuildReadModelConnectionString(configuration))
-                .AddSingleton<EventConsumer>()
+                .AddSingleton<InMemoryEventProcessor>()
                 .AddSingleton<ITodoList, NoSqlTodoList>();
 
-            // Message dispatcher
-            self.AddSingleton(provider =>
+            // Command relay
+            self.AddSingleton<ICommandRelay>(provider =>
             {
-                // Create the message dispatcher
+                // Create the command relay
                 var eventStore = provider.GetService<IEventStore>();
-                var messageDispatcher = new MessageDispatcher(eventStore);
+                var commandRelay = new CommandRelay(eventStore);
 
-                // Let the message dispatcher scan the aggregate and register IHandleCommand implementations
-                messageDispatcher.ScanInstance(new TodoAggregate());
+                // Let the command relay scan the aggregate and register command handlers
+                commandRelay.RegisterHandlersFor<TodoAggregate>();
 
-                // Let the message dispatcher scan the event consumer and register ISubscribeTo implementations
-                var eventConsumer = provider.GetService<EventConsumer>();
-                messageDispatcher.ScanInstance(eventConsumer);
+                // Let the command relay scan the event processor and register publishers
+                var eventProcessor = provider.GetService<InMemoryEventProcessor>();
+                commandRelay.RegisterPublishersFor(eventProcessor);
 
-                return messageDispatcher;
+                return commandRelay;
             });
         }
 

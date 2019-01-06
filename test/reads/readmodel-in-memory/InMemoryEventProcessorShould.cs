@@ -6,22 +6,22 @@ using Xunit;
 
 namespace ReadModel.InMemory
 {
-    public class EventConsumerShould
+    public class InMemoryEventProcessorShould
     {
         private readonly InMemoryTodoList todoList;
-        private readonly EventConsumer eventConsumer;
+        private readonly InMemoryEventProcessor inMemoryEventProcessor;
 
-        public EventConsumerShould()
+        public InMemoryEventProcessorShould()
         {
             todoList = new InMemoryTodoList(NullLogger<InMemoryTodoList>.Instance);
-            eventConsumer = new EventConsumer(todoList, NullLogger<EventConsumer>.Instance);
+            inMemoryEventProcessor = new InMemoryEventProcessor(todoList, NullLogger<InMemoryEventProcessor>.Instance);
         }
 
         [Fact]
         public async Task HandleAddedTodoItem()
         {
             // Act
-            eventConsumer.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
+            inMemoryEventProcessor.Publish(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
 
             // Assert
             (await todoList.GetAllAsync()).ShouldBe(new[] { ObjectMother.BuyCheese });
@@ -31,8 +31,8 @@ namespace ReadModel.InMemory
         public async Task HandleAddedTodoItems()
         {
             // Act
-            eventConsumer.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
-            eventConsumer.Handle(new TodoAdded(ObjectMother.WashCar.Id, ObjectMother.WashCar.Title));
+            inMemoryEventProcessor.Publish(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
+            inMemoryEventProcessor.Publish(new TodoAdded(ObjectMother.WashCar.Id, ObjectMother.WashCar.Title));
 
             // Assert
             (await todoList.GetAllAsync()).ShouldBe(new[] { ObjectMother.BuyCheese, ObjectMother.WashCar });
@@ -42,11 +42,11 @@ namespace ReadModel.InMemory
         public async Task HandleCompletedTodoItem()
         {
             // Arrange
-            eventConsumer.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
-            eventConsumer.Handle(new TodoAdded(ObjectMother.WashCar.Id, ObjectMother.WashCar.Title));
+            inMemoryEventProcessor.Publish(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
+            inMemoryEventProcessor.Publish(new TodoAdded(ObjectMother.WashCar.Id, ObjectMother.WashCar.Title));
 
             // Act
-            eventConsumer.Handle(new TodoCompleted(ObjectMother.BuyCheese.Id));
+            inMemoryEventProcessor.Publish(new TodoCompleted(ObjectMother.BuyCheese.Id));
 
             // Assert
             (await todoList.GetAllAsync()).ShouldBe(new[] { ObjectMother.BuyCheese.ButCompleted(), ObjectMother.WashCar });
@@ -56,12 +56,12 @@ namespace ReadModel.InMemory
         public async Task HandleIncompletedTodoItem()
         {
             // Arrange
-            eventConsumer.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
-            eventConsumer.Handle(new TodoAdded(ObjectMother.WashCar.Id, ObjectMother.WashCar.Title));
-            eventConsumer.Handle(new TodoCompleted(ObjectMother.BuyCheese.Id));
+            inMemoryEventProcessor.Publish(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
+            inMemoryEventProcessor.Publish(new TodoAdded(ObjectMother.WashCar.Id, ObjectMother.WashCar.Title));
+            inMemoryEventProcessor.Publish(new TodoCompleted(ObjectMother.BuyCheese.Id));
 
             // Act
-            eventConsumer.Handle(new TodoIncompleted(ObjectMother.BuyCheese.Id));
+            inMemoryEventProcessor.Publish(new TodoIncompleted(ObjectMother.BuyCheese.Id));
 
             // Assert
             (await todoList.GetAllAsync()).ShouldBe(new[] { ObjectMother.BuyCheese, ObjectMother.WashCar });
@@ -71,10 +71,10 @@ namespace ReadModel.InMemory
         public async Task HandleRemoveIncompletedTodoItem()
         {
             // Arrange
-            eventConsumer.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
+            inMemoryEventProcessor.Publish(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
 
             // Act
-            eventConsumer.Handle(new TodoRemoved(ObjectMother.BuyCheese.Id));
+            inMemoryEventProcessor.Publish(new TodoRemoved(ObjectMother.BuyCheese.Id));
 
             // Assert
             (await todoList.GetAllAsync()).ShouldBeEmpty();
@@ -84,11 +84,11 @@ namespace ReadModel.InMemory
         public async Task HandleRemoveCompletedTodoItem()
         {
             // Arrange
-            eventConsumer.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
-            eventConsumer.Handle(new TodoCompleted(ObjectMother.BuyCheese.Id));
+            inMemoryEventProcessor.Publish(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
+            inMemoryEventProcessor.Publish(new TodoCompleted(ObjectMother.BuyCheese.Id));
 
             // Act
-            eventConsumer.Handle(new TodoRemoved(ObjectMother.BuyCheese.Id));
+            inMemoryEventProcessor.Publish(new TodoRemoved(ObjectMother.BuyCheese.Id));
 
             // Assert
             (await todoList.GetAllAsync()).ShouldBeEmpty();
@@ -98,12 +98,12 @@ namespace ReadModel.InMemory
         public async Task HandleRenamedTodoItem()
         {
             // Arrange
-            eventConsumer.Handle(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
+            inMemoryEventProcessor.Publish(new TodoAdded(ObjectMother.BuyCheese.Id, ObjectMother.BuyCheese.Title));
 
             var newTitle = "Apply for 6-month tax extension";
 
             // Act
-            eventConsumer.Handle(new TodoRenamed(ObjectMother.BuyCheese.Id, newTitle));
+            inMemoryEventProcessor.Publish(new TodoRenamed(ObjectMother.BuyCheese.Id, newTitle));
 
             // Assert
             (await todoList.GetAllAsync()).ShouldBe(new[] { ObjectMother.BuyCheese.ButWithTitle(newTitle) });
