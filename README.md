@@ -102,7 +102,7 @@ Run the following command in the root of the repository to start the application
 $ docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up
 ```
 
-The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
+GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
 ### Single process using SQL event store and in-memory read model
 
@@ -128,7 +128,7 @@ Run the following command in the root of the repository to start the application
 $ docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up
 ```
 
-The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
+GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
 [Adminer](https://www.adminer.org/), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081), where the following information is entered to view the PostgreSQL database.
 
@@ -162,7 +162,7 @@ Run the following command in the root of the repository to start the application
 $ docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up
 ```
 
-The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
+GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
 [Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).
 
@@ -189,7 +189,7 @@ Run the following command in the root of the repository to start the application
 $ docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up
 ```
 
-The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
+GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
 [Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).
 
@@ -197,7 +197,7 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 #### Requirements
 
-- **The application read/write quota strongly favors reads, and the solutions architect has deemed it necessary to scale reads vertically without affecting writes**
+- **The application read/write quota strongly favors reads, and the solutions architect has deemed it necessary being able to scale up reads without affecting writes**
 - **State can be eventual consistent, i.e. changes introduced by commands might take some time to propagate through the application and be reflected in the read model**
 - State should be durable, the application should retain it after application restart
 - Since the state isn't relational by nature, the solutions architect has deemed a relational database to be inappropriate, and requires the usage of a NoSQL document database
@@ -205,11 +205,11 @@ The GraphQL playground is available on [http://localhost:8080/ui/playground](htt
 
 #### Solution
 
-The code needed to fulfill the requirements can be found in `5.Distributed.NoSqlEventStore.NoSqlReadModel.sln`. It has moved the command handlers and the read model into their own processes, where the read model is consuming events from a RabbitMQ message queue and updates the read model accordingly.
+The code needed to fulfill the requirements can be found in `5.Distributed.NoSqlEventStore.NoSqlReadModel.sln`. The command handlers reside in their own process, as do the read model, thus living up to the requirement of being able to scale up reads without affecting writes.
 
-TODO: Add something about JSON-RPC
+Reading events produced by aggregates and update the read model accordingly, i.e. synchronization of the read model, has also been moved into its own process. This decoupling means that we no longer is able to pass events in memory. [RabbitMQ](https://www.rabbitmq.com/) has been added to the application, taking the role of being the message broker between the different parts of the application.
 
-Decoupling reads from writes means that the application has moved from being strongly consistent to eventually consistent. This is one of the drawbacks of being a distributed system, but something we embrace to achieve reliability. The read model is no longer entangled in the command handling process. It has its own process, and can continue to serve client reads event if the command handling process by some mishap terminates.
+Decoupling also means that the application has morphed from being strongly consistent into eventually consistent. This is one of the drawbacks of being a distributed system, but something we embrace to achieve reliability. The read model is no longer entangled in the command handling process. It has its own process, and can continue to serve client even if the command handling process by some mishap terminates.
 
 #### Running the application
 
@@ -219,6 +219,8 @@ Run the following command in the root of the repository to start the application
 $ docker-compose -f ./docker-compose.5.distributed-no-sql-event-store.no-sql-readmodel.yml up
 ```
 
-The GraphQL playground is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
+GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
-The [Rabbit Management plugin](https://www.rabbitmq.com/management.html), a graphical RabbitMQ interface, is available on [http://localhost:8082](http://localhost:8082).
+[Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).
+
+The [Rabbit Management plugin](https://www.rabbitmq.com/management.html), a graphical message broker interface, is available on [http://localhost:8082](http://localhost:8082).
