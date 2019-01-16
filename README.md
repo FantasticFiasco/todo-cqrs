@@ -205,11 +205,11 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 
 #### Solution
 
-The code needed to fulfill the requirements can be found in `5.Distributed.NoSqlEventStore.NoSqlReadModel.sln`. The command handlers reside in their own process, as do the read model, thus living up to the requirement of being able to scale up reads without affecting writes.
+The code needed to fulfill the requirements can be found in `5.Distributed.NoSqlEventStore.NoSqlReadModel.sln`. The command handlers and the read model reside in their own process, thus living up to the requirement of being independently scalable.
 
-Reading events produced by aggregates and update the read model accordingly, i.e. synchronization of the read model, has also been moved into its own process. This decoupling means that we no longer is able to pass events in memory. [RabbitMQ](https://www.rabbitmq.com/) has been added to the application, taking the role of being the message broker between the different parts of the application.
+Reading events produced by aggregates and update the read model accordingly, i.e. synchronization of the read model, has also been moved into its own process. This decoupling means that we no longer is able to publish and subscribe to events in memory. [RabbitMQ](https://www.rabbitmq.com/) has been added to the application, taking the role of being the message broker between the different parts of the application.
 
-Decoupling also means that the application has morphed from being strongly consistent into eventually consistent. This is one of the drawbacks of being a distributed system, but something we embrace to achieve reliability. The read model is no longer entangled in the command handling process. It has its own process, and can continue to serve client even if the command handling process by some mishap terminates.
+Decoupling also means that the application has morphed from being strongly consistent into eventually consistent. This is one of the drawbacks of a distributed system, but something we embrace to achieve reliability. The read model is no longer entangled in the command handling process. It has its own process, and can continue to serve client even if the command handling process by some mishap terminates.
 
 #### Running the application
 
