@@ -7,7 +7,12 @@
 - [Introduction](#introduction)
 - [What you will end up with](#what-you-will-end-up-with)
 - [Acceptance criteria](#acceptance-criteria)
-- [Implementations](#Implementations)
+- [Single process using in-memory event store and in-memory read model](#single-process-using-in-memory-event-store-and-in-memory-read-model)
+- [Single process using SQL event store and in-memory read model](#single-process-using-sql-event-store-and-in-memory-read-model)
+- [Single process using NoSQL event store and in-memory read model](#single-process-using-nosql-event-store-and-in-memory-read-model)
+- [Single process using NoSQL event store and NoSQL read model](#single-process-using-nosql-event-store-and-nosql-read-model)
+- [Distributed NoSQL event store and NoSQL read model](#distributed-nosql-event-store-and-nosql-read-model)
+
 
 ## Introduction
 
@@ -77,24 +82,22 @@ Given a Todo list with a single item 'Buy cheese'<br/>
 When the item changed to 'Apply for 6-month tax extension'<br/>
 Then only the revised item is listed
 
-## Implementations
+## Single process using in-memory event store and in-memory read model
 
-Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
-
-### Single process using in-memory event store and in-memory read model
-
-#### Requirements
+### Requirements
 
 - **State should be strongly consistent, i.e. changes introduced by commands should immediately be reflected in the read model**
 - **State does not need to be durable, clients can accept losing it given application restart**
 
-#### Solution
+### Solution
 
 The code needed to fulfill the requirements can be found in `1.InMemoryEventStore.InMemoryReadModel.sln`. It contains a very basic in-memory event store that holds all published events.
 
 The read model is also held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being processed, the read model also becomes unavailable.
 
-#### Running the application
+### Running the application
+
+Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
 
 Run the following command in the root of the repository to start the application.
 
@@ -104,15 +107,15 @@ $ docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel
 
 GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
-### Single process using SQL event store and in-memory read model
+## Single process using SQL event store and in-memory read model
 
-#### Requirements
+### Requirements
 
 - State should be strongly consistent, i.e. changes introduced by commands should immediately be reflected in the read model
 - **State should be durable, the application should retain it after application restart**
 - **It is acceptable that state is rebuilt using some manual process after application termination, since it isn't mission critical**
 
-#### Solution
+### Solution
 
 The code needed to fulfill the requirements can be found in `2.SqlEventStore.InMemoryReadModel.sln`. It has replaced the in-memory event store with one that persists events in a [PostgreSQL](https://www.postgresql.org/) database, thus living up to the requirements of being durable.
 
@@ -120,7 +123,9 @@ The read model is still being held in memory, in the same process as the event s
 
 All evens will have to be manually replayed after application termination to get the current state of the application, all according to the requirements.
 
-#### Running the application
+### Running the application
+
+Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
 
 Run the following command in the root of the repository to start the application.
 
@@ -137,16 +142,16 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 - Username: `root`
 - Password: `secret`
 
-### Single process using NoSQL event store and in-memory read model
+## Single process using NoSQL event store and in-memory read model
 
-#### Requirements
+### Requirements
 
 - State should be strongly consistent, i.e. changes introduced by commands should immediately be reflected in the read model
 - State should be durable, the application should retain it after application restart
 - It is acceptable that state is rebuilt using some manual process after application termination, since it isn't mission critical
 - **Since the state isn't relational by nature, the solutions architect has deemed a relational database to be inappropriate, and requires the usage of a NoSQL document database**
 
-#### Solution
+### Solution
 
 The code needed to fulfill the requirements can be found in `3.NoSqlEventStore.InMemoryReadModel.sln`. It has replaced the SQL event store with one that persists events in a [MongoDB](https://www.mongodb.com/) document database, thus living up to the requirements of being NoSQL.
 
@@ -154,7 +159,9 @@ The read model is still being held in memory, in the same process as the event s
 
 All evens will have to be manually replayed after application termination to get the current state of the application, all according to the requirements.
 
-#### Running the application
+### Running the application
+
+Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
 
 Run the following command in the root of the repository to start the application.
 
@@ -166,22 +173,24 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 
 [Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).
 
-### Single process using NoSQL event store and NoSQL read model
+## Single process using NoSQL event store and NoSQL read model
 
-#### Requirements
+### Requirements
 
 - State should be strongly consistent, i.e. changes introduced by commands should immediately be reflected in the read model
 - State should be durable, the application should retain it after application restart
 - Since the state isn't relational by nature, the solutions architect has deemed a relational database to be inappropriate, and requires the usage of a NoSQL document database
 - **State should automatically be available on restart after application termination**
 
-#### Solution
+### Solution
 
 The code needed to fulfill the requirements can be found in `4.NoSqlEventStore.NoSqlReadModel.sln`. It has replaced the in-memory read model with one that persists todo items in a [MongoDB](https://www.mongodb.com/) document database, thus living up to the requirements of being available after application restart.
 
 The read model is still being served by the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being processed, the read model also becomes unavailable.
 
-#### Running the application
+### Running the application
+
+Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
 
 Run the following command in the root of the repository to start the application.
 
@@ -193,9 +202,9 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 
 [Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).
 
-### Distributed NoSQL event store and NoSQL read model
+## Distributed NoSQL event store and NoSQL read model
 
-#### Requirements
+### Requirements
 
 - **The application read/write quota strongly favors reads, and the solutions architect has deemed it necessary being able to scale up reads without affecting writes**
 - **State can be eventual consistent, i.e. changes introduced by commands might take some time to propagate through the application and be reflected in the read model**
@@ -203,7 +212,7 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 - Since the state isn't relational by nature, the solutions architect has deemed a relational database to be inappropriate, and requires the usage of a NoSQL document database
 - State should automatically be available on restart after application termination
 
-#### Solution
+### Solution
 
 The code needed to fulfill the requirements can be found in `5.Distributed.NoSqlEventStore.NoSqlReadModel.sln`. The command handlers and the read model reside in their own process, thus living up to the requirement of being independently scalable.
 
@@ -211,7 +220,9 @@ Reading events produced by aggregates and update the read model accordingly, i.e
 
 Decoupling also means that the application has morphed from being strongly consistent into eventually consistent. This is one of the drawbacks of a distributed system, but something we embrace to achieve reliability. The read model is no longer entangled in the command handling process. It has its own process, and can continue to serve client even if the command handling process by some mishap terminates.
 
-#### Running the application
+### Running the application
+
+Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
 
 Run the following command in the root of the repository to start the application.
 
