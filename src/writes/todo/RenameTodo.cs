@@ -4,14 +4,13 @@ namespace Todo
 {
     public class RenameTodo
     {
-        public RenameTodo(Guid id, string newTitle)
+        public Guid Id { get; set; }
+
+        public string NewTitle { get; set; }
+
+        public override string ToString()
         {
-            Id = id;
-            NewTitle = newTitle;
+            return $"{nameof(RenameTodo)}#{Id} Title: {NewTitle}";
         }
-
-        public Guid Id { get; }
-
-        public string NewTitle { get; }
     }
 }

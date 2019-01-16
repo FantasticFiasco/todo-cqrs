@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using GraphQL.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Web.GraphQL;
 
 namespace Frontend
 {
@@ -9,8 +9,9 @@ namespace Frontend
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCqrs();
-            services.AddTodoGraphQL();
+            services
+                .AddCqrs()
+                .AddTodoGraphQL();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

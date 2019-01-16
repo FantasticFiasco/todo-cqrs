@@ -4,11 +4,11 @@ namespace Todo
 {
     public class IncompleteTodo
     {
-        public IncompleteTodo(Guid id)
-        {
-            Id = id;
-        }
+        public Guid Id { get; set; }
 
-        public Guid Id { get; }
+        public override string ToString()
+        {
+            return $"{nameof(IncompleteTodo)}#{Id}";
+        }
     }
 }

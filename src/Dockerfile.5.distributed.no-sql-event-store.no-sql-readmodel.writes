@@ -1,0 +1,9 @@
+FROM microsoft/dotnet:sdk AS build-env
+WORKDIR /app
+COPY . ./
+RUN dotnet publish -c Release -o out ./apps/5.distributed.no-sql-event-store.no-sql-readmodel/writes/Writes.csproj
+
+FROM microsoft/dotnet:aspnetcore-runtime
+WORKDIR /app
+COPY --from=build-env /app/apps/5.distributed.no-sql-event-store.no-sql-readmodel/writes/out .
+ENTRYPOINT ["dotnet", "Writes.dll"]

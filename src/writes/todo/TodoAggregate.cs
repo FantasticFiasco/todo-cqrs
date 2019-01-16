@@ -20,37 +20,54 @@ namespace Todo
 
         public IEnumerable Handle(AddTodo command)
         {
-            if (exists) throw new TodoAlreadyExistsException();
+            if (exists) throw new TodoAlreadyExistsException(command.Id);
 
-            yield return new TodoAdded(command.Id, command.Title);
+            yield return new TodoAdded
+            {
+                Id = command.Id,
+                Title = command.Title
+            };
         }
 
         public IEnumerable Handle(RenameTodo command)
         {
-            if (!exists) throw new TodoDoesNotExistException();
+            if (!exists) throw new TodoDoesNotExistException(command.Id);
 
-            yield return new TodoRenamed(command.Id, command.NewTitle);
+            yield return new TodoRenamed
+            {
+                Id = command.Id,
+                NewTitle = command.NewTitle
+            };
         }
 
         public IEnumerable Handle(CompleteTodo command)
         {
-            if (!exists) throw new TodoDoesNotExistException();
+            if (!exists) throw new TodoDoesNotExistException(command.Id);
 
-            yield return new TodoCompleted(command.Id);
+            yield return new TodoCompleted
+            {
+                Id = command.Id
+            };
         }
 
         public IEnumerable Handle(IncompleteTodo command)
         {
-            if (!exists) throw new TodoDoesNotExistException();
+            if (!exists) throw new TodoDoesNotExistException(command.Id);
 
-            yield return new TodoIncompleted(command.Id);
+            yield return new TodoIncompleted
+            {
+                Id = command.Id
+            };
         }
 
         public IEnumerable Handle(RemoveTodo command)
         {
-            if (!exists) throw new TodoDoesNotExistException();
+            if (!exists) throw new TodoDoesNotExistException(command.Id);
 
-            yield return new TodoRemoved(command.Id);
+            yield return new TodoRemoved
+            {
+                Id = command.Id
+            };
         }
 
         public void Apply(TodoAdded e)
