@@ -20,13 +20,12 @@ namespace EventStore.InMemory
 
         public IEnumerable<object> LoadEventsFor<TAggregate>(Guid id)
         {
-            // Get the current event stream. Note that we never mutate the
-            // events array so it's safe to return the real thing.
+            // Get the current event stream
             var events = store.TryGetValue(id, out var stream)
                 ? stream.Events
-                : new object[0];
+                : new List<object>();
 
-            logger.LogInformation("Loaded {count} events for aggregate {id}", events.Length, id);
+            logger.LogInformation("Loaded {count} events for aggregate {id}", events.Count, id);
 
             return events;
         }
@@ -36,38 +35,21 @@ namespace EventStore.InMemory
             logger.LogInformation("Save {count} event(s) for aggregate {id}", newEvents.Length, id);
 
             // Get or create stream
-            var stream = store.GetOrAdd(id, _ => new Stream());
+            var stream = store.GetOrAdd(id, new Stream());
 
-            // We'll use a lock-free algorithm for the update
-            while (true)
+
+            lock (stream)
             {
-                // Read the current event list
-                var events = stream.Events;
-
                 // Ensure no events persisted since us
-                var previousEvents = events?.Length ?? 0;
+                if (stream.Events.Count != eventsLoaded) throw new Exception("Concurrency conflict; cannot persist these events");
 
-                if (previousEvents != eventsLoaded) throw new Exception("Concurrency conflict; cannot persist these events");
-
-                // Create a new event list with existing ones plus our new
-                // ones (making new important for lock free algorithm!)
-                var newEventList = events == null
-                    ? new List<object>()
-                    : new List<object>((object[])events.Clone());
-
-                newEventList.AddRange(newEvents);
-
-                // Try to put the new event list in place atomically
-                if (Interlocked.CompareExchange(ref stream.Events, newEventList.ToArray(), events) == events)
-                {
-                    break;
-                }
+                stream.Events.AddRange(newEvents);
             }
         }
 
         private class Stream
         {
-            public object[] Events;
+            public List<object> Events { get; } = new List<object>();
         }
     }
 }
