@@ -37,7 +37,6 @@ namespace EventStore.InMemory
             // Get or create stream
             var stream = store.GetOrAdd(id, new Stream());
 
-
             lock (stream)
             {
                 // Ensure no events persisted since us
