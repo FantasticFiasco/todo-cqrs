@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . ./
 RUN dotnet publish -c Release -o out ./apps/5.distributed.no-sql-event-store.no-sql-readmodel/reads-synchronizer/Reads.Synchronizer.csproj
 
-FROM microsoft/2.2-dotnet:aspnetcore-runtime
+FROM microsoft/2.2-aspnetcore-runtime
 WORKDIR /app
 COPY --from=build-env /app/apps/5.distributed.no-sql-event-store.no-sql-readmodel/reads-synchronizer/out .
 ENTRYPOINT ["dotnet", "Reads.Synchronizer.dll"]
