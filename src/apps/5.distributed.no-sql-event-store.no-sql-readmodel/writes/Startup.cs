@@ -21,7 +21,7 @@ namespace Writes
                 .AddDatabase()
                 .AddCqrs(configuration)
                 .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(options =>
                 {
                     options.RegisterValidatorsFromAssemblyContaining<Startup>();
