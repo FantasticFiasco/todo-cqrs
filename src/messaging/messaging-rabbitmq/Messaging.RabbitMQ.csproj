@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EasyNetQ" Version="3.3.9" />
+    <PackageReference Include="EasyNetQ" Version="3.4.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
   </ItemGroup>
 
