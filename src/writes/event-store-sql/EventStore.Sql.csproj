@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Npgsql" Version="4.0.9" />
+    <PackageReference Include="Npgsql" Version="4.0.10" />
   </ItemGroup>
 
 </Project>
