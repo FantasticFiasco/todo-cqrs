@@ -10,8 +10,4 @@
     <ProjectReference Include="..\..\..\reads\readmodel-no-sql\ReadModel.NoSql.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
 </Project>
