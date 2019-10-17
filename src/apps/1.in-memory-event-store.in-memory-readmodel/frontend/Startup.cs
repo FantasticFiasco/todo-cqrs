@@ -11,14 +11,14 @@ namespace Frontend
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddCqrs()
+                .AddTodoGraphQL();
+
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
             });
-
-            services
-                .AddCqrs()
-                .AddTodoGraphQL();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
