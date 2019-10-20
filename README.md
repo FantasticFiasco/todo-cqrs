@@ -13,7 +13,6 @@
 - [Single process using NoSQL event store and NoSQL read model](#single-process-using-nosql-event-store-and-nosql-read-model)
 - [Distributed NoSQL event store and NoSQL read model](#distributed-nosql-event-store-and-nosql-read-model)
 
-
 ## Introduction
 
 This repository contains various implementations meeting the acceptance criteria of [TodoMVC](http://todomvc.com/), built using CQRS and event sourcing. It starts with a very basic in-memory event store, but then gradually becomes more complex with increasing requirements.
@@ -227,7 +226,7 @@ Before running any of the implementations, please make sure [Docker](https://www
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f ./docker-compose.5.distributed-no-sql-event-store.no-sql-readmodel.yml up
+$ docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml up
 ```
 
 GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
