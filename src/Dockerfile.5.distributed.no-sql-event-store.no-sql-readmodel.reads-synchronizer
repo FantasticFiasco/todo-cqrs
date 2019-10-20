@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 COPY . ./
 RUN dotnet publish -c Release -o out ./apps/5.distributed.no-sql-event-store.no-sql-readmodel/reads-synchronizer/Reads.Synchronizer.csproj
