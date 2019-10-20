@@ -20,8 +20,11 @@ namespace Writes
             services
                 .AddDatabase()
                 .AddCqrs(configuration)
-                .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddMvc(options =>
+                {
+                    options.EnableEndpointRouting = false;
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddFluentValidation(options =>
                 {
                     options.RegisterValidatorsFromAssemblyContaining<Startup>();
