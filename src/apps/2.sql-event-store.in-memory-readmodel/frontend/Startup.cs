@@ -27,7 +27,6 @@ namespace Frontend
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
-
             });
         }
 
