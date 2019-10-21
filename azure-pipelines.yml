@@ -57,6 +57,7 @@ jobs:
       cd ./test/e2e
       yarn
       yarn test
+      docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml down
     displayName: Run e2e tests
 
 - job: e2e-sql-eventstore-inmemory-readmodel
@@ -69,6 +70,7 @@ jobs:
       cd ./test/e2e
       yarn
       yarn test
+      docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml down
     displayName: Run e2e tests
 
 - job: e2e-nosql-eventstore-inmemory-readmodel
@@ -81,6 +83,7 @@ jobs:
       cd ./test/e2e
       yarn
       yarn test
+      docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml down
     displayName: Run e2e tests
 
 - job: e2e-nosql-eventstore-nosql-readmodel
@@ -93,6 +96,7 @@ jobs:
       cd ./test/e2e
       yarn
       yarn test
+      docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml down
     displayName: Run e2e tests
 
 - job: e2e-distributed-nosql-eventstore-nosql-readmodel
@@ -105,4 +109,5 @@ jobs:
       cd ./test/e2e
       yarn
       yarn test
+      docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml down
     displayName: Run e2e tests
