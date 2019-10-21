@@ -52,12 +52,12 @@ jobs:
   pool:
     vmImage: Ubuntu 16.04
   steps:
+  - bash: docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up --build --detach
   - bash: |
-      docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up --build --detach
       cd ./test/e2e
       yarn
       yarn test
-      docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml down
+  - bash: docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml down
     displayName: Run e2e tests
 
 - job: e2e_sql_eventstore_inmemory_readmodel
@@ -65,12 +65,12 @@ jobs:
   pool:
     vmImage: Ubuntu 16.04
   steps:
+  - bash: docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up --build --detach
   - bash: |
-      docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up --build --detach
       cd ./test/e2e
       yarn
       yarn test
-      docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml down
+  - bash: docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml down
     displayName: Run e2e tests
 
 - job: e2e_nosql_eventstore_inmemory_readmodel
@@ -91,12 +91,12 @@ jobs:
   pool:
     vmImage: Ubuntu 16.04
   steps:
+  - bash: docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up --build --detach
   - bash: |
-      docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up --build --detach
       cd ./test/e2e
       yarn
       yarn test
-      docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml down
+  - bash: docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml down
     displayName: Run e2e tests
 
 - job: e2e_distributed_nosql_eventstore_nosql_readmodel
@@ -104,10 +104,10 @@ jobs:
   pool:
     vmImage: Ubuntu 16.04
   steps:
+  - bash: docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml up --build --detach
   - bash: |
-      docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml up --build --detach
       cd ./test/e2e
       yarn
       yarn test
-      docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml down
+  - bash: docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml down
     displayName: Run e2e tests
