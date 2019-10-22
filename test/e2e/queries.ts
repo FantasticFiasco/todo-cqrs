@@ -33,7 +33,7 @@ describe('queries', () => {
     const firstId = await mutation.add(firstTitle);
     const secondId = await mutation.add(secondTitle);
 
-    await sleep(1000);
+    // await sleep(1000);
 
     const actual = await query.getAll();
 
