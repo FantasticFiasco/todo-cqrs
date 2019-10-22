@@ -9,19 +9,19 @@ describe('mutations', () => {
   const query = new QueryApiModel(url);
 
   beforeEach('given an empty todo list', async () => {
-    console.log(t, "Start beforeEach");
+    console.log(t(), "Start beforeEach");
 
     const todos = await query.getAll();
 
     for (const todo of todos) {
-      console.log(t, `Removing todo ${todo.id} - ${todo.title}`);
+      console.log(t(), `Removing todo ${todo.id} - ${todo.title}`);
       await mutation.remove(todo.id);
     }
 
-    console.log(t, "Before await");
+    console.log(t(), "Before await");
     await condition(() => query.getAll().then((result) => result.length === 0));
-    console.log(t, "After await");
-    console.log(t, "End beforeEach");
+    console.log(t(), "After await");
+    console.log(t(), "End beforeEach");
   });
 
   it('should add item given empty list', async () => {
@@ -135,7 +135,7 @@ describe('mutations', () => {
 
 });
 
-function t() {
+function t(): string {
   const today = new Date();
   return today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 }
