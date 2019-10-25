@@ -106,6 +106,7 @@ jobs:
   steps:
   - bash: docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml up --build --detach
   - bash: |
+      sleep 1m
       cd ./test/e2e
       yarn
       yarn test
