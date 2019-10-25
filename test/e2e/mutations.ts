@@ -24,7 +24,7 @@ describe('mutations', () => {
 
     console.log(t(), "Before await");
     console.log("-4");
-    await condition(() => query.getAll().then((result) => result.length === 0));
+    await condition(async () => await query.getAll().then((result) => result.length === 0));
     console.log(t(), "After await");
     console.log(t(), "End beforeEach");
     console.log("-5");
@@ -38,7 +38,7 @@ describe('mutations', () => {
     const id = await mutation.add(title);
 
     console.log("3");
-    await condition(() => query.getAll().then((result) => result.length === 1));
+    await condition(async () => await query.getAll().then((result) => result.length === 1));
     console.log("4");
     const actual = await query.getAll();
     console.log("5");
@@ -58,7 +58,7 @@ describe('mutations', () => {
     const firstId = await mutation.add(firstTitle);
     const secondId = await mutation.add(secondTitle);
 
-    await condition(() => query.getAll().then((result) => result.length === 2));
+    await condition(async () => await query.getAll().then((result) => result.length === 2));
     const actual = await query.getAll();
     const expected = [
       new Todo(firstId, firstTitle, false),
@@ -75,7 +75,7 @@ describe('mutations', () => {
 
     await mutation.complete(firstId);
 
-    await condition(() => query.get(firstId).then((result) => result.isCompleted === true));
+    await condition(async () => await query.get(firstId).then((result) => result.isCompleted === true));
     const actual = await query.getAll();
     const expected = [
       new Todo(firstId, firstTitle, true),
@@ -90,11 +90,11 @@ describe('mutations', () => {
     const firstId = await mutation.add(firstTitle);
     const secondId = await mutation.add(secondTitle);
     await mutation.complete(firstId);
-    await condition(() => query.get(firstId).then((result) => result.isCompleted === true));
+    await condition(async () => await query.get(firstId).then((result) => result.isCompleted === true));
 
     await mutation.incomplete(firstId);
 
-    await condition(() => query.get(firstId).then((result) => result.isCompleted === false));
+    await condition(async () => await query.get(firstId).then((result) => result.isCompleted === false));
     const actual = await query.getAll();
     const expected = [
       new Todo(firstId, firstTitle, false),
@@ -106,11 +106,11 @@ describe('mutations', () => {
   it('should remove incomplete item', async () => {
     const title = 'Buy cheese';
     const id = await mutation.add(title);
-    await condition(() => query.getAll().then((result) => result.length === 1));
+    await condition(async () => await query.getAll().then((result) => result.length === 1));
 
     await mutation.remove(id);
 
-    await condition(() => query.getAll().then((result) => result.length === 0));
+    await condition(async () => await query.getAll().then((result) => result.length === 0));
     const actual = await query.getAll();
     const expected = [];
     expect(actual).to.deep.equal(expected);
@@ -120,11 +120,11 @@ describe('mutations', () => {
     const title = 'Buy cheese';
     const id = await mutation.add(title);
     await mutation.complete(id);
-    await condition(() => query.get(id).then((result) => result.isCompleted === true));
+    await condition(async () => await query.get(id).then((result) => result.isCompleted === true));
 
     await mutation.remove(id);
 
-    await condition(() => query.getAll().then((result) => result.length === 0));
+    await condition(async () => await query.getAll().then((result) => result.length === 0));
     const actual = await query.getAll();
     const expected = [];
     expect(actual).to.deep.equal(expected);
@@ -133,12 +133,12 @@ describe('mutations', () => {
   it('should rename item', async () => {
     const title = 'Buy cheese';
     const id = await mutation.add(title);
-    await condition(() => query.getAll().then((result) => result.length === 1));
+    await condition(async () => await query.getAll().then((result) => result.length === 1));
 
     const newTitle = 'Apply for 6-month tax extension';
     await mutation.rename(id, newTitle);
 
-    await condition(() => query.get(id).then((result) => result.title === newTitle));
+    await condition(async () => await query.get(id).then((result) => result.title === newTitle));
     const actual = await query.getAll();
     const expected = [
       new Todo(id, newTitle, false),
