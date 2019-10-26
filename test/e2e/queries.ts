@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { MutationApiModel, QueryApiModel, Todo } from './api-models';
+import { condition, MutationApiModel, QueryApiModel, Todo } from './api-models';
 
 describe('queries', () => {
   const url = 'http://localhost:8080/graphql';
@@ -18,6 +18,7 @@ describe('queries', () => {
   it('should get one item', async () => {
     const title = 'Buy cheese';
     const id = await mutation.add(title);
+    await condition(async () => await query.getAll().then((result) => result.length === 1));
 
     const actual = await query.get(id);
 
@@ -30,6 +31,7 @@ describe('queries', () => {
     const secondTitle = 'Wash the car';
     const firstId = await mutation.add(firstTitle);
     const secondId = await mutation.add(secondTitle);
+    await condition(async () => await query.getAll().then((result) => result.length === 2));
 
     const actual = await query.getAll();
 
@@ -40,3 +42,7 @@ describe('queries', () => {
     expect(actual).to.deep.equal(expected);
   });
 });
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
