@@ -128,8 +128,3 @@ describe('mutations', () => {
   });
 
 });
-
-function t(): string {
-  const today = new Date();
-  return today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-}
