@@ -19,8 +19,6 @@ describe('queries', () => {
     const title = 'Buy cheese';
     const id = await mutation.add(title);
 
-    await sleep(1000);
-
     const actual = await query.get(id);
 
     const expected = new Todo(id, title, false);
@@ -33,8 +31,6 @@ describe('queries', () => {
     const firstId = await mutation.add(firstTitle);
     const secondId = await mutation.add(secondTitle);
 
-    // await sleep(1000);
-
     const actual = await query.getAll();
 
     const expected = [
@@ -44,7 +40,3 @@ describe('queries', () => {
     expect(actual).to.deep.equal(expected);
   });
 });
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
