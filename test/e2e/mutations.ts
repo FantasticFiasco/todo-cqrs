@@ -9,46 +9,27 @@ describe('mutations', () => {
   const query = new QueryApiModel(url);
 
   beforeEach('given an empty todo list', async () => {
-    console.log(t(), "Start beforeEach");
-
-    console.log("-1");
     const todos = await query.getAll();
 
-    console.log("-2");
     for (const todo of todos) {
-      console.log(t(), `Removing todo ${todo.id} - ${todo.title}`);
-
-      console.log("-3");
       await mutation.remove(todo.id);
     }
 
-    console.log(t(), "Before await");
-    console.log("-4");
     await condition(async () => await query.getAll().then((result) => result.length === 0));
-    console.log(t(), "After await");
-    console.log(t(), "End beforeEach");
-    console.log("-5");
   });
 
   it('should add item given empty list', async () => {
-    console.log("1");
     const title = 'Buy cheese';
 
-    console.log("2");
     const id = await mutation.add(title);
 
-    console.log("3");
     await condition(async () => await query.getAll().then((result) => result.length === 1));
-    console.log("4");
     const actual = await query.getAll();
-    console.log("5");
     const expected = [
       new Todo(id, title, false),
     ];
-    console.log("6");
 
     expect(actual).to.deep.equal(expected);
-    console.log("7");
   });
 
   it('should add two items given empty list', async () => {
