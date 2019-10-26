@@ -3,7 +3,7 @@ WORKDIR /app
 COPY . ./
 RUN dotnet publish -c Release -o out ./apps/5.distributed.no-sql-event-store.no-sql-readmodel/writes/Writes.csproj
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "Writes.dll"]
