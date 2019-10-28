@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
 using Cqrs;
 using Microsoft.Extensions.Logging;
 
@@ -9,12 +8,12 @@ namespace EventStore.InMemory
 {
     public class InMemoryEventStore : IEventStore
     {
-        private readonly ConcurrentDictionary<Guid, Stream> store;
+        private readonly ConcurrentDictionary<Guid, InMemoryStream> store;
         private readonly ILogger<InMemoryEventStore> logger;
 
         public InMemoryEventStore(ILogger<InMemoryEventStore> logger)
         {
-            store = new ConcurrentDictionary<Guid, Stream>();
+            store = new ConcurrentDictionary<Guid, InMemoryStream>();
             this.logger = logger;
         }
 
@@ -35,7 +34,7 @@ namespace EventStore.InMemory
             logger.LogInformation("Save {count} event(s) for aggregate {id}", newEvents.Length, id);
 
             // Get or create stream
-            var stream = store.GetOrAdd(id, new Stream());
+            var stream = store.GetOrAdd(id, new InMemoryStream());
 
             lock (stream)
             {
@@ -44,11 +43,6 @@ namespace EventStore.InMemory
 
                 stream.Events.AddRange(newEvents);
             }
-        }
-
-        private class Stream
-        {
-            public List<object> Events { get; } = new List<object>();
         }
     }
 }
