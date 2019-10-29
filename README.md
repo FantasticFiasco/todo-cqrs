@@ -225,7 +225,7 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 
 The code needed to fulfill the requirements can be found in `5.Distributed.NoSqlEventStore.NoSqlReadModel.sln`. The command handlers and the read model reside in their own process, thus living up to the requirement of being independently scalable.
 
-Reading events produced by aggregates, and update the read model accordingly, i.e. synchronization of the read model, has also been moved into its own process. This decoupling means that we no longer are able to publish and subscribe to events in memory. [RabbitMQ](https://www.rabbitmq.com/) has been added to the application, taking the role of being the message broker between the different parts of the application.
+Reading events produced by aggregates, and update the read model accordingly (i.e. synchronization of the read model) has also been moved into its own process. This decoupling means that we no longer are able to publish and subscribe to events in memory. [RabbitMQ](https://www.rabbitmq.com/) has been added to the application, taking the role of being the message broker between the different parts of the application.
 
 Decoupling also means that the application has morphed from being strongly consistent into eventually consistent. This is one of the drawbacks of a distributed system, but something we embrace to achieve reliability. The read model is no longer entangled in the command handling process. It has its own process, and can continue to serve client even if the command handling process by some mishap terminates.
 
@@ -249,6 +249,6 @@ The [Rabbit Management plugin](https://www.rabbitmq.com/management.html), a grap
 
 ## 6. What's next?
 
-There are some drawbacks with the previous solution that one would like to fix before releasing to production. One is that updating the event store and publishing a message to the broker are two distinct separate atomic operations, but here they are executed in sequence by the write process.
+There are some drawbacks with the previous solution that one would like to fix before releasing to production. One is that updating the event store and publishing a message to the broker are two distinct atomic operations, but here they are executed in sequence by the write process.
 
 What would happen if the processed crashed after writing to the event store but before the message was published? Total mayhem I would argue. We would have to refactor the solution so that command handlers only write to the event store, and then in the synchronizing process we would subscribe to Monge DB's change stream and synchronize the read model. That way we've eliminated the risk of introducing discrepancies in the read model, and the world would seem a whole lot brighter.
