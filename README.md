@@ -7,11 +7,12 @@
 - [Introduction](#introduction)
 - [What you will end up with](#what-you-will-end-up-with)
 - [Acceptance criteria](#acceptance-criteria)
-- [Single process using in-memory event store and in-memory read model](#single-process-using-in-memory-event-store-and-in-memory-read-model)
-- [Single process using SQL event store and in-memory read model](#single-process-using-sql-event-store-and-in-memory-read-model)
-- [Single process using NoSQL event store and in-memory read model](#single-process-using-nosql-event-store-and-in-memory-read-model)
-- [Single process using NoSQL event store and NoSQL read model](#single-process-using-nosql-event-store-and-nosql-read-model)
-- [Distributed NoSQL event store and NoSQL read model](#distributed-nosql-event-store-and-nosql-read-model)
+- [Single process using in-memory event store and in-memory read model](#1-single-process-using-in-memory-event-store-and-in-memory-read-model)
+- [Single process using SQL event store and in-memory read model](#2-single-process-using-sql-event-store-and-in-memory-read-model)
+- [Single process using NoSQL event store and in-memory read model](#3-single-process-using-nosql-event-store-and-in-memory-read-model)
+- [Single process using NoSQL event store and NoSQL read model](#4-single-process-using-nosql-event-store-and-nosql-read-model)
+- [Distributed NoSQL event store and NoSQL read model](#5-distributed-nosql-event-store-and-nosql-read-model)
+- [What's next](#6-whats-next)
 
 ## Introduction
 
@@ -19,11 +20,12 @@ This repository contains various implementations meeting the acceptance criteria
 
 These are the implementations, ordered according to complexity:
 
-1. [Single process using in-memory event store and in-memory read model](#single-process-using-in-memory-event-store-and-in-memory-read-model)
-1. [Single process using SQL event store and in-memory read model](#single-process-using-sql-event-store-and-in-memory-read-model)
-1. [Single process using NoSQL event store and in-memory read model](#single-process-using-nosql-event-store-and-in-memory-read-model)
-1. [Single process using NoSQL event store and NoSQL read model](#single-process-using-nosql-event-store-and-nosql-read-model)
-1. [Distributed NoSQL event store and NoSQL read model](#distributed-nosql-event-store-and-nosql-read-model)
+1. [Single process using in-memory event store and in-memory read model](#1-single-process-using-in-memory-event-store-and-in-memory-read-model)
+1. [Single process using SQL event store and in-memory read model](#2-single-process-using-sql-event-store-and-in-memory-read-model)
+1. [Single process using NoSQL event store and in-memory read model](#3-single-process-using-nosql-event-store-and-in-memory-read-model)
+1. [Single process using NoSQL event store and NoSQL read model](#4-single-process-using-nosql-event-store-and-nosql-read-model)
+1. [Distributed NoSQL event store and NoSQL read model](#5-distributed-nosql-event-store-and-nosql-read-model)
+1. [What's next](#6-whats-next)
 
 ## What you will end up with
 
@@ -81,7 +83,7 @@ Given a Todo list with a single item 'Buy cheese'<br/>
 When the item changed to 'Apply for 6-month tax extension'<br/>
 Then only the revised item is listed
 
-## Single process using in-memory event store and in-memory read model
+## 1. Single process using in-memory event store and in-memory read model
 
 ### Requirements
 
@@ -93,6 +95,8 @@ Then only the revised item is listed
 The code needed to fulfill the requirements can be found in `1.InMemoryEventStore.InMemoryReadModel.sln`. It contains a very basic in-memory event store that holds all published events.
 
 The read model is also held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being processed, the read model also becomes unavailable.
+
+![alt text](./doc/resources/1-architecture.png "Architecture for solution 1")
 
 ### Running the application
 
@@ -106,7 +110,7 @@ $ docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel
 
 GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
 
-## Single process using SQL event store and in-memory read model
+## 2. Single process using SQL event store and in-memory read model
 
 ### Requirements
 
@@ -121,6 +125,8 @@ The code needed to fulfill the requirements can be found in `2.SqlEventStore.InM
 The read model is still being held in memory, in the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being processed, the read model also becomes unavailable.
 
 All evens will have to be manually replayed after application termination to get the current state of the application, all according to the requirements.
+
+![alt text](./doc/resources/2-architecture.png "Architecture for solution 2")
 
 ### Running the application
 
@@ -141,7 +147,7 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 - Username: `root`
 - Password: `secret`
 
-## Single process using NoSQL event store and in-memory read model
+## 3. Single process using NoSQL event store and in-memory read model
 
 ### Requirements
 
@@ -158,6 +164,8 @@ The read model is still being held in memory, in the same process as the event s
 
 All evens will have to be manually replayed after application termination to get the current state of the application, all according to the requirements.
 
+![alt text](./doc/resources/3-architecture.png "Architecture for solution 3")
+
 ### Running the application
 
 Before running any of the implementations, please make sure [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install) are installed.
@@ -172,7 +180,7 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 
 [Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).
 
-## Single process using NoSQL event store and NoSQL read model
+## 4. Single process using NoSQL event store and NoSQL read model
 
 ### Requirements
 
@@ -186,6 +194,8 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 The code needed to fulfill the requirements can be found in `4.NoSqlEventStore.NoSqlReadModel.sln`. It has replaced the in-memory read model with one that persists todo items in a [MongoDB](https://www.mongodb.com/) document database, thus living up to the requirements of being available after application restart.
 
 The read model is still being served by the same process as the event store. This allows us to be strongly consistent, but also decreases reliability because if the process is terminated, not only are commands prevented from being processed, the read model also becomes unavailable.
+
+![alt text](./doc/resources/4-architecture.png "Architecture for solution 4")
 
 ### Running the application
 
@@ -201,7 +211,7 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 
 [Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).
 
-## Distributed NoSQL event store and NoSQL read model
+## 5. Distributed NoSQL event store and NoSQL read model
 
 ### Requirements
 
@@ -215,9 +225,11 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 
 The code needed to fulfill the requirements can be found in `5.Distributed.NoSqlEventStore.NoSqlReadModel.sln`. The command handlers and the read model reside in their own process, thus living up to the requirement of being independently scalable.
 
-Reading events produced by aggregates and update the read model accordingly, i.e. synchronization of the read model, has also been moved into its own process. This decoupling means that we no longer is able to publish and subscribe to events in memory. [RabbitMQ](https://www.rabbitmq.com/) has been added to the application, taking the role of being the message broker between the different parts of the application.
+Reading events produced by aggregates, and update the read model accordingly (i.e. synchronization of the read model) has also been moved into its own process. This decoupling means that we no longer are able to publish and subscribe to events in memory. [RabbitMQ](https://www.rabbitmq.com/) has been added to the application, taking the role of being the message broker between the different parts of the application.
 
 Decoupling also means that the application has morphed from being strongly consistent into eventually consistent. This is one of the drawbacks of a distributed system, but something we embrace to achieve reliability. The read model is no longer entangled in the command handling process. It has its own process, and can continue to serve client even if the command handling process by some mishap terminates.
+
+![alt text](./doc/resources/5-architecture.png "Architecture for solution 5")
 
 ### Running the application
 
@@ -234,3 +246,9 @@ GraphQL playground, the application frontend, is available on [http://localhost:
 [Mongo Express](https://github.com/mongo-express/mongo-express), a graphical database interface, is available on [http://localhost:8081](http://localhost:8081).
 
 The [Rabbit Management plugin](https://www.rabbitmq.com/management.html), a graphical message broker interface, is available on [http://localhost:8082](http://localhost:8082).
+
+## 6. What's next?
+
+There are some drawbacks with the previous solution that one would like to fix before releasing to production. One is that updating the event store and publishing a message to the broker are two distinct atomic operations, but here they are executed in sequence by the write process.
+
+What would happen if the processed crashed after writing to the event store but before the message was published? Total mayhem I would argue. We would have to refactor the solution so that command handlers only write to the event store, and then in the synchronizing process we would subscribe to Monge DB's change stream and synchronize the read model. That way we've eliminated the risk of introducing discrepancies in the read model, and the world would seem a whole lot brighter.
