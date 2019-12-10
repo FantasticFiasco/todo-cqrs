@@ -10,7 +10,7 @@
   "author": "Mattias Kindborg <mattias.kindborg@gmail.com> (https://twitter.com/FantasticFiasco)",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/chai": "4.2.6",
+    "@types/chai": "4.2.7",
     "@types/mocha": "5.2.7",
     "chai": "4.2.0",
     "graphql-request": "1.8.2",
