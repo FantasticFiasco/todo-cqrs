@@ -1,5 +1,6 @@
 import { request } from 'graphql-request';
 import { Variables } from 'graphql-request/dist/src/types';
+import 'cross-fetch/polyfill';
 
 import { Todo } from './todo';
 
