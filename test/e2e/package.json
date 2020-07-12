@@ -11,7 +11,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/chai": "4.2.11",
-    "@types/mocha": "7.0.2",
+    "@types/mocha": "8.0.0",
     "chai": "4.2.0",
     "cross-fetch": "3.0.5",
     "graphql-request": "2.0.0",
