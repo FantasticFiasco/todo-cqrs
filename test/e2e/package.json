@@ -21,6 +21,7 @@
     "typescript": "4.2.4"
   },
   "resolutions": {
+    "glob-parent": ">=5.1.2",
     "minimist": ">=1.2.2",
     "path-parse": ">=1.0.7"
   }
