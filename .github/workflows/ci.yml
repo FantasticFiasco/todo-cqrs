@@ -8,6 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Build 0.All.sln
         run: dotnet build --configuration Release 0.All.sln
       - name: Build 1.InMemoryEventStore.InMemoryReadModel.sln
