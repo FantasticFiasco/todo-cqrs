@@ -31,16 +31,19 @@ jobs:
 
   e2e_lint:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./test/e2e
     steps:
       - uses: actions/checkout@v2
-      - name: Lint
-        run: |
-          cd ./test/e2e
-          yarn
-          yarn lint
+      - run: yarn
+      - run: yarn lint
 
   e2e:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./test/e2e
     strategy:
       matrix:
         docker_file: [
@@ -53,9 +56,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: docker-compose -f ${{ matrix.docker_file }} up --build --detach
-      - run: |
-          sleep 1m
-          cd ./test/e2e
-          yarn
-          yarn test
+      - run: sleep 1m
+      - run: yarn
+      - run: yarn test
       - run: docker-compose -f ${{ matrix.docker_file }} down
