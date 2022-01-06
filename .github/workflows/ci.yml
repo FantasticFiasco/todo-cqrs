@@ -38,3 +38,14 @@ jobs:
           cd ./test/e2e
           yarn
           yarn lint
+
+  e2e_inmemory_eventstore_inmemory_readmodel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up --build --detach
+      - run: |
+          cd ./test/e2e
+          yarn
+          yarn test
+      - run: docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml down
