@@ -22,7 +22,7 @@ jobs:
       - name: Build 5.Distributed.NoSqlReadModel.sln
         run: dotnet build --configuration Release 5.Distributed.NoSqlEventStore.NoSqlReadModel.sln
 
-  test:
+  unit_test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -45,47 +45,17 @@ jobs:
       matrix:
         docker_file: [
           ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml,
-          ./docker-compose.2.sql-event-store.in-memory-readmodel.yml
+          ./docker-compose.2.sql-event-store.in-memory-readmodel.yml,
+          ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml,
+          ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml,
+          ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml
         ]
     steps:
       - uses: actions/checkout@v2
       - run: docker-compose -f ${{ matrix.docker_file }} up --build --detach
       - run: |
+          sleep 1m
           cd ./test/e2e
           yarn
           yarn test
       - run: docker-compose -f ${{ matrix.docker_file }} down
-
-  # e2e_nosql_eventstore_inmemory_readmodel:
-  #   runs-on: ubuntu-latest
-  #     steps:
-  #       - uses: actions/checkout@v2
-  #       - run: docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up --build --detach
-  #       - run: |
-  #           cd ./test/e2e
-  #           yarn
-  #           yarn test
-  #       - run: docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml down
-
-  # e2e_nosql_eventstore_nosql_readmodel:
-  #   runs-on: ubuntu-latest
-  #     steps:
-  #       - uses: actions/checkout@v2
-  #       - run: docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up --build --detach
-  #       - run: |
-  #           cd ./test/e2e
-  #           yarn
-  #           yarn test
-  #       - run: docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml down
-
-  # e2e_distributed_nosql_eventstore_nosql_readmodel:
-  #   runs-on: ubuntu-latest
-  #     steps:
-  #       - uses: actions/checkout@v2
-  #       - run: docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml up --build --detach
-  #       - run: |
-  #           sleep 1m
-  #           cd ./test/e2e
-  #           yarn
-  #           yarn test
-  #       - run: docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml down
