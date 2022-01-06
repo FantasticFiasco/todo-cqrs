@@ -21,3 +21,10 @@ jobs:
         run: dotnet build --configuration Release 4.NoSqlEventStore.NoSqlReadModel.sln
       - name: Build 5.Distributed.NoSqlReadModel.sln
         run: dotnet build --configuration Release 5.Distributed.NoSqlEventStore.NoSqlReadModel.sln
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: dotnet test --configuration Release .\test\writes\event-store-in-memory-test\EventStore.InMemory.Test.csproj
+      - run: dotnet test --configuration Release .\test\writes\todo-test\Todo.Test.csproj.csproj
