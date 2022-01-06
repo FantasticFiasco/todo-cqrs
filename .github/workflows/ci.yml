@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build 0.All.sln
+        run: dotnet build --configuration Release 0.All.sln
+      - name: Build 1.InMemoryEventStore.InMemoryReadModel.sln
+        run: dotnet build --configuration Release 1.InMemoryEventStore.InMemoryReadModel.sln
+      - name: Build 2.SqlEventStore.InMemoryReadModel.sln
+        run: dotnet build --configuration Release 2.SqlEventStore.InMemoryReadModel.sln
+      - name: Build 3.NoSqlEventStore.InMemoryReadModel.sln
+        run: dotnet build --configuration Release 3.NoSqlEventStore.InMemoryReadModel.sln
+      - name: Build 4.NoSqlEventStore.NoSqlReadModel.sln
+        run: dotnet build --configuration Release 4.NoSqlEventStore.NoSqlReadModel.sln
+      - name: Build 5.Distributed.NoSqlReadModel.sln
+        run: dotnet build --configuration Release 5.Distributed.NoSqlEventStore.NoSqlReadModel.sln
+
+  unit_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: dotnet test --configuration Release ./test/writes/event-store-in-memory-test/EventStore.InMemory.Test.csproj
+      - run: dotnet test --configuration Release ./test/writes/todo-test/Todo.Test.csproj
+
+  e2e_lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./test/e2e
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn
+      - run: yarn lint
+
+  e2e:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./test/e2e
+    strategy:
+      matrix:
+        docker_file: [
+          ../../docker-compose.1.in-memory-event-store.in-memory-readmodel.yml,
+          ../../docker-compose.2.sql-event-store.in-memory-readmodel.yml,
+          ../../docker-compose.3.no-sql-event-store.in-memory-readmodel.yml,
+          ../../docker-compose.4.no-sql-event-store.no-sql-readmodel.yml,
+          ../../docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml
+        ]
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker-compose -f ${{ matrix.docker_file }} up --build --detach
+      - run: sleep 1m
+      - run: yarn
+      - run: yarn test
+      - run: docker-compose -f ${{ matrix.docker_file }} down
