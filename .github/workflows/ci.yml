@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: dotnet test --configuration Release ./test/writes/event-store-in-memory-test/EventStore.InMemory.Test.csproj
-      - run: dotnet test --configuration Release ./test\writes/todo-test/Todo.Test.csproj
+      - run: dotnet test --configuration Release ./test/writes/todo-test/Todo.Test.csproj
 
   e2e_lint:
     runs-on: ubuntu-latest
