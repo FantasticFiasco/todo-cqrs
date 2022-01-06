@@ -1,11 +1,5 @@
 {
-    "spellright.language": [
-      "en",
-      "English (American)"
-    ],
-    "spellright.documentTypes": [
-        "markdown",
-        "latex",
-        "plaintext"
-    ]
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow": ["/.github/workflows/*"]
+  }
 }

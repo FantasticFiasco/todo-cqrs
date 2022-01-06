@@ -1,0 +1,18 @@
+name: CI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build 0.All.sln
+        run: dotnet build --configuration Release 0.All.sln
+      - name: Build 1.InMemoryEventStore.InMemoryReadModel.sln
+        run: dotnet build --configuration Release 1.InMemoryEventStore.InMemoryReadModel.sln
+      - name: Build 2.SqlEventStore.InMemoryReadModel.sln
+        run: dotnet build --configuration Release 2.SqlEventStore.InMemoryReadModel.sln
+      - name: Build 3.NoSqlEventStore.InMemoryReadModel.sln
+        run: dotnet build --configuration Release 3.NoSqlEventStore.InMemoryReadModel.sln
+      - name: Build 4.NoSqlEventStore.NoSqlReadModel.sln
+        run: dotnet build --configuration Release 4.NoSqlEventStore.NoSqlReadModel.sln
+      - name: Build 5.Distributed.NoSqlReadModel.sln
+        run: dotnet build --configuration Release 5.Distributed.NoSqlEventStore.NoSqlReadModel.sln
