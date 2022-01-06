@@ -39,16 +39,21 @@ jobs:
           yarn
           yarn lint
 
-  e2e_inmemory_eventstore_inmemory_readmodel:
+  e2e:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        docker_file: [
+          ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml
+        ]
     steps:
       - uses: actions/checkout@v2
-      - run: docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up --build --detach
+      - run: docker-compose -f ${{ matrix.docker_file }} up --build --detach
       - run: |
           cd ./test/e2e
           yarn
           yarn test
-      - run: docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml down
+      - run: docker-compose -f ${{ matrix.docker_file }} down
 
   e2e_sql_eventstore_inmemory_readmodel:
     runs-on: ubuntu-latest
