@@ -55,52 +55,52 @@ jobs:
           yarn test
       - run: docker-compose -f ${{ matrix.docker_file }} down
 
-  e2e_sql_eventstore_inmemory_readmodel:
-    runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-    displayName: E2E SQL Event Store / In-Memory Read Model
-    pool:
-      vmImage: Ubuntu 16.04
-    steps:
-    - run: docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up --build --detach
-    - run: |
-        cd ./test/e2e
-        yarn
-        yarn test
-    - run: docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml down
-      displayName: Run e2e tests
+  # e2e_sql_eventstore_inmemory_readmodel:
+  #   runs-on: ubuntu-latest
+  #     steps:
+  #       - uses: actions/checkout@v2
+  #   displayName: E2E SQL Event Store / In-Memory Read Model
+  #   pool:
+  #     vmImage: Ubuntu 16.04
+  #   steps:
+  #   - run: docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up --build --detach
+  #   - run: |
+  #       cd ./test/e2e
+  #       yarn
+  #       yarn test
+  #   - run: docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml down
+  #     displayName: Run e2e tests
 
-  e2e_nosql_eventstore_inmemory_readmodel:
-    runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - run: docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up --build --detach
-        - run: |
-            cd ./test/e2e
-            yarn
-            yarn test
-        - run: docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml down
+  # e2e_nosql_eventstore_inmemory_readmodel:
+  #   runs-on: ubuntu-latest
+  #     steps:
+  #       - uses: actions/checkout@v2
+  #       - run: docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up --build --detach
+  #       - run: |
+  #           cd ./test/e2e
+  #           yarn
+  #           yarn test
+  #       - run: docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml down
 
-  e2e_nosql_eventstore_nosql_readmodel:
-    runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - run: docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up --build --detach
-        - run: |
-            cd ./test/e2e
-            yarn
-            yarn test
-        - run: docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml down
+  # e2e_nosql_eventstore_nosql_readmodel:
+  #   runs-on: ubuntu-latest
+  #     steps:
+  #       - uses: actions/checkout@v2
+  #       - run: docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up --build --detach
+  #       - run: |
+  #           cd ./test/e2e
+  #           yarn
+  #           yarn test
+  #       - run: docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml down
 
-  e2e_distributed_nosql_eventstore_nosql_readmodel:
-    runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - run: docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml up --build --detach
-        - run: |
-            sleep 1m
-            cd ./test/e2e
-            yarn
-            yarn test
-        - run: docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml down
+  # e2e_distributed_nosql_eventstore_nosql_readmodel:
+  #   runs-on: ubuntu-latest
+  #     steps:
+  #       - uses: actions/checkout@v2
+  #       - run: docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml up --build --detach
+  #       - run: |
+  #           sleep 1m
+  #           cd ./test/e2e
+  #           yarn
+  #           yarn test
+  #       - run: docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml down
