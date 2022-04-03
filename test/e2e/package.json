@@ -22,7 +22,7 @@
   },
   "resolutions": {
     "glob-parent": ">=5.1.2",
-    "minimist": ">=1.2.2",
+    "minimist": ">=1.2.6",
     "path-parse": ">=1.0.7"
   }
 }
