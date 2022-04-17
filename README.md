@@ -105,7 +105,7 @@ Before running any of the implementations, please make sure [Docker](https://www
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up
+$ docker compose -f ./docker-compose.1.in-memory-event-store.in-memory-readmodel.yml up
 ```
 
 GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
@@ -135,7 +135,7 @@ Before running any of the implementations, please make sure [Docker](https://www
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up
+$ docker compose -f ./docker-compose.2.sql-event-store.in-memory-readmodel.yml up
 ```
 
 GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
@@ -173,7 +173,7 @@ Before running any of the implementations, please make sure [Docker](https://www
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up
+$ docker compose -f ./docker-compose.3.no-sql-event-store.in-memory-readmodel.yml up
 ```
 
 GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
@@ -204,7 +204,7 @@ Before running any of the implementations, please make sure [Docker](https://www
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up
+$ docker compose -f ./docker-compose.4.no-sql-event-store.no-sql-readmodel.yml up
 ```
 
 GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
@@ -238,7 +238,7 @@ Before running any of the implementations, please make sure [Docker](https://www
 Run the following command in the root of the repository to start the application.
 
 ```bash
-$ docker-compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml up
+$ docker compose -f ./docker-compose.5.distributed.no-sql-event-store.no-sql-readmodel.yml up
 ```
 
 GraphQL playground, the application frontend, is available on [http://localhost:8080/ui/playground](http://localhost:8080/ui/playground).
